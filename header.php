@@ -85,7 +85,7 @@
         </ul></div>	</nav>
 
         <div id="profile_links">
-            <span id="welcome">Welcome <strong>Sri Navas</strong></span> | <a href="/sscy/teachers/index.php?logout">logout</a>
+            <span id="welcome">Welcome <strong>Jesse Burton</strong></span> | <a href="/sscy/teachers/index.php?logout">logout</a>
         </div>
 
         </header>

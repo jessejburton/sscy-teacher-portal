@@ -6,6 +6,11 @@
             $("#registration").toggle($(this).val().length > 0);
         });
 
+        // Show FAQs when area is selected
+        $("#area_select").on("change", function(){
+            $("#faqs").toggle($(this).val().length > 0);
+        });
+
         // Show Agenda when date is selected
         $("#agenda_select").on("change", function(){
             $(".agenda").toggle($(this).val().length > 0);
@@ -62,7 +67,7 @@
         // ADD NEW REQUEST
         $(document).on("click", ".button-request", function(){
             var request = $(".agenda__item--request.template").clone(false);
-            request.find(".agenda__item-name").html($("#agenda_request").val() + ' <span class="agenda__item-toggle"></span>');
+            request.find(".agenda__item-name").html('<div class="agenda__item-photo"><img src="../cc/img/mariel.jpg" title="Mariel Ahlers" class="agenda__item-photo--image" /></div>' + $("#agenda_request").val() + ' <span class="agenda__item-toggle"></span>');
             request.removeClass("template");
 
             $(".agenda-spacer").before(request);
@@ -77,11 +82,19 @@
             showModal("<p>Item will be added to the next CC Agenda.</p>");
         });  
 
+
+
         $(document).on("click", ".agenda__item--support", function(){
             var val = $(this).data("val");
             $(this).data("val", val + 1);
             val = val + 1;
             $(this).find(".agenda__item--support-text").html(val + " in support");
+        });
+
+        $(document).on("click", ".faq__question-link", function(){
+            $(this).parent().next(".faq__answer").slideToggle();
+
+            return false;
         });
 
         $(document).on("click", ".agenda__item--complete", function(){
