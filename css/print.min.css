@@ -1,0 +1,11 @@
+html {
+    padding: 40px;
+}
+
+.item-title, strong {
+    font-weight: bold;
+}
+
+.discussion {
+    padding-bottom: 15px;
+}
