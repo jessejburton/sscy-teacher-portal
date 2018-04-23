@@ -80,7 +80,7 @@
                             c-0.313,0.051-0.857,0.124-0.857,0.124c-3.808,0.035-10.523-3.426-14.651-7.625C-123.506,204.979-124.842,202.494-124.755,200.356" />
                     </svg></a>
                 <a class="mobile-nav" href="#" title="toggle menu" onclick="toggleMenu(0)">MENU</a>
-                <div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-16292" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16292"><a href="/sscy">Dashboard</a></li>
+                <div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-16292" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16292"><a href="/SSCY/">Dashboard</a></li>
         <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/SSCY/TEACHERS/classes.php">Classes</a></li>
         <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/SSCY/TEACHERS/registration.php">Registration</a></li>
         <li id="menu-item-16319" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16319"><a href="/SSCY/TEACHERS/reports.php">Reports</a></li>
