@@ -82,14 +82,14 @@
                     </svg></a>
                 <a class="mobile-nav" href="#" title="toggle menu" onclick="toggleMenu(0)">MENU</a>
                 <div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-16292" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16292"><a href="/sscy">Dashboard</a></li>
-        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/sscy/cc/agendas.php">Agendas</a></li>
-        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/sscy/cc/minutes.php">Minutes</a></li>
-        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/sscy/cc/public.php">Public Minutes</a></li>
-        <li id="menu-item-16319" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16319"><a href="/sscy/cc/profile.php">My Profile</a></li>
+        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/SSCY/CC/agendas.php">Agendas</a></li>
+        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/SSCY/CC/minutes.php">Minutes</a></li>
+        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/SSCY/CC/public.php">Public Minutes</a></li>
+        <li id="menu-item-16319" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16319"><a href="/SSCY/CC/profile.php">My Profile</a></li>
         </ul></div>	</nav>
 
         <div id="profile_links">
-            <span id="welcome">Welcome <strong>Sri Navas</strong></span> | <a href="/sscy/teachers/index.php?logout">logout</a>
+            <span id="welcome">Welcome <strong>Sri Navas</strong></span> | <a href="/SSCY/index.php?logout">logout</a>
         </div>
 
         </header>

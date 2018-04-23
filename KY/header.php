@@ -82,11 +82,11 @@
                     </svg></a>
                 <a class="mobile-nav" href="#" title="toggle menu" onclick="toggleMenu(0)">MENU</a>
                 <div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-16292" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16292"><a href="/sscy">Dashboard</a></li>
-        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/sscy/ky/forms.php">Forms</a></li>
-        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/sscy/ky/faq.php">Area FAQs</a></li>
-        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/sscy/ky/cc.php">Centre Committee</a></li>
-        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/sscy/ky/discussion.php">Discussion</a></li>
-        <li id="menu-item-16319" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16319"><a href="/sscy/ky/profile.php">My Profile</a></li>
+        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/SSCY/KY/forms.php">Forms</a></li>
+        <li id="menu-item-16332" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16332"><a href="/SSCY/KY/faq.php">Area FAQs</a></li>
+        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/SSCY/KY/cc.php">Centre Committee</a></li>
+        <li id="menu-item-16317" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16317"><a href="/SSCY/KY/discussion.php">Discussion</a></li>
+        <li id="menu-item-16319" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16319"><a href="/SSCY/KY/profile.php">My Profile</a></li>
         </ul></div>	</nav>
 
         <div id="profile_links">
