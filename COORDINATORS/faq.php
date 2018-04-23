@@ -45,6 +45,21 @@
                         <div class="faq__answer">Om and SN.</div>
                     </div>
                 </div>
+
+                <hr />
+
+                <div class="add__faq">
+                    <h3 class="u-bottom-space">Add Maintenance FAQ</h3>
+                    <div class="u-bottom-space">
+                        <input type="text" class="input-text" id="add__faq-question" placeholder="Enter your question..." />
+                    </div>
+                    <div class="u-bottom-space">
+                        <textarea class="input-textarea" id="add__faq-answer" rows="10" placeholder="Enter your answer..."></textarea>
+                    </div>
+                    <div class="u-text-right">
+                        <button class="button">Add FAQ</button>
+                    </div>
+                </div>
             </div>
 
         </article><!-- .row -->
