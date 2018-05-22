@@ -1,3 +1,17 @@
+/*************************************************
+ * 
+ *   CORE
+ *   main.js
+ *   
+ *   Includes all of the javascript code used 
+ *   globally across all of the PORTALS.
+ * 
+ *   Version 1.0
+ *   by Jesse James Burton
+ *   http://www.burtonmediainc.com
+ * 
+ *************************************************/
+
 (function($){
     $(function(){
 
@@ -51,16 +65,6 @@
             $("#registrant_ky").prop("checked", false);
         });
 
-        // Edit Class
-        $(document).on("click", ".edit-class", function(){
-            showModal("<h3>Edit Class</h3><div class='row'><label class='input-textarea-label'>class name</label><input type='text' class='input-text' placeholder='class name' value='Hatha Mixed Levels with John' /></div><div class='row'><label class='input-textarea-label'>class description</label><textarea class='input-textarea' placeholder='class description' rows='15'>A balanced combination of sustained poses with attention to basic alignment and therapeutic principals. Mindfulness; observing breath and body (triputi) are an integral part of class. This style of yoga provides a great stretch and strengthens the body.</textarea></div>");
-        });
-
-        // Cancel Class
-        $(document).on("click", ".cancel-class", function(){
-            showModal("<p><strong>Are you sure you would like to cancel the following class:</strong></p><p>Monday, April 23rd - Hatha Mixed Levels with John</p>");
-        });
-
         // Send Report
         $(document).on("click", ".send-report", function(){
             showModal("<p><strong>Are you sure you would like to send this report to the Yoga Centre?</strong></p>");
@@ -105,10 +109,19 @@
             return date;
         }
 
-        function showModal(html){
-            $(".modal-content-body").html(html);
-            $(".modal-overlay").fadeIn("fast");
-        }
-
     }); // end of document ready
 })(jQuery); // end of jQuery name space
+
+/* 
+*   GLOBAL FUNCTIONS
+*   Functions that need to be accessed across the namespaces
+*   
+*/
+
+// Show a modal dialog window
+function showModal(content, buttons){
+    var html = $.get(content);
+
+    $(".modal__content-body").html(html);
+    $(".modal").fadeIn("fast");
+}

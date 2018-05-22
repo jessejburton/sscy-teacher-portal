@@ -1,114 +1,70 @@
-(function($){
-    $(function(){
+/*************************************************
+ * 
+ *   TEACHERS
+ *   classes.js
+ *   
+ *   Includes all of the javascript code used 
+ *   only within the TEACHERS portal
+ * 
+ *   Version 1.0
+ *   by Jesse James Burton
+ *   http://www.burtonmediainc.com
+ * 
+ *************************************************/
 
-        // Show Registrants when class is selected
-        $("#class_select").on("change", function(){
-            $("#registration").toggle($(this).val().length > 0);
-        });
+/* CLICK HANDLERS */
 
-        // Show Report when date is selected
-        $("#to").on("change", function(){
-            $("#report").toggle($(this).val().length > 0);
-        });
+    // CLICK - class__button--edit
+    $(document).on("click", ".class__button--edit", function(){
+        // Pass the specific class data to the edit class function
+        showModal("../TEACHERS/partials/_edit_class.php");
+    });
 
-        // When Month is selected 
-        $("#month_select").on("change", function(){
-            var startDate = $(this).val();
+    // CLICK - class__button--registration
+    $(document).on("click", ".class__button--registration", function(){
+        // Navigate to the registration for the selected class
+        window.location = 'registration.php?show';
+    });
 
-            if(startDate.length > 1){
-                $("#from").val(startDate);
-                $("#to").val(startDate).trigger("change");
-            } else {
-                $("#from").val("");
-                $("#to").val("");
-                $("#report").hide();
-            }
-        });
+    // CLICK - class__button--cancel
+    $(document).on("click", ".class__button--registration", function(){
+        // Confirm whether or not to cancel the selcted class
+        showModal("<p><strong>Are you sure you would like to cancel the following class:</strong></p><p>Monday, April 23rd - Hatha Mixed Levels with John</p>");
+    });
 
-        $(document).on("click", ".registration-checkin", function(){
-            $(this).replaceWith('<span class="checkedin" title="Click to un-check in">checked in</span>');
-        });
+    // CLICK - class__button--add
+    $(document).on("click", ".class__button--add", function(){
+        // Call the add class function
+        showModal("<p>Add a class</p>");
+    });
+    
+/* 
+*   FUNCTIONS 
+*
+*   I am using cls as the variable name to represent the 
+*   class since 'class' is a reserved word
+*
+*/
 
-        $(document).on("click", ".checkedin", function(){
-            $(this).replaceWith('<button class="button registration-checkin">CHECK IN</button>');
-        });
+    // Add a new class
+    function addClass(){
+        // Show the class modal
 
-        $(".registration-new").on('click', function(){
-            var r = $("#registrant-table").find(".template").clone(false);
+    }
 
-            r.removeClass("template");
-            r.find(".registrant-name").html($("#registrant_name").val());
-            r.find(".registrant-email").html($("#registrant_email").val());
-            r.find(".registrant-pr").prop("checked", $("#registrant_pr").is(":checked"));
-            r.find(".registrant-ky").prop("checked", $("#registrant_ky").is(":checked"));
+    // Edit a specific class
+    function editClass(cls){
+        // Show the class modal and populate it with the passed in class
+    }
 
-            $("#registrant-table").find("tbody").append(r);
+    // Cancel a specific class
+    function cancelClass(cls, message){
+        // Cancel the passed in class and add a message to the class
+    }
 
-            // Clear the values
-            $("#registrant_name").val("");
-            $("#registrant_email").val("");
-            $("#registrant_pr").prop("checked", false);
-            $("#registrant_ky").prop("checked", false);
-        });
+    // Save a class
+    function saveClass(cls){
+        // Either create a new class if the passed in object ID is 0 or save 
+        // the class that is passed in by ID
+    }
 
-        // Edit Class
-        $(document).on("click", ".edit-class", function(){
-            showModal("<h3>Edit Class</h3><div class='row'><label class='input-textarea-label'>class name</label><input type='text' class='input-text' placeholder='class name' value='Hatha Mixed Levels with John' /></div><div class='row'><label class='input-textarea-label'>class description</label><textarea class='input-textarea' placeholder='class description' rows='15'>A balanced combination of sustained poses with attention to basic alignment and therapeutic principals. Mindfulness; observing breath and body (triputi) are an integral part of class. This style of yoga provides a great stretch and strengthens the body.</textarea></div>");
-        });
-
-        // Cancel Class
-        $(document).on("click", ".cancel-class", function(){
-            showModal("<p><strong>Are you sure you would like to cancel the following class:</strong></p><p>Monday, April 23rd - Hatha Mixed Levels with John</p>");
-        });
-
-        // Send Report
-        $(document).on("click", ".send-report", function(){
-            showModal("<p><strong>Are you sure you would like to send this report to the Yoga Centre?</strong></p>");
-        });
-
-        $(".modal-content-buttons").on("click", function(){
-            $(".modal-overlay").fadeOut("fast");
-        });
-
-        if($(".show").length > 0){
-            $("#class_select").val("2").trigger("change");
-        }
-
-        var dateFormat = "mm/dd/yy",
-            // From Date Picker
-            from = $( "#from" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3
-                })
-                .on( "change", function() {
-                    to.datepicker( "option", "minDate", getDate( this ) );
-                }),
-            // To Date Picker
-            to = $( "#to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 3
-                })
-                .on( "change", function() {
-                    from.datepicker( "option", "maxDate", getDate( this ) );
-                });
-   
-        function getDate( element ) {
-            var date;
-            try {
-                date = $.datepicker.parseDate( dateFormat, element.value );
-            } catch( error ) {
-                date = null;
-            }
-
-            return date;
-        }
-
-        function showModal(html){
-            $(".modal-content-body").html(html);
-            $(".modal-overlay").fadeIn("fast");
-        }
-
-    }); // end of document ready
-})(jQuery); // end of jQuery name space

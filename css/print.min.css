@@ -9,3 +9,16 @@ html {
 .discussion {
     padding-bottom: 15px;
 }
+
+table {
+    width: 100%;
+}
+
+.logo {
+    width: 50%;
+}
+
+.wrapper {
+    width: 90%;
+    margin: 0 auto;
+}
