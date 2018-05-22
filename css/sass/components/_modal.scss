@@ -1,0 +1,26 @@
+.modal {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.7);
+
+    .modal__content {
+        width: 50vw;
+        @include absCenter;
+        background-color: $white;
+        border: 1px solid $black;
+
+        .modal__content-body, .modal__content-buttons {
+            padding: 25px;
+        }
+
+        .row {
+            width: 80%;
+            transform: translateX(-5px);
+        }
+    }
+
+}

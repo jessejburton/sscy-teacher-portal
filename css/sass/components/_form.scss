@@ -1,0 +1,51 @@
+.input-group {
+    padding: 20px 0;
+}
+
+.button-group {
+    border-top: 1px solid $accent-color;
+    padding: 20px 0;
+    text-align: right;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+}
+
+.input-text, .input-textarea, .input-select {
+    font-size: 16px;
+    color: #575350;
+    padding: 10px 15px;
+    background-color: transparent;
+    width: 100%;
+}
+
+.input-textarea {
+    border: 1px solid #ccc9c6
+}
+
+.input-text {
+    border: none;
+    border-bottom: 1px solid #ccc9c6
+}
+
+.input-text-inline {
+    font-size: 16px;
+    color: #575350;
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc9c6
+}
+
+.input-text-label {
+    padding: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #b3aba4;
+}
+
+.input-textarea-label, .input-select-label {
+    font-weight: 500;
+    color: #b3aba4;
+}

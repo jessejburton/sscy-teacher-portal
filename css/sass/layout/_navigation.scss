@@ -1,0 +1,108 @@
+nav {
+    height: 3em;
+    font-size: 100%;
+    overflow: hidden;
+    @include transition(height 0.3s);
+
+    // Heading Anchors
+    a {
+        border-width: 0.3em;
+        
+        &:hover, &:active {
+            color: $accent-high;
+            
+            svg path { 
+                fill: $accent-high; 
+            }
+        }
+
+        &.home-link {
+            width: 40px;
+            float: left;
+            height: 2.5em;
+            margin-right:0;
+            padding-top: 0.2em;
+            display: inline-block;
+            
+            svg {
+                float: left;
+                height: 100%;
+            }
+
+            &:hover { 
+                border-color: transparent;
+            }
+        }
+
+        &.mobile-nav {
+            float: right;
+            border: 1px solid;
+            margin-top: 0.6em;
+            padding: 0.2em 0.6em;
+        }
+    }
+
+    ul {
+        display: block;
+        clear: left;
+
+        li {
+            overflow: hidden;
+            text-align: right;
+            vertical-align: top;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+
+            a {
+                float: right;
+                height: 2em;
+                padding-top: 0.7em;
+            }
+        }
+    }
+
+    &.open { 
+        height: 32em; 
+    }
+    
+   @include respond($tablet) {
+        a.home-link { 
+            width: 36px; 
+        }
+        
+        a.mobile-nav { 
+            display: none; 
+        }
+        
+        ul {
+            font-size: 80%;
+            margin-left: 10px;
+            clear: none;
+            display: inline-block;
+
+            li {
+                display: inline-block;
+                margin-left: 1.38em;
+                padding: 5px;
+
+                a {
+                    height: 2.2em;
+                }
+            }
+        }
+    }      
+
+    @include respond($tablet-wide) {
+        ul {
+            font-size: 100%;
+
+            li {
+                padding: 0;
+    
+                a {
+                    height: 2em;
+                }
+            }
+        }
+    }
+}
