@@ -1,18 +1,26 @@
 <?php
 
     // Set up the database connection
-    require_once('mysql_connect.php');
+    require_once('../mysql_connect.php');
 
     $qry = "
-        SELECT c.*, cs.*, t.*, a.* 
+            SELECT 
+            c.class_id AS class_id, c.name, c.description, c.room_id, c.teacher_id, 
+            cs.days_of_week, cs.start_time, cs.end_time, cs.date_until,
+            t.teacher_id, t.account_id, t.default_price, t.waiver, t.bio, t.photo,
+            a.name_first, a.name_last, 
+            r.name AS room_name, r.photo AS room_photo, r.description AS room_description
         FROM class_weekly_schedule_tbl cs 
-        LEFT JOIN class_tbl c ON c.class_id = cs.class_id
+        INNER JOIN class_tbl c ON c.class_id = cs.class_id
         LEFT JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
-        LEFT JOIN account_tbl a ON t.account_id = a.account_id    
+        LEFT JOIN account_tbl a ON t.account_id = a.account_id 
+        LEFT JOIN room_tbl r ON r.room_id = c.room_id
+        WHERE cs.date_until IS NULL OR cs.date_until >= CURDATE()
+        ORDER BY cs.start_time   
     " ;
 
-    $qry_results = @mysqli_query($sscy_database, $qry);
- 
+    $qry_results = @mysqli_query($dbc, $qry);
+    
     while ($entry = @mysqli_fetch_object($qry_results)) {
         $qry_classes[] = $entry;
     }
@@ -72,6 +80,7 @@
                             <tr class="class">
                                 <td><?php echo $start_time . ' - ' . $end_time; ?></td>
                                 <td><?php echo $class->name; ?></td>
+                                <td><?php echo $class->room_name; ?></td>
                                 <td><?php echo $class->name_first . ' ' . $class->name_last; ?></td>
                             </tr>
 

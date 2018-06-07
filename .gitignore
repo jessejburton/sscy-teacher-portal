@@ -1,3 +1,4 @@
 # Ignore SASS cache files #
 *.sass-cache
 *.sass-cache/*
+/print/mysql_connect.php

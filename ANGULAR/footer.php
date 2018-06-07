@@ -1,13 +1,5 @@
     </main><!-- main -->
 
-        <!-- MODAL OVERLAY and CONTENT -->
-        <div class="modal modal__overlay">
-            <div class="modal__content">
-                <div class="modal__content-body"></div>
-                <div class="modal__content-buttons"></div>
-            </div>
-        </div>
-
         <!-- ANGULARJS -->
         <script src="../js/vendor/angular.js"></script>
 

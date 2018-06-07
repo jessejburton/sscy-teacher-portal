@@ -1,26 +1,29 @@
-.modal {
-    display: none;
+.modal__overlay {
+    //display: none;
     width: 100vw;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     background-color: rgba(0,0,0,.7);
+    z-index: 999;
 
     .modal__content {
-        width: 50vw;
+        width: 85vw;
+        height: 95vh;
+        overflow: scroll;
         @include absCenter;
         background-color: $white;
         border: 1px solid $black;
-
+        z-index: 1000;
+    
         .modal__content-body, .modal__content-buttons {
             padding: 25px;
         }
 
-        .row {
-            width: 80%;
-            transform: translateX(-5px);
+        .modal__content-buttons {
+            border-top: 3px solid $accent-color;
         }
     }
-
 }
+
