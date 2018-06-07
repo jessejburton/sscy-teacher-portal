@@ -3,15 +3,15 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-// Get all classes the current user has access to.
+// Get all classes
 $app->get('/classes', function (Request $request, Response $response) {
     session_start();
 
-    // Check if the user is logged in
+    // Make sure the person is logged in.
     if( !isset($_SESSION['userid']) ){
-        echo "You must be logged in to access this content.";
-        die();
-    } 
+        echo '{"type": "danger","text": "You muset be logged in to access this page."}';
+        return;
+    }
 
     $userid = $_SESSION['userid'];
 

@@ -1,6 +1,10 @@
 <div class="container" ng-controller="profileController" ng-init="getLoggedInProfile()">
     <h2>My Profile</h2>
     <form>
+        <div ng-show="message.show" class="alert alert-{{message.type}}">
+            {{message.text}}
+        </div>
+
         <div class="row input-group">
             <h3>Name</h3>
             <div class="col-1-of-2">
@@ -36,7 +40,7 @@
         </div>
 
         <div class="button-group u-text-right">
-            <a class="button profile__save-button" href="javascript:void(0);">SAVE PROFILE</a>
+            <a class="button profile__save-button" href="javascript:void(0);" ng-click="saveProfile()">SAVE PROFILE</a>
         </div>
     </form>
 </div>

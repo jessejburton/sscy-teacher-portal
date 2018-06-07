@@ -13,11 +13,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
     return $response;
 });
 
-// Login
+// Routes
 require 'src/routes/login.php';
-
-// Customer Routes
 require 'src/routes/classes.php';
+require 'src/routes/profile.php';
 
 $app->run();
 

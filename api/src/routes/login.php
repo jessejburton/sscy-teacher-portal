@@ -9,16 +9,22 @@ $app->post('/login', function (Request $request, Response $response) {
     $username = $request->getParam("username");
     $password = $request->getParam("password");
 
+    // If either are blank return an error message
+    if(strlen($username) == 0 || strlen($password) == 0){
+        return '{"type": "danger","message": "Please enter a username and password."}';
+    }
+
+    // hash the password to compare
     $hashed_password = md5($password);
 
-    // Check the database
-    $sql = "SELECT username, account_id, email, concat(name_first, ' ', name_last) AS name
-            FROM account_tbl 
+    // Query to get record based on username and password
+    $sql = "SELECT account_id, username, concat(name_first, ' ', name_last) AS name
+            FROM account_tbl
             WHERE username = '$username'
             AND password = '$hashed_password'";
 
     try {
-        
+
         // Get DB Object
         $db = new db();
         // Connect
@@ -28,19 +34,20 @@ $app->post('/login', function (Request $request, Response $response) {
         $user = $stmt->fetch(PDO::FETCH_OBJ);
         $db = null;
 
-        if( !$user ) {
-            echo '{"success":false,"type":"danger","text":"Sorry, that username or password is incorrect."}';
+        // if no user record is returned the password must be incorrect
+        if(!$user){
+            echo '{"success": false,"type": "danger","text": "Your username and password don\'t match our records."}';
         } else {
-            // User login successful, create the session
+            // Log the user in
             session_start();
 
-            $_SESSION['userid'] = $user->account_id;
+            $_SESSION['username'] = $username;
             $_SESSION['name'] = $user->name;
-
-            echo '{"success":true,"type":"success","text":"Welcome to the site!"}';            
-        }
+            $_SESSION['userid'] = $user->account_id;
+            echo '{"success": true,"type": "success","text": "Welcome to the site!"}';
+        };
 
     } catch(PDOException $e) {
-        echo '{"success":false,"type":"danger","text":"' . $e->getMessage() . '"}';
+        echo '{"type": "danger","text": '.$e->getMessage().'"}';
     }
 });
