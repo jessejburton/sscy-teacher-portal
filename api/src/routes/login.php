@@ -43,7 +43,7 @@ $app->post('/login', function (Request $request, Response $response) {
 
             $_SESSION['username'] = $username;
             $_SESSION['name'] = $user->name;
-            $_SESSION['userid'] = $user->account_id;
+            $_SESSION['user_id'] = $user->account_id;
             echo '{"success": true,"type": "success","text": "Welcome to the site!"}';
         };
 

@@ -1,53 +1,48 @@
 // Main Angular App File
 
-var sscy = angular.module('SSCY',[])
+var sscy = angular.module('SSCY',['720kb.datepicker'])
 
 // Navigation Controller
-sscy.controller('navigationController',['$scope',function($scope){
+sscy.controller('navigationController',['$scope','$rootScope',function($scope,$rootScope){
 
-    $scope.rootURL = '/internal/'
+    $rootScope.rootURL = '/SSCY/'
 
     // Change this to read from a folder config file
     $scope.navItems = [
-        {'text':'Dashboard','link' : $scope.rootURL},
-        {'text':'Classes','link' : $scope.rootURL + 'classes.php'},
-        {'text':'Registration','link' : $scope.rootURL + 'registration.php'},
-        {'text':'Reports','link' : $scope.rootURL + 'reports.php'},
-        {'text':'My Profile','link' : $scope.rootURL + 'profile.php'}
+        {'text':'Dashboard','link' : $rootScope.rootURL},
+        {'text':'Classes','link' : $rootScope.rootURL + 'classes.php'},
+        {'text':'Registration','link' : $rootScope.rootURL + 'registration.php'},
+        {'text':'Reports','link' : $rootScope.rootURL + 'reports.php'},
+        {'text':'My Profile','link' : $rootScope.rootURL + 'profile.php'}
     ];
 }]);
 
 // Class Controller
 sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
-    $scope.classes = [];
-    $scope.mode = "Add";
-    $scope.yogaClass = {
-        "name": "My Test Class",
-        "description": "fdsf"
-    }
-    $scope.weekdays = {
-        Sunday: false, 
-        Monday: false,
-        Tuesday: false,
-        Wednesday: false,
-        Thursday: false,
-        Friday: false,
-        Saturday: false
-    };
+    $scope.classes = {};    // Will contain an object of classes with the names as keys
+    $scope.exception = {    // Will contain a single exception as it is being worked on
+        "date": "",
+        "type": "",
+        "invalid_days": [],
+        "class": {}
+    };  
+
+    // Constants
+    const exception_window = document.querySelector('.exceptions');
 
     // get all classes
     $scope.getClasses = function() {
         $http({ 
                 method:'GET',
-                url: '/internal/api/classes', 
+                url: '/SSCY/api/classes', 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
                 $scope.classes = response.data;
             }, function errorCallback(response) {
                 alert("Error" + JSON.stringify(response));
-            });
+        });
     };
 
     // Add a class
@@ -61,6 +56,66 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             'endtime':$scope.classEndTime
         });
     };
+
+    /* EXCEPTIONS */
+
+    // Populate Teachers
+    $http({ 
+            method:'GET',
+            url: '/SSCY/api/teachers', 
+            headers: { 'Content-Type':'application/json' }
+        })
+        .then(function successCallback(response) {
+            $scope.teachers = response.data;
+        }, function errorCallback(response) {
+            alert("Error" + JSON.stringify(response));
+    });
+
+    // Populate Rooms
+    $http({ 
+            method:'GET',
+            url: '/SSCY/api/rooms', 
+            headers: { 'Content-Type':'application/json' }
+        })
+        .then(function successCallback(response) {
+            $scope.rooms = response.data;
+        }, function errorCallback(response) {
+            alert("Error" + JSON.stringify(response));
+    });
+
+    // Show Exceptions
+    $scope.showExceptions = function(class_name){
+        // Clear any existing exceptions
+        $scope.exception = {};
+
+        // Get the class details
+        $scope.exception.class = $scope.classes[class_name];
+
+        // Set the invalid days array
+        $scope.exception.invalid_days = [];
+        for( var i = 0; i < 7; i++ ){
+            if(i != $scope.exception.class.schedules[0].days){ // Only add if it isn't in the days.
+                $scope.exception.invalid_days.push(i);
+            }
+        };
+
+        console.log($scope.exception.class.schedules[0].days);
+        console.log($scope.exception.invalid_days);
+        
+        // Show the exception window
+        exception_window.style.top = `${window.scrollY + 20}px`;
+        exception_window.classList.add('open');
+        
+    };
+
+    // Close Exception Window
+    $scope.closeExceptions = function(){
+
+        // Hide the exception window
+        document.querySelector('.exceptions').classList.remove('open');
+
+    }
+
 
 }]);
 
@@ -82,7 +137,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
         // Get the current users profile
         $http({ 
             method:'GET',
-            url: '/internal/api/profile', 
+            url: '/SSCY/api/profile', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -102,7 +157,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
 
         $http({ 
             method:'PUT',
-            url: '/internal/api/profile/save/' + $scope.profile.account_id, 
+            url: '/SSCY/api/profile/save/' + $scope.profile.account_id, 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -124,10 +179,8 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
 // Login Controller
 sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
-    $scope.username = "jessejburton";
-    $scope.password = "password";
-
-    $scope.details = "hello";
+    $scope.username = "";
+    $scope.password = "";
 
     $scope.message = {
         "show": false,
@@ -152,7 +205,7 @@ sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
         $http({ 
             method:'POST',
-            url: '/internal/api/login', 
+            url: '/SSCY/api/login', 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -176,6 +229,143 @@ sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
 }]);
 
+// Registration Controller
+sscy.controller('registrationController',['$scope', '$http', function($scope, $http){
+
+    // Set up some variables
+    $scope.classes = [];
+    $scope.registrants = [];
+    $scope.class = "";
+    $scope.show = false;
+
+    // Get the url for the API call
+    $user_id = document.getElementById('hidden_user_id').value;
+
+    // get all classes with registrants for the current teacher
+    $scope.getClassesWithRegistrants = function() {
+        $http({ 
+                method:'GET',
+                url: '/SSCY/api/registration/classes/' + $user_id, 
+                headers: { 'Content-Type':'application/json' }
+            })
+            .then(function successCallback(response) {
+                $scope.classes = response.data;
+            }, function errorCallback(response) {
+                alert("Error" + JSON.stringify(response));
+            });
+    };
+
+    // Get the registrants based on the selected value
+    $scope.getRegistrantsByClass = function() {
+
+        // $scope.class gets updated by the ng-model of the select box
+
+        $http({ 
+                method:'GET',
+                url: '/SSCY/api/registration/' + $scope.class.value, 
+                headers: { 'Content-Type':'application/json' }
+            })
+            .then(function successCallback(response) {
+                $scope.registrants = response.data;
+                $scope.show = true;
+            }, function errorCallback(response) {
+                alert("Error" + JSON.stringify(response));
+        });
+
+    };
+    
+}]);
+
+// Signin Controller
+sscy.controller('signinController',['$scope', '$http', function($scope, $http){
+
+    // Get a reference to the controller container
+    const signin = document.querySelector('.signin');
+
+    // Set up the variables
+    $scope.class = {};
+    $scope.mode = "setup";
+    $scope.lastMode = "setup";
+    $scope.open = false;
+    $scope.pin = "";
+    $scope.pin_value = "0355";
+    $scope.error_message = "";
+    $scope.classes = [];
+
+    const currentDate = new Date();
+    const formattedDate = currentDate.getFullYear() + '-' 
+                            + ('0' + (currentDate.getMonth()+1)).slice(-2) + '-'
+                            + ('0' + currentDate.getDate()).slice(-2);
+
+    // Get the available classes
+    $scope.getAvailableClasses = function() {
+
+        $http({ 
+                method:'GET',
+                url: '/SSCY/api/class/date/' + formattedDate, 
+                headers: { 'Content-Type':'application/json' }
+            })
+            .then(function successCallback(response) {
+                $scope.classes = response.data;
+            }, function errorCallback(response) {
+                alert("Error" + JSON.stringify(response));
+        });
+
+    };
+
+    // Select the class for registration
+    $scope.selectClass = function(){
+        let class_name = document.querySelector(".class-select").value;
+
+        $scope.class = $scope.classes.find(c => c.name = class_name);
+    }
+
+    // Enter Signin Mode
+    $scope.enterSigninMode = function(){
+        // Check if they have selected a class and if so then go to signin mode
+        if($scope.class.name !== undefined){
+            $scope.mode = "signin";
+        }
+    }
+
+    // Close Exit Mode
+    $scope.closeExit = function(){
+        $scope.mode = $scope.lastMode;
+    }
+
+    $scope.checkPin = function(e) { 
+
+        if($scope.pin == $scope.pin_value){
+            $scope.error_message = "";
+            $scope.open = false;
+            document.querySelector('.signin').classList.remove("open");
+            $scope.pin = "";
+        } else {
+            $scope.error_message = "Invalid Pin!";
+        }
+
+    }
+
+    $scope.toggleSigninMode = function(){
+        if($scope.open){
+            $scope.lastMode = $scope.mode;
+            $scope.mode = "exit";
+        } else {
+            // Open the signin mode
+            $scope.open = true;
+            $scope.mode = "setup";
+            document.querySelector('.signin').classList.add("open");
+        }
+    }
+
+    // Event Listeners
+
+    // Listen for key up on pin screen
+    const pin = signin.querySelector('.pin-input');
+    pin.addEventListener('keyup', $scope.checkPin);
+
+}]);
+
 /*************************************************
  * 
  * Time Format Filter
@@ -191,7 +381,7 @@ sscy.filter('formatTime', function formatTime($filter){
         var  tempdate= new Date(date_str);
 
         // Return the filtered time
-        return $filter('date')(tempdate, "h:mm a");
+        return $filter('date')(tempdate, "h:mma");
     }
 });
 

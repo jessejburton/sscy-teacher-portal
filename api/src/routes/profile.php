@@ -8,15 +8,15 @@ $app->get('/profile', function (Request $request, Response $response) {
     session_start();
 
     // Make sure the person is logged in.
-    if( !isset($_SESSION['userid']) ){
+    if( !isset($_SESSION['user_id']) ){
         echo '{"type": "danger","text": "You muset be logged in to access this page."}';
         return;
     }
 
-    $id = $_SESSION['userid'];
+    $id = $_SESSION['user_id'];
 
     $sql = "SELECT 
-            a.account_id, a.name_first, a.name_last, t.bio, a.email, a.phone, t.photo
+            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.pin, t.photo
             FROM account_tbl a
             INNER JOIN teacher_tbl t ON a.account_id = t.account_id
             WHERE a.account_id = $id";
@@ -46,6 +46,7 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
     $name_last = $request->getParam('name_last');
     $bio = $request->getParam('bio');
     $email = $request->getParam('email');
+    $pin = $request->getParam('pin');
 
     $sql =  "UPDATE account_tbl SET
                 name_first = :name_first,
@@ -54,7 +55,8 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
             WHERE account_id = $id";
 
     $sql2 =  "UPDATE teacher_tbl SET
-                bio = :bio
+                bio = :bio,
+                pin = :pin
             WHERE account_id = $id";
 
     try {
@@ -72,12 +74,13 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
 
         $stmt = $db->prepare($sql2);
             $stmt->bindParam(':bio', $bio);
+            $stmt->bindParam(':pin', $pin);
         $stmt->execute();
 
         echo '{"type": "success","text":"Profile changes have been saved."}';
 
     } catch(PDOException $e) {
-        echo '{"type": "danger","text": '.$e->getMessage().'"}';
+        echo '{"type": "danger","text":"' . $e->getMessage() . '"}';
     }
 });
 

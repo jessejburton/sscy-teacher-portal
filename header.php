@@ -22,10 +22,14 @@
         <script src="js/vendor/fontawesome-all.min.js"></script>
 
         <!-- JQUERY UI -->
-        <link rel="stylesheet" href="css/vendor/jquery-ui.min.css">        
+        <link rel="stylesheet" href="css/vendor/jquery-ui.min.css"> 
+
+        <!-- Angular DatePicker -->
+        <link rel="stylesheet" href="css/vendor/angular-datepicker.css">        
         
         <!-- STYLES -->
         <link rel="stylesheet" href="css/style.min.css">
+        <!-- <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"> -->
     </head>
 
     <body>
@@ -41,7 +45,7 @@
         <header class="header bright-background">
             <!-- Menu Header -->
             <nav class="menu-header">
-                <?php if(isset($_SESSION["userid"])) { ?>
+                <?php if(isset($_SESSION["user_id"])) { ?>
                     <a class="menu-header__link home-link" href="#" title="Home">
                         <span class="screen-reader">Home</span><?php require_once('img/lotus.svg'); ?>
                     </a>
@@ -58,9 +62,10 @@
 
             <!-- Welcome and Log Out -->
             <div class="profile_links">
-                <?php if(isset($_SESSION["userid"])) { ?>
+                <?php if(isset($_SESSION["user_id"])) { ?>
                     <span class="welcome">Welcome <strong><?php echo $_SESSION["name"]; ?></strong></span> | 
-                    <a href="/internal/index.php?logout">logout</a>
+                    <a href="/SSCY/index.php?logout">logout</a>
+                    <input type="hidden" value="<?php echo $_SESSION['user_id']; ?>" id="hidden_user_id" />
                 <?php } ?>
             </div>
         </header>
@@ -75,7 +80,7 @@
 
 <!-- Get user to log in if needed -->
 <?php 
-    if(!isset($_SESSION['userid'])) {
+    if(!isset($_SESSION['user_id'])) {
         require_once('templates/login/login.php');
         require_once('footer.php');
         die();

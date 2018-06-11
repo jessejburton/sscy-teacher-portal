@@ -16,7 +16,11 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 // Routes
 require 'src/routes/login.php';
 require 'src/routes/classes.php';
+require 'src/routes/exceptions.php';
 require 'src/routes/profile.php';
+require 'src/routes/registration.php';
+require 'src/routes/rooms.php';
+require 'src/routes/teachers.php';
 
 $app->run();
 

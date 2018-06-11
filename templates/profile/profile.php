@@ -1,4 +1,4 @@
-<div class="container" ng-controller="profileController" ng-init="getLoggedInProfile()">
+<div class="container" ng-controller="profileController" ng-init="getLoggedInProfile()" ng-cloak>
     <h2>My Profile</h2>
     <form>
         <div ng-show="message.show" class="alert alert-{{message.type}}">
@@ -24,8 +24,23 @@
                 <label for="email" class="input-text-label">email</label>
             </div>
         </div>
+
+        <div class="row input-group">
+            <div class="col-1-of-2">
+                <h3>Waiver</h3>
+                <p>feature coming soon!</p>
+            </div>
+            <div class="col-1-of-2">
+                <!--
+                <h3>Pin</h3>
+                <input id="pin" type="text" class="input-text" placeholder="pin" ng-model="profile.pin" maxlength="4" />
+                <label for="pin" class="input-text-label">pin</label>
+                <small>* This pin will be used to unlock the screen when in class mode.</small>       
+                -->         
+            </div>
+        </div>
         
-        <div class="row">
+        <div class="row input-group">
             <div class="col-1-of-2">
                 <h3>Teacher Bio</h3>
                 <textarea id="bio" class="input-textarea" placeholder="teacher bio" rows="20" ng-model="profile.bio"></textarea>

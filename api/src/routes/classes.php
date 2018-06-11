@@ -8,25 +8,25 @@ $app->get('/classes', function (Request $request, Response $response) {
     session_start();
 
     // Make sure the person is logged in.
-    if( !isset($_SESSION['userid']) ){
+    if( !isset($_SESSION['user_id']) ){
         echo '{"type": "danger","text": "You muset be logged in to access this page."}';
         return;
     }
 
-    $userid = $_SESSION['userid'];
+    $userid = $_SESSION['user_id'];
 
     $sql = "SELECT 
-                c.class_id AS id, c.name, c.description, c.room_id, c.teacher_id, 
+                c.class_id, c.name, c.description, cs.room_id, c.teacher_id, 
                 cs.days_of_week AS days, cs.start_time, cs.end_time,
                 t.teacher_id, t.account_id, t.default_price, t.waiver, 
-                a.name_first, a.name_last, 
+                CONCAT(a.name_first, ' ', a.name_last) AS teacher_name, 
                 r.name AS room_name, r.photo AS room_photo, r.description AS room_description
             FROM class_weekly_schedule_tbl cs 
             LEFT JOIN class_tbl c ON c.class_id = cs.class_id
             LEFT JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
             LEFT JOIN account_tbl a ON t.account_id = a.account_id 
-            LEFT JOIN room_tbl r ON r.room_id = c.room_id
-            WHERE t.account_id = $userid";
+            LEFT JOIN room_tbl r ON r.room_id = cs.room_id
+            WHERE a.account_id = $userid";
 
     try {
         
@@ -36,9 +36,38 @@ $app->get('/classes', function (Request $request, Response $response) {
         $db = $db->connect();
 
         $stmt = $db->query($sql);
-        $classes = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $records = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
-        echo json_encode($classes);
+
+        // Loop through the classes and get the schedules and exceptions
+        $return_arr = [];
+
+        foreach($records as $record){
+            // Schedules
+            if(!isset($return_arr[$record->name])){
+                // Create the main object
+                $return_arr[$record->name] = (object) ['name'=> $record->name, 'class_id' => $record->class_id, 'description' => $record->description];
+
+                // Create the schedule array
+                $return_arr[$record->name]->schedules = [];
+            }
+
+            $schedule =  (object) [
+                'room_id'=> $record->room_id, 
+                'room_name' => $record->room_name,
+                'start_time' => $record->start_time,
+                'end_time' => $record->end_time,
+                'teacher_id' => $record->teacher_id,
+                'teacher' => $record->teacher_name,
+                'days' => $record->days
+            ];
+            array_push($return_arr[$record->name]->schedules, $schedule);
+
+            // Exceptions
+
+        };
+
+        echo json_encode($return_arr);
 
     } catch(PDOException $e) {
         echo '{"error": {"text": '.$e->getMessage().'}';
@@ -73,6 +102,41 @@ $app->get('/class/{id}', function (Request $request, Response $response) {
         $class = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
         echo json_encode($class);
+
+    } catch(PDOException $e) {
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
+// Get Classes on a Specific Day
+$app->get('/class/date/{date}', function (Request $request, Response $response) {
+    $date = $request->getAttribute('date');
+    $day = date("w", strtotime($date));
+
+    $sql = "SELECT 
+            c.class_id, c.name, c.description, c.teacher_id, 
+            cs.start_time, cs.end_time, cs.room_id,
+            t.teacher_id, t.account_id, t.default_price, t.waiver, 
+            a.name_first, a.name_last, 
+            r.name AS room_name, r.photo AS room_photo, r.description AS room_description
+        FROM class_weekly_schedule_tbl cs 
+        INNER JOIN class_tbl c ON c.class_id = cs.class_id
+        INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
+        INNER JOIN account_tbl a ON t.account_id = a.account_id 
+        INNER JOIN room_tbl r ON r.room_id = cs.room_id
+        WHERE cs.days_of_week = $day";
+
+    try {
+        
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->query($sql);
+        $classes = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo json_encode($classes);
 
     } catch(PDOException $e) {
         echo '{"error": {"text": '.$e->getMessage().'}';

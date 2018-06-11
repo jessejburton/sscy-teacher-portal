@@ -9,6 +9,7 @@
 
 @import "components/alerts";
 @import "components/form";
+@import "components/signin";
 @import "components/table";
 @import "components/modal";
 
@@ -17,8 +18,8 @@
 @import "layout/header";
 @import "layout/navigation";
 
-/*@import "pages/home";
-@import "pages/archive-project";*/
+@import "pages/classes";
+/*@import "pages/archive-project";*/
 
 // TO CLEAN UP
 @import "elements";

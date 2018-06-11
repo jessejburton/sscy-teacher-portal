@@ -1,0 +1,45 @@
+.class {
+
+    margin-bottom: 40px;
+
+    strong {
+        font-weight: 600px!important;
+        font-style: italic;
+        font-family: 'Pacifico', cursive;
+    }
+
+    &__schedule {
+        margin-top: 20px;
+    }
+
+}
+
+
+// Exception Manager
+.exceptions {
+    // High z-index to cover signin button
+    z-index: 10000;
+
+    @include dropShadow;
+    position: absolute;
+    padding: 20px;
+    width: 50%;
+    background-color: $white;
+    border-top: 1px solid $accent-light;
+    border-left: 1px solid $accent-light;
+    border-bottom: 1px solid $accent-light;
+    top: 20px;
+    left: 100%;
+    width: 50%;
+    transition: left .4s;
+
+    &.open {
+        left: 50%;
+    }
+
+    h5 {
+        font-weight: 500;
+        font-family: $display-font;
+    }
+}
+

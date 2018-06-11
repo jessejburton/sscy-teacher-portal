@@ -13,9 +13,21 @@
   margin-bottom: 20px!important;
 }
 
-.u-text-right {
-  text-align: right;
+.u-half {
+  float: left;
+  width: 45%;
+  
+  &:not(:last-child){
+    margin-right: 40px;
+  }
 }
+
+.u-text-right { text-align: right!important; }
+.u-text-left { text-align: left!important; }
+.u-text-center { text-align: center!important; }
+
+.u-float-right {float: right!important; }
+.u-float-left { float: left!important; }
 
 .u-tiny-text {
   font-size: 12px;
