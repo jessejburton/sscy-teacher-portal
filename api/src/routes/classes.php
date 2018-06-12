@@ -43,15 +43,22 @@ $app->get('/classes', function (Request $request, Response $response) {
         $return_arr = [];
 
         foreach($records as $record){
-            // Schedules
+            
+            // Make sure the record exists 
             if(!isset($return_arr[$record->name])){
                 // Create the main object
-                $return_arr[$record->name] = (object) ['name'=> $record->name, 'class_id' => $record->class_id, 'description' => $record->description];
+                $return_arr[$record->name] = (object) [
+                    'name'=> $record->name, 
+                    'class_id' => $record->class_id, 
+                    'description' => $record->description
+                ];
 
-                // Create the schedule array
+                // Create the schedule and exception arrays
                 $return_arr[$record->name]->schedules = [];
+                $return_arr[$record->name]->exceptions = [];
             }
 
+            // Schedules
             $schedule =  (object) [
                 'room_id'=> $record->room_id, 
                 'room_name' => $record->room_name,
@@ -64,6 +71,10 @@ $app->get('/classes', function (Request $request, Response $response) {
             array_push($return_arr[$record->name]->schedules, $schedule);
 
             // Exceptions
+            
+            /* NEED TO ADD A GET EXCEPTIONS FOR A CLASS TO THE API THEN RETURN IT HERE */
+
+            array_push($return_arr[$record->name]->exceptions, $exceptions);
 
         };
 

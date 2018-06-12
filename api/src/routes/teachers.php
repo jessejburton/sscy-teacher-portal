@@ -8,7 +8,7 @@ $app->get('/teachers', function (Request $request, Response $response) {
 
     $sql = "SELECT 
             teacher_id, bio, CONCAT(a.name_first, ' ', a.name_last) AS name, a.email, a.account_id
-        FROM room_tbl r
+        FROM teacher_tbl r
         INNER JOIN account_tbl a ON a.account_id = r.account_id
         WHERE is_active = 1";
 

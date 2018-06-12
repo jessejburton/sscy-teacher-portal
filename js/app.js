@@ -23,10 +23,25 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     $scope.classes = {};    // Will contain an object of classes with the names as keys
     $scope.exception = {    // Will contain a single exception as it is being worked on
         "date": "",
-        "type": "",
+        "type_id": 0,
         "invalid_days": [],
         "class": {}
     };  
+    $scope.message = {
+         "type": "",
+         "message": "",
+         "success": false
+    };
+
+    /** GLOBALIZE **/
+    var weekday = [];
+    weekday[0] =  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
 
     // Constants
     const exception_window = document.querySelector('.exceptions');
@@ -56,8 +71,20 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             'endtime':$scope.classEndTime
         });
     };
-
+    
     /* EXCEPTIONS */
+
+    // Populate Exception Types
+    $http({ 
+            method:'GET',
+            url: '/SSCY/api/exception/types', 
+            headers: { 'Content-Type':'application/json' }
+        })
+        .then(function successCallback(response) {
+            $scope.types = response.data;
+        }, function errorCallback(response) {
+            alert("Error" + JSON.stringify(response));
+    });    
 
     // Populate Teachers
     $http({ 
@@ -90,6 +117,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
         // Get the class details
         $scope.exception.class = $scope.classes[class_name];
+        $scope.exception.class_id = $scope.exception.class.class_id;
 
         // Set the invalid days array
         $scope.exception.invalid_days = [];
@@ -98,9 +126,6 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
                 $scope.exception.invalid_days.push(i);
             }
         };
-
-        console.log($scope.exception.class.schedules[0].days);
-        console.log($scope.exception.invalid_days);
         
         // Show the exception window
         exception_window.style.top = `${window.scrollY + 20}px`;
@@ -116,7 +141,66 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     }
 
+    // Add Exception
+    $scope.addException = function(){ 
+        
+        /* DEBUGGING */
+        console.log($scope.exception);
 
+        /* ERROR TRAPPING */
+        // Must Have an Exception Type
+        if ($scope.exception.type == undefined){
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "You must select an exception type.";
+            return;      
+        }
+
+        // Must be only days the class is on
+        // First find out what day was passed in
+        const date = new Date($scope.exception.date);
+
+        // If the selected date is not the same as the class date
+        if( $scope.exception.class.schedules[0].days != date.getDay() ){
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Date must be on a " + weekday[date.getDay()];
+            return
+        }
+        
+        if ($scope.exception.type == 1){
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "You must select an exception type.";
+            return;      
+        }
+
+        // format the date
+        let exception_date = new Date($scope.exception.date);
+        $scope.exception.date = exception_date.getFullYear() + '-' 
+                        + ('0' + (exception_date.getMonth()+1)).slice(-2) + '-'
+                        + ('0' + exception_date.getDate()).slice(-2);
+
+        // set the type id
+        //** $scope.type is bound as an object to the dropdown
+        $scope.exception.type_id = $scope.exception.type.exception_type_id;
+        
+        // Send the data
+        $http({ 
+            method:'POST',
+            url: '/SSCY/api/exception/add', 
+            headers: { 'Content-Type':'application/json' },
+            data: $scope.exception
+        })
+        .then(function successCallback(response) {
+            $scope.message = response.data;
+            if($scope.message.success) $scope.closeExceptions();
+        }, function errorCallback(response) {
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Error" + JSON.stringify(response);
+        });
+    }
 }]);
 
 // Profile Controller
@@ -218,7 +302,7 @@ sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
             // Show any messages
             $scope.message = response.data;
-            $scope.message.show = true;
+            $scope.message.show = true; // ERROR TRAPPING change to if maybe?
             return;
         }, function errorCallback(response) {
             $scope.message.text = response.data;
@@ -397,6 +481,8 @@ sscy.filter('formatTime', function formatTime($filter){
  *************************************************/
 sscy.filter('daysOfWeek', function daysOfWeek($filter){
     return function(text){
+        if(text == undefined) return;
+
         var weekday = [];
         weekday[0] =  "Sunday";
         weekday[1] = "Monday";
