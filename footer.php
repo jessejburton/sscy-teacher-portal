@@ -106,6 +106,7 @@
         <script src="js/vendor/angular-datepicker.js"></script>
 
         <!-- Global JS -->
+        <script src="js/config.js"></script>
         <script src="js/app.js"></script>
 
     </body>

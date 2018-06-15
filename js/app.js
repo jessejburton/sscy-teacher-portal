@@ -9,11 +9,11 @@ sscy.controller('navigationController',['$scope','$rootScope',function($scope,$r
 
     // Change this to read from a folder config file
     $scope.navItems = [
-        {'text':'Dashboard','link' : $rootScope.rootURL},
-        {'text':'Classes','link' : $rootScope.rootURL + 'classes.php'},
-        {'text':'Registration','link' : $rootScope.rootURL + 'registration.php'},
-        {'text':'Reports','link' : $rootScope.rootURL + 'reports.php'},
-        {'text':'My Profile','link' : $rootScope.rootURL + 'profile.php'}
+        {'text':'Dashboard','link' : rootURL},
+        {'text':'Classes','link' : rootURL + 'classes.php'},
+        {'text':'Registration','link' : rootURL + 'registration.php'},
+        {'text':'Reports','link' : rootURL + 'reports.php'},
+        {'text':'My Profile','link' : rootURL + 'profile.php'}
     ];
 }]);
 
@@ -50,7 +50,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     $scope.getClasses = function() {
         $http({ 
                 method:'GET',
-                url: '/SSCY/api/classes', 
+                url: rootURL + 'api/classes', 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -77,7 +77,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Exception Types
     $http({ 
             method:'GET',
-            url: '/SSCY/api/exception/types', 
+            url: rootURL + 'api/exception/types', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -89,7 +89,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Teachers
     $http({ 
             method:'GET',
-            url: '/SSCY/api/teachers', 
+            url: rootURL + 'api/teachers', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -101,7 +101,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Rooms
     $http({ 
             method:'GET',
-            url: '/SSCY/api/rooms', 
+            url: rootURL + 'api/rooms', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -185,7 +185,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         // Send the data
         $http({ 
             method:'POST',
-            url: '/SSCY/api/exception/add', 
+            url: rootURL + 'api/exception/add', 
             headers: { 'Content-Type':'application/json' },
             data: $scope.exception
         })
@@ -213,7 +213,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             // Send the data
             $http({ 
                 method:'DELETE',
-                url: '/SSCY/api/exception/remove/' + id, 
+                url: rootURL + 'api/exception/remove/' + id, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -260,7 +260,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
         // Get the current users profile
         $http({ 
             method:'GET',
-            url: '/SSCY/api/profile', 
+            url: rootURL + 'api/profile', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -280,7 +280,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
 
         $http({ 
             method:'PUT',
-            url: '/SSCY/api/profile/save/' + $scope.profile.account_id, 
+            url: rootURL + 'api/profile/save/' + $scope.profile.account_id, 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -328,7 +328,7 @@ sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
         $http({ 
             method:'POST',
-            url: '/SSCY/api/login', 
+            url: rootURL + 'api/login', 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -368,7 +368,7 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
     $scope.getClassesWithRegistrants = function() {
         $http({ 
                 method:'GET',
-                url: '/SSCY/api/registration/classes/' + $user_id, 
+                url: rootURL + 'api/registration/classes/' + $user_id, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -385,7 +385,7 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
 
         $http({ 
                 method:'GET',
-                url: '/SSCY/api/registration/' + $scope.class.value, 
+                url: rootURL + 'api/registration/' + $scope.class.value, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -425,7 +425,7 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
 
         $http({ 
                 method:'GET',
-                url: '/SSCY/api/class/date/' + formattedDate, 
+                url: rootURL + 'api/class/date/' + formattedDate, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {

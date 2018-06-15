@@ -2,3 +2,4 @@
 *.sass-cache
 *.sass-cache/*
 /print/mysql_connect.php
+js/config.js
