@@ -4,12 +4,12 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Get Profile
-$app->get('/profile', function (Request $request, Response $response) {
+$app->get('/profile', function (Request $request, Response $response) use ($app) {
     session_start();
 
     // Make sure the person is logged in.
     if( !isset($_SESSION['user_id']) ){
-        echo '{"type": "danger","text": "You muset be logged in to access this page."}';
+        echo '{"type": "danger","text": "You must be logged in to access this page."}';
         return;
     }
 

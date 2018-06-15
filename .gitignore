@@ -3,3 +3,5 @@
 *.sass-cache/*
 /print/mysql_connect.php
 js/config.js
+mysql_connect.php
+api/src/config/db.php

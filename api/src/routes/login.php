@@ -39,8 +39,6 @@ $app->post('/login', function (Request $request, Response $response) {
             echo '{"success": false,"type": "danger","text": "Your username and password don\'t match our records."}';
         } else {
             // Log the user in
-            session_start();
-
             $_SESSION['username'] = $username;
             $_SESSION['name'] = $user->name;
             $_SESSION['user_id'] = $user->account_id;
