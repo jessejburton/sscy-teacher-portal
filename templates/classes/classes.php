@@ -9,7 +9,7 @@
         
         <!-- Class Schedule -->
         <div class="class__schedule" ng-repeat="schedule in class.schedules">
-            <p><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
+<p><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> <?php if($_SESSION['is_admin'] == true){ ?><em><small>with {{schedule.teacher}}</small></em><?php } ?> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
         </div>
 
         <!-- Class Exceptions -->
