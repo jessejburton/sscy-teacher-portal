@@ -143,9 +143,6 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     // Add Exception
     $scope.addException = function(){ 
-        
-        /* DEBUGGING */
-        console.log($scope.exception);
 
         /* ERROR TRAPPING */
         // Must Have an Exception Type
@@ -194,13 +191,55 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         })
         .then(function successCallback(response) {
             $scope.message = response.data;
-            if($scope.message.success) $scope.closeExceptions();
+            if($scope.message.success) {
+                // Add the exception to the classes exception list
+                $scope.classes[$scope.exception.class.name].exceptions.push($scope.message.exception);
+                $scope.closeExceptions();
+            }
         }, function errorCallback(response) {
             $scope.message.success = false;
             $scope.message.type = "danger";
             $scope.message.text = "Error" + JSON.stringify(response);
         });
     }
+
+        // Remove Exception
+        $scope.removeException = function(id){ 
+
+            var exception = document.querySelector(".exception-" + id),
+                classname = exception.dataset.classname,
+                index = $scope.classes[classname].exceptions.findIndex(e => e.exception_id == id);
+            
+            // Send the data
+            $http({ 
+                method:'DELETE',
+                url: '/SSCY/api/exception/remove/' + id, 
+                headers: { 'Content-Type':'application/json' }
+            })
+            .then(function successCallback(response) {
+                if($scope.message.success) {                
+                    $scope.classes[classname].exceptions.splice(index, 1);
+                    // remove the exception 
+                    /* NEEDS WORK ~ This should remove it from the aray either way. I had
+                    to do this to get it to work, not sure if it will even work if there are
+                    more than one item in the array though. 
+
+                    Not working for some reason so falling back to jQuery in order to 
+                    move on but want to COME BACK to this.
+                    if( $scope.classes[classname].exceptions.length == 1 ){
+                        alert("here");
+                        $scope.classes[classname].exceptions = [];    
+                    } else {
+                        $scope.classes[classname].exceptions.splice(index, 1);
+                    }*/
+                }
+                console.log($scope.message);
+            }, function errorCallback(response) {
+                $scope.message.success = false;
+                $scope.message.type = "danger";
+                $scope.message.text = "Error" + JSON.stringify(response);
+            });
+        }
 }]);
 
 // Profile Controller

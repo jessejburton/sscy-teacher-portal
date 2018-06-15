@@ -16,7 +16,7 @@ $app->get('/profile', function (Request $request, Response $response) {
     $id = $_SESSION['user_id'];
 
     $sql = "SELECT 
-            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.pin, t.photo
+            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
             FROM account_tbl a
             INNER JOIN teacher_tbl t ON a.account_id = t.account_id
             WHERE a.account_id = $id";

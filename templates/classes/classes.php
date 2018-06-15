@@ -15,8 +15,11 @@
         <!-- Class Exceptions -->
         <div class="class__exceptions">
             <div class="class__exception" ng-repeat="exception in class.exceptions">
-                <div class="class__exception--message alert alert-{{exception.type]}">
-                    {{exception.date | }} ~ {{exception.message}}
+                <div class="class__exception--message exception-{{exception.type}} exception-{{exception.exception_id}}" data-classname="{{class.name}}">
+                    {{exception.date | date : 'fullDate'}} ~ {{exception.message}} 
+                    <span ng-if="exception.exception_id > 0">
+                        | <a href="javascript:void(0);" data-exceptionid="{{exception.exception_id}}" ng-click="removeException(exception.exception_id)">remove</a>
+                    </span>
                 </div>
             </div>            
         </div>

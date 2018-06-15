@@ -12,8 +12,19 @@
         margin-top: 20px;
     }
 
-}
+    &__exceptions {
+        padding: 20px 0;
 
+        .class__exception--message {
+            position: relative;
+            padding: .75rem 1.25rem;
+            margin: 1rem 0;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+        }
+    }
+
+}
 
 // Exception Manager
 .exceptions {
@@ -43,3 +54,20 @@
     }
 }
 
+.exception-cancelled {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.exception-room_teacher_change {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.exception-notice {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}

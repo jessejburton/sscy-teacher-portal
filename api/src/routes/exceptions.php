@@ -70,11 +70,24 @@ $app->post('/exception/add', function (Request $request, Response $response) {
        $stmt->bindParam(':message', $message);
 
        $stmt->execute();
+       //$exception_id = $stmt->lastInsertId();
+       // NEED TO FIX THIS TO RETURN THE ID
+       $exception_id = 0; 
 
-       echo '{"type": "success","text": "Exception has been added.","success":true}';
+       echo '{
+           "type": "success",
+           "text": "Exception has been added.",
+           "success":true,
+           "exception": {
+                "type": "' . $type["type"] . '",
+                "date": "' . $date . '",
+                "message": "' . $message . '",
+                "exception_id": ' . $exception_id . '
+           }
+        }';
 
    } catch(PDOException $e) {
-      echo '{"type": "danger","text": "'.$e->getMessage().'"}';
+      echo '{"succes": false, "type": "danger","text": "'.$e->getMessage().'"}';
    }
 
 });
@@ -100,5 +113,35 @@ $app->get('/exception/types', function (Request $request, Response $response) {
 
     } catch(PDOException $e) {
         echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
+// Remove an exception
+$app->delete('/exception/remove/{id}', function (Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+
+    /* ERROR TRAPPING - TODO */
+    /* ENSURE THE PERSON LOGGED IN HAS ACCESS TO REMOVE THIS EXCEPTION */
+
+    $sql = "DELETE 
+                FROM class_exception_tbl
+                WHERE exception_id = $id";
+
+    try {
+            
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        $db = null;
+        
+        echo '{"success": true, "type": "success","text": "Exception has been removed."}';
+
+    } catch(PDOException $e) {
+        echo '{"succes": false, "type": "danger","text": "'.$e->getMessage().'"}';
     }
 });

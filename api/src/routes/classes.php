@@ -4,7 +4,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Get all classes
-$app->get('/classes', function (Request $request, Response $response) {
+$app->get('/classes', function (Request $request, Response $response) use ($app) {
     session_start();
 
     // Make sure the person is logged in.
@@ -71,12 +71,32 @@ $app->get('/classes', function (Request $request, Response $response) {
             array_push($return_arr[$record->name]->schedules, $schedule);
 
             // Exceptions
-            
-            /* NEED TO ADD A GET EXCEPTIONS FOR A CLASS TO THE API THEN RETURN IT HERE */
+            $sql2 = "SELECT 
+                    exception_id, teacher_id, room_id, e.exception_type_id, exception_date as date, message,
+                    e.type 
+                FROM class_exception_tbl ce
+                INNER JOIN exception_type_tbl e ON e.exception_type_id = ce.exception_type_id
+                WHERE class_id = $record->class_id
+                AND exception_date > now()";
 
-            array_push($return_arr[$record->name]->exceptions, $exceptions);
+            try {
+                    
+                // Get DB Object
+                $db2 = new db();
+                // Connect
+                $db2 = $db2->connect();
 
-        };
+                $stmt = $db2->query($sql2);
+                $exceptions = $stmt->fetchAll(PDO::FETCH_OBJ);
+                $db2 = null;
+                
+                $return_arr[$record->name]->exceptions = $exceptions;
+
+            } catch(PDOException $e) {
+                echo '{"error": {"text": '.$e->getMessage().'}';
+            }
+
+        }
 
         echo json_encode($return_arr);
 
@@ -226,8 +246,8 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
     }
 });
 
-// Delete Class
-$app->delete('/class/delete/{id}', function (Request $request, Response $response) {
+// Delete exception
+$app->delete('/class/delete/{id}', function (Request $request, Response $response) use ($app) {
     $id = $request->getAttribute('id');
 
     $sql = "DELETE FROM class_tbl WHERE class_id = $id";
