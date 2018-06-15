@@ -15,6 +15,12 @@ $app->get('/classes', function (Request $request, Response $response) use ($app)
 
     $userid = $_SESSION['user_id'];
 
+    // Create the where statement depending on if admin
+    $where_stmt = "WHERE a.account_id = " . $userid;
+    if( $_SESSION['is_admin'] == true){
+        $where_stmt = "";
+    }
+
     $sql = "SELECT 
                 c.class_id, c.name, c.description, cs.room_id, c.teacher_id, 
                 cs.days_of_week AS days, cs.start_time, cs.end_time,
@@ -22,11 +28,11 @@ $app->get('/classes', function (Request $request, Response $response) use ($app)
                 CONCAT(a.name_first, ' ', a.name_last) AS teacher_name, 
                 r.name AS room_name, r.photo AS room_photo, r.description AS room_description
             FROM class_weekly_schedule_tbl cs 
-            LEFT JOIN class_tbl c ON c.class_id = cs.class_id
-            LEFT JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
-            LEFT JOIN account_tbl a ON t.account_id = a.account_id 
-            LEFT JOIN room_tbl r ON r.room_id = cs.room_id
-            WHERE a.account_id = $userid";
+            INNER JOIN class_tbl c ON c.class_id = cs.class_id
+            INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
+            INNER JOIN account_tbl a ON t.account_id = a.account_id 
+            INNER JOIN room_tbl r ON r.room_id = cs.room_id
+            $where_stmt";
 
     try {
         
@@ -77,7 +83,7 @@ $app->get('/classes', function (Request $request, Response $response) use ($app)
                 FROM class_exception_tbl ce
                 INNER JOIN exception_type_tbl e ON e.exception_type_id = ce.exception_type_id
                 WHERE class_id = $record->class_id
-                AND exception_date > now()";
+                AND exception_date > NOW()";
 
             try {
                     

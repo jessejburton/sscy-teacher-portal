@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 // Check user login
 $app->post('/login', function (Request $request, Response $response) {
-
+    
     $username = $request->getParam("username");
     $password = $request->getParam("password");
 
@@ -18,7 +18,7 @@ $app->post('/login', function (Request $request, Response $response) {
     $hashed_password = md5($password);
 
     // Query to get record based on username and password
-    $sql = "SELECT account_id, username, concat(name_first, ' ', name_last) AS name
+    $sql = "SELECT account_id, username, concat(name_first, ' ', name_last) AS name, is_admin
             FROM account_tbl
             WHERE username = '$username'
             AND password = '$hashed_password'";
@@ -38,10 +38,13 @@ $app->post('/login', function (Request $request, Response $response) {
         if(!$user){
             echo '{"success": false,"type": "danger","text": "Your username and password don\'t match our records."}';
         } else {
+            session_start();
+
             // Log the user in
             $_SESSION['username'] = $username;
             $_SESSION['name'] = $user->name;
             $_SESSION['user_id'] = $user->account_id;
+            $_SESSION['is_admin'] = $user->is_admin;
             echo '{"success": true,"type": "success","text": "Welcome to the site!"}';
         };
 

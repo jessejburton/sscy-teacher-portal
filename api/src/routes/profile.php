@@ -13,7 +13,7 @@ $app->get('/profile', function (Request $request, Response $response) use ($app)
         return;
     }
 
-    $id = $_SESSION['user_id'];
+    $userid = $_SESSION['user_id'];
 
     $sql = "SELECT 
             a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
