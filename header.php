@@ -64,7 +64,7 @@
             <div class="profile_links">
                 <?php if(isset($_SESSION["user_id"])) { ?>
                     <span class="welcome">Welcome <strong><?php echo $_SESSION["name"]; ?></strong></span> | 
-                    <a href="/SSCY/index.php?logout">logout</a>
+                    <a href="index.php?logout">logout</a>
                     <input type="hidden" value="<?php echo $_SESSION['user_id']; ?>" id="hidden_user_id" />
                 <?php } ?>
             </div>
