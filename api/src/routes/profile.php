@@ -5,7 +5,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 // Get Profile
 $app->get('/profile', function (Request $request, Response $response) use ($app) {
-    session_start();
 
     // Make sure the person is logged in.
     if( !isset($_SESSION['user_id']) ){
@@ -19,7 +18,7 @@ $app->get('/profile', function (Request $request, Response $response) use ($app)
             a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
             FROM account_tbl a
             INNER JOIN teacher_tbl t ON a.account_id = t.account_id
-            WHERE a.account_id = $id";
+            WHERE a.account_id = $userid";
 
     try {
         

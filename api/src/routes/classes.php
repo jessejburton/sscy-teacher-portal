@@ -5,7 +5,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 // Get all classes
 $app->get('/classes', function (Request $request, Response $response) use ($app) {
-    session_start();
 
     // Make sure the person is logged in.
     if( !isset($_SESSION['user_id']) ){

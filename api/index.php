@@ -5,6 +5,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../vendor/autoload.php';
 require 'src/config/db.php';
 
+session_start();
+
 $app = new \Slim\App([
     'settings' => [
         'displayErrorDetails' => true
