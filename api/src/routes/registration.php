@@ -12,7 +12,7 @@ $app->get('/registration/classes/{id}', function (Request $request, Response $re
             FROM class_tbl c 
             INNER JOIN registration_tbl r ON r.class_id = c.class_id
             INNER JOIN class_weekly_schedule_tbl cws ON cws.class_id = c.class_id
-            WHERE cws.teacher_id = (SELECT teacher_id FROM teacher_tbl WHERE account_id = $id)
+            WHERE c.teacher_id = (SELECT teacher_id FROM teacher_tbl WHERE account_id = $id)
             AND date_class > now()
             GROUP BY c.class_id, r.date_class";
 

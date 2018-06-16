@@ -19,7 +19,7 @@
         
         <!-- Class Schedule -->
         <div class="class__schedule" ng-repeat="schedule in class.schedules">
-<p><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
+<p data-teacher="{{ schedule.teacher }}"><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
         </div>
 
         <!-- Class Exceptions -->
