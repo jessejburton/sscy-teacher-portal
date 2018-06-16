@@ -45,7 +45,6 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
     $name_last = $request->getParam('name_last');
     $bio = $request->getParam('bio');
     $email = $request->getParam('email');
-    $pin = $request->getParam('pin');
 
     $sql =  "UPDATE account_tbl SET
                 name_first = :name_first,
@@ -54,8 +53,7 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
             WHERE account_id = $id";
 
     $sql2 =  "UPDATE teacher_tbl SET
-                bio = :bio,
-                pin = :pin
+                bio = :bio
             WHERE account_id = $id";
 
     try {
@@ -73,7 +71,6 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
 
         $stmt = $db->prepare($sql2);
             $stmt->bindParam(':bio', $bio);
-            $stmt->bindParam(':pin', $pin);
         $stmt->execute();
 
         echo '{"type": "success","text":"Profile changes have been saved."}';
