@@ -4,20 +4,13 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Get all classes
-$app->get('/classes', function (Request $request, Response $response) use ($app) {
+$app->get('/classes/{id}', function (Request $request, Response $response) use ($app) {
+    $id = $request->getAttribute('id');
 
     // Make sure the person is logged in.
     if( !isset($_SESSION['user_id']) ){
         echo '{"type": "danger","text": "You muset be logged in to access this page."}';
         return;
-    }
-
-    $userid = $_SESSION['user_id'];
-
-    // Create the where statement depending on if admin
-    $where_stmt = "WHERE a.account_id = " . $userid;
-    if( $_SESSION['is_admin'] == true){
-        $where_stmt = "";
     }
 
     $sql = "SELECT 
@@ -31,7 +24,7 @@ $app->get('/classes', function (Request $request, Response $response) use ($app)
             INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
             INNER JOIN account_tbl a ON t.account_id = a.account_id 
             INNER JOIN room_tbl r ON r.room_id = cs.room_id
-            $where_stmt
+            WHERE a.account_id = $id
             ORDER BY days_of_week";
 
     try {

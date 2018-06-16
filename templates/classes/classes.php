@@ -1,5 +1,15 @@
 <div class="container" ng-controller="classController" ng-init="getClasses()">
-    <h2>Your Classes</h2>
+    <h2 class="u-bottom-space">Your Classes</h2>
+
+    <!-- Select a teacher -->
+    <div class="input-group u-bottom-space" ng-show="<?php echo $_SESSION['is_admin']; ?>">
+        <label for="teacher_select" class="label-select">Select a Teacher</label>
+        <select class="input-select"
+                ng-model="selectedTeacher" 
+                ng-change="getClasses()"
+                ng-options="teacher.name for teacher in teachers track by teacher.account_id">
+        </select>
+    </div>
 
     <div class="row class" ng-repeat="class in classes" ng-cloak>
         
@@ -9,7 +19,7 @@
         
         <!-- Class Schedule -->
         <div class="class__schedule" ng-repeat="schedule in class.schedules">
-<p><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> <?php if($_SESSION['is_admin'] == true){ ?><em><small>with {{schedule.teacher}}</small></em><?php } ?> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
+<p><strong>{{ schedule.days | daysOfWeek }}'s</strong> at <strong>{{ schedule.start_time | formatTime }} - {{ schedule.end_time | formatTime }}</strong> in <strong>{{schedule.room_name }}</strong> | <a href="javascript:void(0);" ng-click="showExceptions(class.name)">add exception</a></p>
         </div>
 
         <!-- Class Exceptions -->

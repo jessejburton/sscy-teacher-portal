@@ -5,8 +5,6 @@ var sscy = angular.module('SSCY',['720kb.datepicker'])
 // Navigation Controller
 sscy.controller('navigationController',['$scope','$rootScope',function($scope,$rootScope){
 
-    $rootScope.rootURL = '/SSCY/'
-
     // Change this to read from a folder config file
     $scope.navItems = [
         {'text':'Dashboard','link' : rootURL},
@@ -33,6 +31,9 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
          "success": false
     };
 
+    $scope.selectedTeacher = {};
+    $scope.selectedTeacher.account_id = loggedInUserID;
+
     /** GLOBALIZE **/
     var weekday = [];
     weekday[0] =  "Sunday";
@@ -48,9 +49,10 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     // get all classes
     $scope.getClasses = function() {
+
         $http({ 
                 method:'GET',
-                url: rootURL + 'api/classes', 
+                url: rootURL + 'api/classes/' + $scope.selectedTeacher.account_id, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -58,18 +60,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             }, function errorCallback(response) {
                 alert("Error" + JSON.stringify(response));
         });
-    };
-
-    // Add a class
-    $scope.addClass = function(){
-        $scope.classes.push({
-            'id':3,
-            'teacher':'John Howes',
-            'name':$scope.className,
-            'date':$scope.classDate,
-            'starttime':$scope.classStartTime,
-            'endtime':$scope.classEndTime
-        });
+        
     };
     
     /* EXCEPTIONS */
