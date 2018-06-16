@@ -32,7 +32,8 @@ $app->get('/classes', function (Request $request, Response $response) use ($app)
             INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
             INNER JOIN account_tbl a ON t.account_id = a.account_id 
             INNER JOIN room_tbl r ON r.room_id = cs.room_id
-            $where_stmt";
+            $where_stmt
+            ORDER BY days_of_week";
 
     try {
         
