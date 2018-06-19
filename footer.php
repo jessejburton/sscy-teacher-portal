@@ -90,11 +90,16 @@
             </div>
         </div>
 
+        <div class="overlay">&nbsp;</div>
+
         <!-- ANGULARJS -->
         <script src="js/vendor/angular.js"></script>
 
         <!-- MODERNIZR -->
         <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+
+        <!-- MOMENT.JS (Date Formatting) -->
+        <script src="js/vendor/moment.js"></script>
 
         <!-- JQUERY -->
         <script src="js/vendor/jquery-3.2.1.min.js"></script>

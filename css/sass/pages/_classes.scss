@@ -27,6 +27,23 @@
 }
 
 // Exception Manager
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 100%;
+    position: fixed;
+    background-color: black;
+    z-index: 9999;
+    opacity: 0;
+    transition: background-color .4s;
+
+    &.open {
+        opacity: 0.7;
+    }
+}
+
 .exceptions {
     // High z-index to cover signin button
     z-index: 10000;
@@ -45,7 +62,7 @@
     transition: left .4s;
 
     &.open {
-        left: 50%;
+        left: 25%;
     }
 
     h5 {

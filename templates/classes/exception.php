@@ -5,7 +5,7 @@
       <header class="header">
 
          <p class="u-bottom-space-small">Adding exception for:</p>
-         <h5>{{exception.class.name}}</h5>
+         <h3>{{exception.class.name}}</h3>
          <p><small><em>{{ exception.class.schedules[0].days | daysOfWeek }}'s</em> at <em>{{ exception.class.schedules[0].start_time | formatTime }} - {{ exception.class.schedules[0].end_time | formatTime }}</em> in <em>{{exception.class.schedules[0].room_name }}</em></small></p>
       
          <!-- ERROR TRAPPING -->
@@ -32,7 +32,7 @@
             <label>Type of exception</label>
             <select 
                name="exception_type"
-               class="input-select"
+               class="input-select add-exception-type"
                ng-model="exception.type" 
                ng-options="type.type_display for type in types track by type.type"
                required>

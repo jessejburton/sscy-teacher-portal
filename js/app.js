@@ -46,6 +46,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     // Constants
     const exception_window = document.querySelector('.exceptions');
+    const overlay = document.querySelector('.overlay');
 
     // get all classes
     $scope.getClasses = function() {
@@ -101,10 +102,37 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             alert("Error" + JSON.stringify(response));
     });
 
+    // Quick Cancel
+    $scope.quickCancel = function(class_name){
+
+        // Get the class details
+        $scope.exception.class = $scope.classes[class_name];
+        $scope.exception.class_id = $scope.exception.class.class_id;
+
+        let days = $scope.exception.class.schedules[0].days;
+        
+        // Find out the next available class date
+        var dayOfWeek = days;
+        var date = new Date();
+        var diff = date.getDay() - dayOfWeek;
+        if (diff > 0) {
+            date.setDate(date.getDate() + 6);
+        }
+        else if (diff < 0) {
+            date.setDate(date.getDate() + ((-1) * diff))
+        };
+        
+        // Preset the values 
+        $scope.exception.date = moment(date).format('dddd, MMMM D, YYYY');
+        $scope.exception.message = "There will be no class today, sorry for the inconvenience.";
+        $scope.exception.type = $scope.types[0];
+        
+        // Show the exception window
+        $scope.showExceptions(class_name);
+    }
+
     // Show Exceptions
     $scope.showExceptions = function(class_name){
-        // Clear any existing exceptions
-        $scope.exception = {};
 
         // Get the class details
         $scope.exception.class = $scope.classes[class_name];
@@ -119,16 +147,22 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         };
         
         // Show the exception window
-        exception_window.style.top = `${window.scrollY + 20}px`;
+        exception_window.style.top = `${window.scrollY + 50}px`;
+        overlay.style.left = 0;
         exception_window.classList.add('open');
+        overlay.classList.add('open');
+        document.getElementsByTagName("body")[0].style.overflow = "hidden";
         
     };
 
     // Close Exception Window
     $scope.closeExceptions = function(){
 
-        // Hide the exception window
+        // Hide the exception window and overlay
         document.querySelector('.exceptions').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('open');
+        overlay.style.left = '100%';
+        document.getElementsByTagName("body")[0].style.overflow = "auto";
 
     }
 
@@ -146,16 +180,16 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
         // Must be only days the class is on
         // First find out what day was passed in
-        const date = new Date($scope.exception.date);
+        let exception_date = new Date($scope.exception.date);
 
         // If the selected date is not the same as the class date
-        if( $scope.exception.class.schedules[0].days != date.getDay() ){
+        if( $scope.exception.class.schedules[0].days != exception_date.getDay() ){
             $scope.message.success = false;
             $scope.message.type = "danger";
             $scope.message.text = "Date must be on a " + weekday[date.getDay()];
             return
         }
-        
+
         if ($scope.exception.type == 1){
             $scope.message.success = false;
             $scope.message.type = "danger";
@@ -164,7 +198,6 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         }
 
         // format the date
-        let exception_date = new Date($scope.exception.date);
         $scope.exception.date = exception_date.getFullYear() + '-' 
                         + ('0' + (exception_date.getMonth()+1)).slice(-2) + '-'
                         + ('0' + exception_date.getDate()).slice(-2);
@@ -183,8 +216,17 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         .then(function successCallback(response) {
             $scope.message = response.data;
             if($scope.message.success) {
+
                 // Add the exception to the classes exception list
                 $scope.classes[$scope.exception.class.name].exceptions.push($scope.message.exception);
+
+                // Reset the current exception
+                $scope.exception = {    
+                    "date": "",
+                    "type_id": 0,
+                    "invalid_days": []
+                };
+                
                 $scope.closeExceptions();
             }
         }, function errorCallback(response) {
@@ -194,43 +236,50 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         });
     }
 
-        // Remove Exception
-        $scope.removeException = function(id){ 
+    // Remove Exception
+    $scope.removeException = function(id){ 
 
-            var exception = document.querySelector(".exception-" + id),
-                classname = exception.dataset.classname,
-                index = $scope.classes[classname].exceptions.findIndex(e => e.exception_id == id);
-            
-            // Send the data
-            $http({ 
-                method:'DELETE',
-                url: rootURL + 'api/exception/remove/' + id, 
-                headers: { 'Content-Type':'application/json' }
-            })
-            .then(function successCallback(response) {
-                if($scope.message.success) {                
-                    $scope.classes[classname].exceptions.splice(index, 1);
-                    // remove the exception 
-                    /* NEEDS WORK ~ This should remove it from the aray either way. I had
-                    to do this to get it to work, not sure if it will even work if there are
-                    more than one item in the array though. 
-
-                    Not working for some reason so falling back to jQuery in order to 
-                    move on but want to COME BACK to this.
-                    if( $scope.classes[classname].exceptions.length == 1 ){
-                        alert("here");
-                        $scope.classes[classname].exceptions = [];    
-                    } else {
-                        $scope.classes[classname].exceptions.splice(index, 1);
-                    }*/
-                }
-                console.log($scope.message);
-            }, function errorCallback(response) {
-                $scope.message.success = false;
-                $scope.message.type = "danger";
-                $scope.message.text = "Error" + JSON.stringify(response);
-            });
+        // Confirm removal.
+        if( ! confirm("Are you sure you want to remove this exception?") ){
+            return false;
         }
+
+        var exception = document.querySelector(".exception-" + id),
+            classname = exception.dataset.classname,
+            index = $scope.classes[classname].exceptions.findIndex(e => e.exception_id == id);
+        
+        // Send the data
+        $http({ 
+            method:'DELETE',
+            url: rootURL + 'api/exception/remove/' + id, 
+            headers: { 'Content-Type':'application/json' }
+        })
+        .then(function successCallback(response) {
+            $scope.message = response.data;
+            console.log($scope.message);
+            if($scope.message.success) {                
+                $scope.classes[classname].exceptions.splice(index, 1);
+                // remove the exception 
+                /* NEEDS WORK ~ This should remove it from the aray either way. I had
+                to do this to get it to work, not sure if it will even work if there are
+                more than one item in the array though. 
+
+                Not working for some reason so falling back to jQuery in order to 
+                move on but want to COME BACK to this.
+                if( $scope.classes[classname].exceptions.length == 1 ){
+                    alert("here");
+                    $scope.classes[classname].exceptions = [];    
+                } else {
+                    $scope.classes[classname].exceptions.splice(index, 1);
+                }*/
+            }
+
+        }, function errorCallback(response) {
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Error" + JSON.stringify(response);
+        });
+    }
 }]);
 
 // Profile Controller
