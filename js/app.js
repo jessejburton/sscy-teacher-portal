@@ -134,10 +134,10 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     }
 
     // Show Exceptions
-    $scope.showExceptions = function(class_name){
+    $scope.showExceptions = function(class_id){
 
         // Get the class details
-        $scope.exception.class = $scope.classes[class_name];
+        $scope.exception.class = $scope.classes[class_id];
         $scope.exception.class_id = $scope.exception.class.class_id;
 
         // Set the invalid days array
@@ -228,7 +228,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             if($scope.message.success) {
 
                 // Add the exception to the classes exception list
-                $scope.classes[$scope.exception.class.name].exceptions.push($scope.message.exception);
+                $scope.classes[$scope.exception.class.class_id].exceptions.push($scope.message.exception);
 
                 // Reset the current exception
                 $scope.exception = {    
