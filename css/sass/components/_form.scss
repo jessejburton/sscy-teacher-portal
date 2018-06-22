@@ -19,6 +19,21 @@ input:focus, textarea:focus, select:focus {
     width: 100%;
 }
 
+.input-date {
+    width: 280px;
+}
+
+datepicker label {
+    color: #575350;
+    font-size: 20px;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+datepicker:hover svg {
+    transform: scale(1.2);
+}
+
 .input-textarea {
     border: 1px solid #ccc9c6
 }

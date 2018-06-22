@@ -5,7 +5,7 @@
       <header class="header">
 
          <p class="u-bottom-space-small">Adding exception for:</p>
-         <h3>{{exception.class.name}}</h3>
+         <h3>{{exception.class.name}} {{ exception.class.schedules[0].days }}</h3>
          <p><small><em>{{ exception.class.schedules[0].days | daysOfWeek }}'s</em> at <em>{{ exception.class.schedules[0].start_time | formatTime }} - {{ exception.class.schedules[0].end_time | formatTime }}</em> in <em>{{exception.class.schedules[0].room_name }}</em></small></p>
       
          <!-- ERROR TRAPPING -->
@@ -15,15 +15,18 @@
 
       <!-- Exception Date -->
       <div class="input-group u-bottom-space">
+            <label>Date of exception</label>
             <datepicker date-format="EEEE, MMMM d, yyyy" 
                         date-disabled-weekdays="{{exception.invalid_days}}">
-               <input  name="exception_date"
+                  <input name="exception_date"
+                        id="exception_date"
                         ng-model="exception.date" 
                         type="text" 
                         placeholder="select a date"  
-                        class="exceptions_datepicker date-picker input-text" 
+                        class="exceptions_datepicker date-picker input-text input-date" 
                         data-day="{{exception.class.days}}"
                         required />
+                  <label for="exception_date"><i class="fas fa-calendar-alt"></i></label>
             </datepicker>
       </div>
 

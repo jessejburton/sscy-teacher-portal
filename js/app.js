@@ -109,19 +109,21 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         $scope.exception.class = $scope.classes[class_name];
         $scope.exception.class_id = $scope.exception.class.class_id;
 
-        let days = $scope.exception.class.schedules[0].days;
+        let days = $scope.exception.class.schedules[0].days[0];
         
         // Find out the next available class date
         var dayOfWeek = days;
         var date = new Date();
         var diff = date.getDay() - dayOfWeek;
+        var lastClass = new Date(date.setDate(date.getDate() - diff));
+
         if (diff > 0) {
-            date.setDate(date.getDate() + 6);
+            date.setDate(lastClass.getDate() + 7);
         }
         else if (diff < 0) {
-            date.setDate(date.getDate() + ((-1) * diff))
+            date.setDate(lastClass.getDate() + ((-1) * diff))
         };
-        
+
         // Preset the values 
         $scope.exception.date = moment(date).format('dddd, MMMM D, YYYY');
         $scope.exception.message = "There will be no class today, sorry for the inconvenience.";
@@ -157,6 +159,14 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     // Close Exception Window
     $scope.closeExceptions = function(){
+
+        // Reset the current exception
+        $scope.exception = {    
+            "date": "",
+            "type_id": 0,
+            "invalid_days": []
+        };
+
 
         // Hide the exception window and overlay
         document.querySelector('.exceptions').classList.remove('open');
