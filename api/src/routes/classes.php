@@ -44,17 +44,17 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
         foreach($records as $record){
             
             // Make sure the record exists 
-            if(!isset($return_arr[$record->class_id])){
+            if(!isset($return_arr[$record->name])){
                 // Create the main object
-                $return_arr[$record->class_id] = (object) [
+                $return_arr[$record->name] = (object) [
                     'name'=> $record->name, 
                     'class_id' => $record->class_id, 
                     'description' => $record->description
                 ];
 
                 // Create the schedule and exception arrays
-                $return_arr[$record->class_id]->schedules = [];
-                $return_arr[$record->class_id]->exceptions = [];
+                $return_arr[$record->name]->schedules = [];
+                $return_arr[$record->name]->exceptions = [];
             }
 
             // Schedules
