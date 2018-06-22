@@ -72,8 +72,8 @@
                         <?php foreach ( $arr_classes[$i] as $class) { 
                             
                             // Set up the times
-                            $start_time = date_create('2000-01-01 ' . $arr_classes[0][0]->start_time)->format('g:iA'); 
-                            $end_time = date_create('2000-01-01 ' . $arr_classes[0][0]->end_time)->format('g:iA'); 
+                            $start_time = date_create('2000-01-01 ' . $class->start_time)->format('g:iA'); 
+                            $end_time = date_create('2000-01-01 ' . $class->end_time)->format('g:iA'); 
 
                         ?> 
 
