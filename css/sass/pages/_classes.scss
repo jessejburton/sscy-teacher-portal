@@ -1,5 +1,8 @@
 .class {
 
+    background-color: $gradient-color-1!important;
+    border: 1px solid $gradient-color-2;
+    padding: 40px 50px;
     margin-bottom: 40px;
 
     strong {
@@ -8,12 +11,28 @@
         font-family: 'Pacifico', cursive;
     }
 
+    &__dates {
+        font-style: italic;
+        padding: 10px 0;
+    }
+
+    &__description {
+        color: $accent-color;
+    }
+
     &__schedule {
         margin-top: 20px;
+        color: $accent-dark;
+        font-style: italic;
+
+        strong {
+            font-family: "Roboto",sans-serif!important;
+            font-style: normal;
+        }
     }
 
     &__exceptions {
-        padding: 20px 0;
+        padding: 10px 0 0 0;
 
         .class__exception--message {
             position: relative;
@@ -29,62 +48,59 @@
 // Exception Manager
 
 .overlay {
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
     top: 0;
     left: 100%;
-    position: fixed;
-    background-color: black;
-    z-index: 9999;
-    opacity: 0;
-    transition: background-color .4s;
+    background-color: rgba(0,0,0,.7);
+    z-index: 999;
+    overflow-y: hidden;
 
     &.open {
         opacity: 0.7;
     }
 }
 
-.exceptions {
-    // High z-index to cover signin button
-    z-index: 10000;
-
-    @include dropShadow;
-    position: absolute;
-    padding: 20px;
-    width: 50%;
-    background-color: $white;
-    border-top: 1px solid $accent-light;
-    border-left: 1px solid $accent-light;
-    border-bottom: 1px solid $accent-light;
-    top: 20px;
-    left: 100%;
-    width: 50%;
-    transition: left .4s;
-
-    &.open {
-        left: 25%;
-    }
-
-    h5 {
-        font-weight: 500;
-        font-family: $display-font;
-    }
+.no-scroll {
+    max-height: 100vh;
+    overflow-y: hidden;
 }
 
-.exception-cancelled {
+/* 
+    REBUILD - the notification system to work better 
+    Adjust the name of exception to be exception__form to follow BEM
+*/
+
+.exceptions, .class__form-container {
+    @include modal;
+}
+
+.exception-cancelled, .alert--cancelled {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
 
-.exception-room_teacher_change {
+.exception-room_teacher_change, .alert--warning {
     color: #856404;
     background-color: #fff3cd;
     border-color: #ffeeba;
 }
 
-.exception-notice {
+.exception-notice, .alert--notice {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
+}
+
+.exception__header {
+    background-color: $gradient-color-1!important;
+    border: 1px solid $gradient-color-2;
+    padding: 40px 50px;
+    text-align: center;
+
+    & h3 {
+        margin: 20px 0;
+    }
 }

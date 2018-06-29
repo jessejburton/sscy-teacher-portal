@@ -4,7 +4,7 @@
         <div class="signin" ng-controller="signinController" ng-init="getAvailableClasses()">
             <!-- Open and Close button -->
             <div class="signin__button" ng-click="toggleSigninMode()">
-                <span class="signin__icon"><?php require_once( 'lotus-white-svg.php' ); ?></span>
+                <span class="signin__icon"><?php require( 'lotus-white-svg.php' ); ?></span>
             </div>
 
             <!-- Signin Background -->
@@ -110,7 +110,10 @@
         <!-- DATEPICKER -->
         <script src="js/vendor/angular-datepicker.js"></script>
 
-        <!-- Global JS -->
+        <!-- SLIDER -->
+        <script src="js/vendor/angular-slider.js"></script>
+
+        <!-- SLIDER -->
         <script src="js/config.js"></script>
         <script src="js/app.js"></script>
 

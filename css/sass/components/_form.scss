@@ -1,5 +1,5 @@
 .input-group {
-    padding: 20px 0;
+    padding: 40px 0 ;
 }
 
 .button-group {
@@ -24,7 +24,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 datepicker label {
-    color: #575350;
+    color: $accent-color;
     font-size: 20px;
     transition: all .2s;
     cursor: pointer;
@@ -50,6 +50,10 @@ datepicker:hover svg {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #ccc9c6
+}
+
+label {
+    font-weight: bold;
 }
 
 .input-text-label {

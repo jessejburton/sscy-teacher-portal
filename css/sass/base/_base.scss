@@ -15,6 +15,10 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
     src: url('../fonts/roboto/Roboto-Light.woff');
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 body {
     .container {
         padding: 40px 0;
@@ -129,5 +133,13 @@ body {
         
     }
     
+}
 
+small.links a {
+    text-transform: lowercase;
+    font-size: 12px!important; 
+    
+    &:not(:first-child){
+        margin-left: 20px;    
+    }
 }

@@ -4,18 +4,19 @@
       <!-- Form Header -->
       <header class="header">
 
-         <p class="u-bottom-space-small">Adding exception for:</p>
-         <h3>{{exception.class.name}} {{ exception.class.schedules[0].days }}</h3>
-         <p><small><em>{{ exception.class.schedules[0].days | daysOfWeek }}'s</em> at <em>{{ exception.class.schedules[0].start_time | formatTime }} - {{ exception.class.schedules[0].end_time | formatTime }}</em> in <em>{{exception.class.schedules[0].room_name }}</em></small></p>
-      
-         <!-- ERROR TRAPPING -->
-         <div ng-if="message.text.length > 0" class="alert alert-{{ message.type }}"> {{message.text}} </div>      
+            <h3>ADD NOTICE</h3>
+
+            <h5>{{exception.class.name}}</h5>
+            <p><strong>{{ exception.class.schedules[0].days | daysOfWeek }}'s</strong> at <strong>{{ exception.class.schedules[0].start_time | formatTime }} - {{ exception.class.schedules[0].end_time | formatTime }}</strong> in <strong>{{exception.class.schedules[0].room_name }}</strong></p>     
 
       </header>
 
+      <!-- ERROR TRAPPING -->
+      <div ng-if="message.text.length > 0" class="alert alert-{{ message.type }}"> {{message.text}} </div> 
+
       <!-- Exception Date -->
       <div class="input-group u-bottom-space">
-            <label>Date of exception</label>
+            <label>Date of notice</label>
             <datepicker date-format="EEEE, MMMM d, yyyy" 
                         date-disabled-weekdays="{{exception.invalid_days}}">
                   <input name="exception_date"
@@ -32,7 +33,7 @@
 
       <!-- Type of Exception -->
       <div class="input-group">
-            <label>Type of exception</label>
+            <label>Type of notice</label>
             <select 
                name="exception_type"
                class="input-select add-exception-type"

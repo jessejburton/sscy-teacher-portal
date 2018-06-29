@@ -3,12 +3,7 @@ body {
   font-weight: $body-weight;
   font-size: $default-font-size;
   @include relative-line-height(1);
-}
 
-p { @extend %paragraph-margin; }
-
-h1, h2, h3, h4, h5, h6 {
-  @include relative-line-height(1);
   a &, a {
     color: $black;
     @extend %underlined; padding-bottom: 1px;
@@ -17,6 +12,12 @@ h1, h2, h3, h4, h5, h6 {
     color: $accent-color;
     @extend %underlined-hover;
   }
+}
+
+p { @extend %paragraph-margin; }
+
+h1, h2, h3, h4, h5, h6 {
+  @include relative-line-height(1);
 }
 h1 {
   @extend %paragraph-margin;

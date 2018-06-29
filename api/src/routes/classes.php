@@ -16,6 +16,7 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
     $sql = "SELECT 
                 c.class_id, c.name, c.description, cs.room_id, c.teacher_id, 
                 cs.days_of_week AS days, cs.start_time, cs.end_time,
+                cs.date_from, cs.date_until,
                 t.teacher_id, t.account_id, t.default_price, t.waiver, 
                 CONCAT(a.name_first, ' ', a.name_last) AS teacher_name, 
                 r.name AS room_name, r.photo AS room_photo, r.description AS room_description
@@ -25,6 +26,8 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
             INNER JOIN account_tbl a ON t.account_id = a.account_id 
             INNER JOIN room_tbl r ON r.room_id = cs.room_id
             WHERE a.account_id = $id
+            AND cs.date_until IS NULL
+            OR cs.date_until > NOW() 
             ORDER BY days_of_week";
 
     try {
@@ -49,7 +52,9 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
                 $return_arr[$record->name] = (object) [
                     'name'=> $record->name, 
                     'class_id' => $record->class_id, 
-                    'description' => $record->description
+                    'description' => $record->description,
+                    'date_from' => $record->date_from,
+                    'date_until' => $record->date_until
                 ];
 
                 // Create the schedule and exception arrays
@@ -213,13 +218,28 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
     $name = $request->getParam('name');
     $description = $request->getParam('description');
     $room_id = $request->getParam('room_id');
-    $teacher_id = $request->getParam('teacher_id');
+    $days_of_week = $request->getParam('day');
+    $date_from = $request->getParam('date_from');
+    $date_to = $request->getParam('date_to');
+    //$teacher_id = $request->getParam('teacher_id'); // *** FUTURE - Need to add ability to change teachers
 
+    // Check Dates
+    if(strlen($date_from) == 0) $date_from = NULL;
+    if(strlen($date_to) == 0) $date_to = NULL;
+
+    // Update the class table
     $sql =  "UPDATE class_tbl SET
                 name = :class_name, 
-                description = :class_description, 
-                room_id = :room_id, 
-                teacher_id = :teacher_id
+                description = :class_description
+            WHERE class_id = $id";
+
+    // Update the schedule
+    $sql2 = "UPDATE class_weekly_schedule_tbl SET
+            days_of_week = :days_of_week,
+            room_id = :room_id, 
+            date_from = :date_from,
+            date_until = :date_to,
+            room_id = :room_id            
             WHERE class_id = $id";
 
     try {
@@ -229,16 +249,26 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
         // Connect
         $db = $db->connect();
 
+        // Handle Class Update
         $stmt = $db->prepare($sql);
 
         $stmt->bindParam(':class_name', $name);
         $stmt->bindParam(':class_description', $description);
-        $stmt->bindParam(':room_id', $room_id);
-        $stmt->bindParam(':teacher_id', $teacher_id);
 
         $stmt->execute();
 
-        echo '{"notice": {"text": "Class updated"}}';
+        // Handle Schedule Update
+        $stmt = $db->prepare($sql2);
+
+        $stmt->bindParam(':days_of_week', $days_of_week);
+        $stmt->bindParam(':room_id', $room_id);
+        $stmt->bindParam(':date_from', $date_from, PDO::PARAM_STR);
+        $stmt->bindParam(':date_to', $date_to, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        // return message
+        echo '{"success": true, "type": "success","text": "Class has been saved."}';
 
     } catch(PDOException $e) {
         echo '{"error": {"text": '.$e->getMessage().'}';

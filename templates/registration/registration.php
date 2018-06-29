@@ -1,13 +1,30 @@
-<div class="container" ng-controller="registrationController" ng-init="getClassesWithRegistrants()">
+<div class="container" ng-controller="registrationController" ng-init="getClasses()">
 
     <h2>Registration</h2>
 
     <div class="row">
-        <select class="input-select" id="class_select" 
-            ng-model="class" 
-            ng-change="getRegistrantsByClass()"
-            ng-options="class.label for class in classes">
-        </select>
+        <div class="col-1-of-2">
+            <label>Class</label>
+            <select class="input-select" id="class_select" 
+                ng-model="class" 
+                ng-options="class.name for class in classes track by class.class_id">
+            </select>
+        </div>
+        <div class="col-1-of-2">
+            <label>Date</label>
+            <datepicker date-format="EEEE, MMMM d, yyyy" 
+                        date-disabled-weekdays="{{exception.invalid_days}}">
+                  <input name="exception_date"
+                        id="exception_date"
+                        ng-model="exception.date" 
+                        type="text" 
+                        placeholder="select a date"  
+                        class="exceptions_datepicker date-picker input-text input-date" 
+                        data-day="{{exception.class.days}}"
+                        required />
+                  <label for="exception_date"><i class="fas fa-calendar-alt"></i></label>
+            </datepicker>
+        </div>
     </div>
 
     <div class="row" style="padding-top: 40px;" ng-if="show" ng-cloak>

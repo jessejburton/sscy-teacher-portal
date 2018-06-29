@@ -25,11 +25,14 @@
         <link rel="stylesheet" href="css/vendor/jquery-ui.min.css"> 
 
         <!-- Angular DatePicker -->
-        <link rel="stylesheet" href="css/vendor/angular-datepicker.css">        
+        <link rel="stylesheet" href="css/vendor/angular-datepicker.css">
+        
+        <!-- Slider -->
+        <link rel="stylesheet" href="css/vendor/angular-slider.css">                
         
         <!-- STYLES -->
         <link rel="stylesheet" href="css/style.min.css">
-        <!-- <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"> -->
+        <link rel="stylesheet" id="google_fonts-css" href="https://fonts.googleapis.com/css?family=Crimson+Text%3A400i%7CRoboto%3A300%2C400&amp;ver=4.9.6" type="text/css" media="all">
     </head>
 
     <body>
@@ -47,7 +50,7 @@
             <nav class="menu-header">
                 <?php if(isset($_SESSION["user_id"])) { ?>
                     <a class="menu-header__link home-link" href="#" title="Home">
-                        <span class="screen-reader">Home</span><?php require_once('img/lotus.svg'); ?>
+                        <span class="screen-reader">Home</span><?php require('lotus-white-svg.php'); ?>
                     </a>
                     <a class="mobile-nav" href="#" title="toggle menu" onclick="toggleMenu(0)">MENU</a>
                     <div class="menu-main-menu-container">

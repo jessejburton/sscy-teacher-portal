@@ -1,18 +1,19 @@
 // Main Angular App File
 
-var sscy = angular.module('SSCY',['720kb.datepicker'])
+var sscy = angular.module('SSCY',['720kb.datepicker','rzModule']);
 
 // Navigation Controller
 sscy.controller('navigationController',['$scope','$rootScope',function($scope,$rootScope){
 
     // Change this to read from a folder config file
     $scope.navItems = [
-        {'text':'Dashboard','link' : rootURL},
-        {'text':'Classes','link' : rootURL + 'classes.php'},
-        {'text':'Registration','link' : rootURL + 'registration.php'},
-        {'text':'Reports','link' : rootURL + 'reports.php'},
-        {'text':'My Profile','link' : rootURL + 'profile.php'}
+        {'text':'Dashboard','link' : siteRootURL },
+        {'text':'Classes','link' : siteRootURL  + 'classes.php'},
+        {'text':'Registration','link' : siteRootURL  + 'registration.php'},
+        {'text':'Reports','link' : siteRootURL  + 'reports.php'},
+        {'text':'My Profile','link' : siteRootURL  + 'profile.php'}
     ];
+
 }]);
 
 // Class Controller
@@ -34,30 +35,101 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     $scope.selectedTeacher = {};
     $scope.selectedTeacher.account_id = loggedInUserID;
 
+    // Related to editing / adding classes
+    $scope.saveClassButtonText = "Add Class";
+    $scope.classFormOpen = false;
+
+    $scope.currentClass = {
+        "mode": "Add",
+        "message": {
+            "success": false,
+            "text": "",
+            "type": ""
+        },
+        "show": false,
+        "saveClassButtonText": "Save Class",
+        "class_id": 0,
+        "name": "",
+        "description": "",
+        "day": 4
+    }
+
     /** GLOBALIZE **/
-    var weekday = [];
-    weekday[0] =  "Sunday";
-    weekday[1] = "Monday";
-    weekday[2] = "Tuesday";
-    weekday[3] = "Wednesday";
-    weekday[4] = "Thursday";
-    weekday[5] = "Friday";
-    weekday[6] = "Saturday";
+    $scope.weekdays = []
+    $scope.weekdays.push({"label": "Sundays", "value": 0});
+    $scope.weekdays.push({"label": "Mondays", "value": 1});
+    $scope.weekdays.push({"label": "Tuesdays", "value": 2});
+    $scope.weekdays.push({"label": "Wednesdays", "value": 3});
+    $scope.weekdays.push({"label": "Thursdays", "value": 4});
+    $scope.weekdays.push({"label": "Fridays", "value": 5});
+    $scope.weekdays.push({"label": "Saturdays", "value": 6});
 
     // Constants
     const exception_window = document.querySelector('.exceptions');
     const overlay = document.querySelector('.overlay');
+    const class_form = document.querySelector('.class__form-container');
+
+    // Time Sliders
+    const times = [
+        "6:00 AM","6:15 AM","6:30 AM","6:45 AM",
+        "7:00 AM","7:15 AM","7:30 AM","7:45 AM",
+        "8:00 AM","8:15 AM","8:30 AM","8:45 AM",
+        "9:00 AM","9:15 AM","9:30 AM","9:45 AM",
+        "10:00 AM","10:15 AM","10:30 AM","10:45 AM",
+        "11:00 AM","11:15 AM","11:30 AM","11:45 AM",
+        "12:00 PM","12:15 PM","12:30 PM","12:45 PM",
+        "1:00 PM","1:15 PM","1:30 PM","1:45 PM",
+        "2:00 PM","2:15 PM","2:30 PM","2:45 PM",
+        "3:00 PM","3:15 PM","3:30 PM","3:45 PM",
+        "4:00 PM","4:15 PM","4:30 PM","4:45 PM",
+        "5:00 PM","5:15 PM","5:30 PM","5:45 PM",
+        "6:00 PM","6:15 PM","6:30 PM","6:45 PM",
+        "7:00 PM","7:15 PM","7:30 PM","7:45 PM",
+        "8:00 PM","8:15 PM","8:30 PM","8:45 PM",
+        "9:00 PM","9:15 PM","9:30 PM","9:45 PM",
+        "10:00 PM"
+    ];
+
+    // Set the time based on value for the sliders
+    $scope.translateTime = function(value) {
+        var val =  times[value];
+        return val
+    };
+
+    // Set up the sliders as objects
+    $scope.classTime = {
+        minValue: 0,
+        maxValue: 0,
+        options: {
+            floor: 0,
+            ceil: 64,
+            translate: $scope.translateTime,
+            draggableRange: true
+        }
+    }
+
+    $scope.slider = {
+        minValue: 1,
+        maxValue: 8,
+        options: {
+          floor: 0,
+          ceil: 10,
+          draggableRange: true
+        }
+      };
+
 
     // get all classes
     $scope.getClasses = function() {
 
         $http({ 
                 method:'GET',
-                url: rootURL + 'api/classes/' + $scope.selectedTeacher.account_id, 
+                url: siteRootURL + 'api/classes/' + $scope.selectedTeacher.account_id, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
                 $scope.classes = response.data;
+
             }, function errorCallback(response) {
                 alert("Error" + JSON.stringify(response));
         });
@@ -69,7 +141,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Exception Types
     $http({ 
             method:'GET',
-            url: rootURL + 'api/exception/types', 
+            url: siteRootURL  + 'api/exception/types', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -81,7 +153,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Teachers
     $http({ 
             method:'GET',
-            url: rootURL + 'api/teachers', 
+            url: siteRootURL  + 'api/teachers', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -93,7 +165,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Populate Rooms
     $http({ 
             method:'GET',
-            url: rootURL + 'api/rooms', 
+            url: siteRootURL  + 'api/rooms', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -101,6 +173,95 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         }, function errorCallback(response) {
             alert("Error" + JSON.stringify(response));
     });
+
+    // Edit a Class
+    $scope.editClass = function(currentClass){
+        $scope.currentClass = currentClass;
+        $scope.currentClass.saveClassButtonText = "Save Class";
+        $scope.currentClass.mode = "Edit";
+        $scope.currentClass.show = true;
+
+        // Select the appropriate times
+        var start_time = moment($scope.currentClass.schedules[0].start_time, "HH:mm A").format("h:mm A");
+        var end_time = moment($scope.currentClass.schedules[0].end_time, "HH:mm A").format("h:mm A");
+        $scope.classTime.minValue = times.findIndex(e => e == start_time);
+        $scope.classTime.maxValue = times.findIndex(e => e == end_time);
+
+        // Select the day
+        $scope.currentClass.selectedDay = $scope.weekdays[$scope.currentClass.schedules[0].days];
+        
+        // Show the overlay
+        class_form.style.top = `${window.scrollY + 5}vh`;
+        overlay.style.left = 0;
+        overlay.classList.add('open');
+        document.getElementsByTagName("body")[0].style.overflow = "hidden";
+
+    }
+
+    // Save a Class
+    $scope.saveClass = function(){
+
+        // SETUP THE DATES
+
+        // From Date
+        if($scope.currentClass.date_from == undefined){
+            var date_from = "";
+        } else {
+            var date_from = new Date($scope.currentClass.date_from);
+            date_from = moment(date_from).format("YYYY-MM-DD");
+        }
+
+        // To Date
+        if($scope.currentClass.date_until == undefined){
+            var date_to = "";
+        } else {
+            var date_to = new Date($scope.currentClass.date_until);
+            date_to = moment(date_to).format("YYYY-MM-DD");
+        }
+
+        // Prepare the class data
+        var data = {
+            "name": $scope.currentClass.name,
+            "description": $scope.currentClass.description,
+            "room_id": 1,
+            "day": $scope.currentClass.selectedDay.value,
+            "date_from": date_from.toString(),
+            "date_to":  date_to.toString()          
+        };
+
+        /* TODO - ERROR TRAPPING */
+
+        // Send the data
+        $http({ 
+            method:'PUT',
+            url: siteRootURL  + 'api/class/update/' + $scope.currentClass.class_id, 
+            headers: { 'Content-Type':'application/json' },
+            data: data
+        })
+        .then(function successCallback(response) {
+            $scope.currentClass.message = response.data;
+            class_form.scrollTop = 0; // Scroll to the top to see the message
+
+            if($scope.currentClass.message.success) {
+                // Update the model
+                //$scope.currentClass.schedules[0].days = 6;
+
+                // Close the window if is was successful
+                $scope.closeClassForm();
+            }
+
+        }, function errorCallback(response) {
+            $scope.currentClass.message.success = false;
+            $scope.currentClass.message.type = "danger";
+            $scope.currentClass.message.text = "Error" + JSON.stringify(response);
+        });
+
+    }
+
+    // Update Current Class Day - used for when user changes the day in the dropdown
+    $scope.updateCurrentClassDay = function(){
+        $scope.currentClass.schedules[0].days = $scope.currentClass.selectedDay.value.toString();
+    }
 
     // Quick Cancel
     $scope.quickCancel = function(class_name){
@@ -136,6 +297,9 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Show Exceptions
     $scope.showExceptions = function(class_name){
 
+        // disable scrolling
+        document.body.className += ' ' + 'no-scroll';
+
         // Get the class details
         $scope.exception.class = $scope.classes[class_name];
         $scope.exception.class_id = $scope.exception.class.class_id;
@@ -149,7 +313,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         };
         
         // Show the exception window
-        exception_window.style.top = `${window.scrollY + 50}px`;
+        exception_window.style.top = `${window.scrollY + 5}vh`;
         overlay.style.left = 0;
         exception_window.classList.add('open');
         overlay.classList.add('open');
@@ -171,6 +335,35 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         // Hide the exception window and overlay
         document.querySelector('.exceptions').classList.remove('open');
         document.querySelector('.overlay').classList.remove('open');
+        overlay.style.left = '100%';
+        document.getElementsByTagName("body")[0].style.overflow = "auto";
+
+    }
+
+    // Close Class Form
+    $scope.closeClassForm = function(){
+
+        // Reset the current class
+        $scope.currentClass = {    
+            "mode": "Add",
+            "message": {
+                "success": false,
+                "text": "",
+                "type": ""
+            },
+            "show": false,
+            "saveClassButtonText": "Save Class",
+            "class_id": 0,
+            "name": "",
+            "description": "",
+            "startTime": "",
+            "endTime": ""
+        };
+
+
+        // Hide the class form and overlay
+        class_form.classList.remove('open');
+        overlay.classList.remove('open');
         overlay.style.left = '100%';
         document.getElementsByTagName("body")[0].style.overflow = "auto";
 
@@ -219,7 +412,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         // Send the data
         $http({ 
             method:'POST',
-            url: rootURL + 'api/exception/add', 
+            url: siteRootURL  + 'api/exception/add', 
             headers: { 'Content-Type':'application/json' },
             data: $scope.exception
         })
@@ -261,7 +454,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         // Send the data
         $http({ 
             method:'DELETE',
-            url: rootURL + 'api/exception/remove/' + id, 
+            url: siteRootURL  + 'api/exception/remove/' + id, 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -310,7 +503,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
         // Get the current users profile
         $http({ 
             method:'GET',
-            url: rootURL + 'api/profile', 
+            url: siteRootURL  + 'api/profile', 
             headers: { 'Content-Type':'application/json' }
         })
         .then(function successCallback(response) {
@@ -330,7 +523,7 @@ sscy.controller('profileController',['$scope', '$http', '$timeout', function($sc
 
         $http({ 
             method:'PUT',
-            url: rootURL + 'api/profile/save/' + $scope.profile.account_id, 
+            url: siteRootURL  + 'api/profile/save/' + $scope.profile.account_id, 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -378,7 +571,7 @@ sscy.controller('loginController',['$scope', '$http', function($scope, $http){
 
         $http({ 
             method:'POST',
-            url: rootURL + 'api/login', 
+            url: siteRootURL  + 'api/login', 
             headers: { 'Content-Type':'application/json' },
             data: dataObj
         })
@@ -415,10 +608,10 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
     $user_id = document.getElementById('hidden_user_id').value;
 
     // get all classes with registrants for the current teacher
-    $scope.getClassesWithRegistrants = function() {
+    $scope.getClasses = function() {
         $http({ 
                 method:'GET',
-                url: rootURL + 'api/registration/classes/' + $user_id, 
+                url: siteRootURL  + 'api/classes/' + $user_id, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -435,7 +628,7 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
 
         $http({ 
                 method:'GET',
-                url: rootURL + 'api/registration/' + $scope.class.value, 
+                url: siteRootURL  + 'api/registration/' + $scope.class.value, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -475,7 +668,7 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
 
         $http({ 
                 method:'GET',
-                url: rootURL + 'api/class/date/' + formattedDate, 
+                url: siteRootURL  + 'api/class/date/' + formattedDate, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
