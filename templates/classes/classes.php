@@ -58,9 +58,9 @@
                         <a href="javascriptio:void(0);" ng-click="editClass(class);">
                             <i class="fas fa-edit"></i> edit class
                         </a>
-                        <a href="javascriptio:void(0);" ng-click="removeClass(class);" class="admin">
+                        <!--<a href="javascriptio:void(0);" ng-click="removeClass(class);" class="admin">
                             <i class="far fa-times-circle"></i> remove class
-                        </a>  
+                        </a>--> 
                     </small>
                 </p>
 
