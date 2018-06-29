@@ -54,7 +54,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         "day": 4
     }
 
-    /** GLOBALIZE **/
+    /** WEEKDAYS **/
     $scope.weekdays = []
     $scope.weekdays.push({"label": "Sundays", "value": 0});
     $scope.weekdays.push({"label": "Mondays", "value": 1});
@@ -189,12 +189,19 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
         // Select the day
         $scope.currentClass.selectedDay = $scope.weekdays[$scope.currentClass.schedules[0].days];
+
+        // Select the room
+        $scope.currentClass.selectedRoom 
+            = $scope.rooms.find(room => room.room_id == $scope.currentClass.schedules[0].room_id);
         
         // Show the overlay
         class_form.style.top = `${window.scrollY + 5}vh`;
         overlay.style.left = 0;
         overlay.classList.add('open');
         document.getElementsByTagName("body")[0].style.overflow = "hidden";
+
+        console.log($scope.currentClass);
+
 
     }
 
@@ -223,7 +230,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         var data = {
             "name": $scope.currentClass.name,
             "description": $scope.currentClass.description,
-            "room_id": 1,
+            "room_id": $scope.currentClass.selectedRoom.room_id,
             "day": $scope.currentClass.selectedDay.value,
             "date_from": date_from.toString(),
             "date_to":  date_to.toString()          
@@ -261,6 +268,13 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
     // Update Current Class Day - used for when user changes the day in the dropdown
     $scope.updateCurrentClassDay = function(){
         $scope.currentClass.schedules[0].days = $scope.currentClass.selectedDay.value.toString();
+    }
+
+    // Update Current Class Room - used for when user changes the day in the dropdown
+    $scope.updateCurrentClassRoom = function(){
+        console.log($scope.currentClass.selectedRoom);
+        $scope.currentClass.schedules[0].room_id = $scope.currentClass.selectedRoom.room_id.toString();
+        $scope.currentClass.schedules[0].room_name = $scope.currentClass.selectedRoom.name.toString();
     }
 
     // Quick Cancel

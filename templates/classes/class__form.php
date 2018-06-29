@@ -26,6 +26,19 @@
 
     </div>
 
+    <!-- Room -->
+    <div class="class__room input-group">
+        <label>Room</label>
+        <select 
+            name="class_room"
+            class="input-select"
+            ng-model="currentClass.selectedRoom" 
+            ng-options="room.name for room in rooms track by room.room_id"
+            ng-change="updateCurrentClassRoom()">
+        </select>
+    </div>
+
+    <!-- Class Day -->
     <div class="input-group" style="margin-top: -30px;">
 
         <div class="input-group">
