@@ -1,7 +1,7 @@
 <div class="container" style="width: 50%;" ng-controller="loginController">
     <h1>Please Log In</h1>
     <form>
-        <div ng-if="message.show" class="alert alert-{{message.type}}">
+        <div ng-if="message.show" class="alert alert-{{message.type}}" ng-cloak>
             {{message.text}}
         </div>
 
