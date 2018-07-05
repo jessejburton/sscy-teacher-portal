@@ -25,9 +25,9 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
             INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
             INNER JOIN account_tbl a ON t.account_id = a.account_id 
             INNER JOIN room_tbl r ON r.room_id = cs.room_id
-            WHERE a.account_id = $id
-            AND cs.date_until IS NULL
-            OR cs.date_until > NOW() 
+            WHERE t.account_id = $id
+            AND (cs.date_until IS NULL
+            OR cs.date_until > NOW())
             ORDER BY days_of_week";
 
     try {
@@ -179,14 +179,46 @@ $app->get('/class/date/{date}', function (Request $request, Response $response) 
 });
 
 // Add Class
-$app->post('/class/add', function (Request $request, Response $response) {
+$app->put('/class/add', function (Request $request, Response $response) {
+
     $name = $request->getParam('name');
     $description = $request->getParam('description');
     $room_id = $request->getParam('room_id');
+    $days_of_week = $request->getParam('day');
+    $date_from = $request->getParam('date_from');
+    $date_to = $request->getParam('date_to');
+    $start_time = $request->getParam('start_time');
+    $end_time = $request->getParam('end_time');
     $teacher_id = $request->getParam('teacher_id');
 
-    $sql =  "INSERT INTO class_tbl (name, description, room_id, teacher_id) 
-             VALUES (:name, :description, :room_id, :teacher_id)";
+    // Check Dates
+    if(strlen($date_from) == 0) $date_from = NULL;
+    if(strlen($date_to) == 0) $date_to = NULL;
+
+    // Add the Class
+    $sql =  "INSERT INTO class_tbl (name, description, teacher_id) 
+             VALUES (:name, :description, :teacher_id)";
+
+    // Add the schedule
+    $sql2 = "INSERT INTO class_weekly_schedule_tbl
+                (
+                    days_of_week,
+                    room_id,
+                    date_from,
+                    date_until,
+                    start_time,
+                    end_time,
+                    class_id
+                ) VALUES (
+                    :days_of_week,
+                    :room_id,
+                    :date_from,
+                    :date_until,
+                    :start_time,
+                    :end_time,
+                    :class_id
+                )
+            ";
 
     try {
         
@@ -195,16 +227,31 @@ $app->post('/class/add', function (Request $request, Response $response) {
         // Connect
         $db = $db->connect();
 
+        // Handle Class Insert
         $stmt = $db->prepare($sql);
 
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':room_id', $room_id);
         $stmt->bindParam(':teacher_id', $teacher_id);
 
         $stmt->execute();
+        $class_id = $db->lastInsertId();
 
-        echo '{"notice": {"text": "Class added"}}';
+        // Handle Schedule Insert
+        $stmt = $db->prepare($sql2);
+
+        $stmt->bindParam(':days_of_week', $days_of_week);
+        $stmt->bindParam(':room_id', $room_id);
+        $stmt->bindParam(':date_from', $date_from, PDO::PARAM_STR);  // Need the PDO to handle NULLS
+        $stmt->bindParam(':date_until', $date_to, PDO::PARAM_STR);      // Need the PDO to handle NULLS
+        $stmt->bindParam(':start_time', $start_time);
+        $stmt->bindParam(':end_time', $end_time);
+        $stmt->bindParam(':class_id', $class_id);
+
+        $stmt->execute();
+
+        // return message
+        echo '{"success": true, "type": "success","text": "Class has been added."}';
 
     } catch(PDOException $e) {
         echo '{"error": {"text": '.$e->getMessage().'}';
@@ -221,6 +268,8 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
     $days_of_week = $request->getParam('day');
     $date_from = $request->getParam('date_from');
     $date_to = $request->getParam('date_to');
+    $start_time = $request->getParam('start_time');
+    $end_time = $request->getParam('end_time');
     //$teacher_id = $request->getParam('teacher_id'); // *** FUTURE - Need to add ability to change teachers
 
     // Check Dates
@@ -239,7 +288,8 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
             room_id = :room_id, 
             date_from = :date_from,
             date_until = :date_to,
-            room_id = :room_id            
+            start_time = :start_time,
+            end_time = :end_time        
             WHERE class_id = $id";
 
     try {
@@ -264,6 +314,8 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
         $stmt->bindParam(':room_id', $room_id);
         $stmt->bindParam(':date_from', $date_from, PDO::PARAM_STR);
         $stmt->bindParam(':date_to', $date_to, PDO::PARAM_STR);
+        $stmt->bindParam(':start_time', $start_time, PDO::PARAM_STR);
+        $stmt->bindParam(':end_time', $end_time, PDO::PARAM_STR);
 
         $stmt->execute();
 

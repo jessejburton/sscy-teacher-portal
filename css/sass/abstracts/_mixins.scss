@@ -292,14 +292,14 @@
     // High z-index to cover signin button
     z-index: 10000;
 
-    @include dropShadow;
-    position: absolute;
-    padding: 60px 80px;
+    z-index: 10000;
+    box-shadow: 5px 5px 10px rgba(55, 51, 61, 0.5);
+    position: fixed;
     width: 70vw;
-    background-color: $white;
-    border-top: 1px solid $accent-light;
-    border-left: 1px solid $accent-light;
-    border-bottom: 1px solid $accent-light;
+    background-color: #f7f4f0;
+    border-top: 1px solid #c2edef;
+    border-left: 1px solid #c2edef;
+    border-bottom: 1px solid #c2edef;
     top: 5vh;
     left: 100%;
     max-height: 90vh;

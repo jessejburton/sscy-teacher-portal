@@ -1,4 +1,4 @@
-<div class="class__form-container" ng-class="{open: currentClass.show}">
+<div class="class__form-container">
   <form name="class__form" ng-submit="saveClass()">
 
       <!-- Form Header -->

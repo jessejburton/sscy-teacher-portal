@@ -76,6 +76,12 @@
     @include modal;
 }
 
+.exceptions form, .class__form-container form {
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+}
+
 .exception-cancelled, .alert--cancelled {
     color: #721c24;
     background-color: #f8d7da;

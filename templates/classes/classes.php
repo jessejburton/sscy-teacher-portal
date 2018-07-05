@@ -4,11 +4,12 @@
     <!-- Select a teacher -->
     <div class="input-group u-bottom-space" ng-show="<?php echo $_SESSION['is_admin']; ?>">
         <label for="teacher_select" class="label-select">Select a Teacher</label>
-        <select class="input-select"
+        <select class="input-select input-select-inline"
                 ng-model="selectedTeacher" 
                 ng-change="getClasses()"
                 ng-options="teacher.name for teacher in teachers track by teacher.account_id">
         </select>
+        <button class="button button__add-class" ng-click="addClass()"><i class="fas fa-plus"></i> Add Class</button>
     </div>
 
     <div class="row class" ng-repeat="class in classes" ng-cloak>

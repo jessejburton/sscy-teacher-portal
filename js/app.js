@@ -174,8 +174,37 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             alert("Error" + JSON.stringify(response));
     });
 
+    // Add a Class
+    $scope.addClass = function(){
+
+        // disable scrolling
+        document.body.className += ' ' + 'no-scroll';
+
+        $scope.currentClass = {
+            "saveClassButtonText": "Add Class",
+            "mode": "Add",
+            "show": true
+        };
+
+        // Show the overlay
+        class_form.style.top = `${window.scrollY + 5}vh`;
+        class_form.scrollTop = 0;
+        class_form.classList.add('open');        
+        overlay.style.left = 0;
+        overlay.classList.add('open');
+        document.getElementsByTagName("body")[0].style.overflow = "hidden";
+
+        // Click handler to close on overlay click
+        overlay.addEventListener("click", $scope.closeClassForm);
+
+    }
+
     // Edit a Class
     $scope.editClass = function(currentClass){
+
+        // disable scrolling
+        document.body.className += ' ' + 'no-scroll';
+
         $scope.currentClass = currentClass;
         $scope.currentClass.saveClassButtonText = "Save Class";
         $scope.currentClass.mode = "Edit";
@@ -196,12 +225,14 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         
         // Show the overlay
         class_form.style.top = `${window.scrollY + 5}vh`;
+        class_form.scrollTop = 0;
+        class_form.classList.add('open');
         overlay.style.left = 0;
         overlay.classList.add('open');
         document.getElementsByTagName("body")[0].style.overflow = "hidden";
 
-        console.log($scope.currentClass);
-
+        // Click handler to close on overlay click
+        overlay.addEventListener("click", $scope.closeClassForm);        
 
     }
 
@@ -230,18 +261,28 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         var data = {
             "name": $scope.currentClass.name,
             "description": $scope.currentClass.description,
-            "room_id": $scope.currentClass.selectedRoom.room_id,
+            "teacher_id": $scope.teachers.find(t => t.account_id == $scope.selectedTeacher.account_id).teacher_id,            
+            "room_id": $scope.currentClass.selectedRoom.room_id,            
+            "start_time": moment(times[$scope.classTime.minValue], "h:mm A").format("HH:mm:ss"),
+            "end_time": moment(times[$scope.classTime.maxValue], "h:mm A").format("HH:mm:ss"),
             "day": $scope.currentClass.selectedDay.value,
             "date_from": date_from.toString(),
-            "date_to":  date_to.toString()          
+            "date_to":  date_to.toString()        
         };
 
         /* TODO - ERROR TRAPPING */
 
+        // Update or Add
+        if ( "class_id" in $scope.currentClass ){
+            var putUrl = siteRootURL  + 'api/class/update/' + $scope.currentClass.class_id
+        } else {
+            var putUrl = siteRootURL  + 'api/class/add'
+        }
+
         // Send the data
         $http({ 
-            method:'PUT',
-            url: siteRootURL  + 'api/class/update/' + $scope.currentClass.class_id, 
+            method: 'PUT',
+            url: putUrl, 
             headers: { 'Content-Type':'application/json' },
             data: data
         })
@@ -250,10 +291,7 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             class_form.scrollTop = 0; // Scroll to the top to see the message
 
             if($scope.currentClass.message.success) {
-                // Update the model
-                //$scope.currentClass.schedules[0].days = 6;
-
-                // Close the window if is was successful
+                $scope.getClasses();
                 $scope.closeClassForm();
             }
 
@@ -267,14 +305,17 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
 
     // Update Current Class Day - used for when user changes the day in the dropdown
     $scope.updateCurrentClassDay = function(){
-        $scope.currentClass.schedules[0].days = $scope.currentClass.selectedDay.value.toString();
+        if ( "schedules" in $scope.currentClass ){
+            $scope.currentClass.schedules[0].days = $scope.currentClass.selectedDay.value.toString();
+        }
     }
 
     // Update Current Class Room - used for when user changes the day in the dropdown
     $scope.updateCurrentClassRoom = function(){
-        console.log($scope.currentClass.selectedRoom);
-        $scope.currentClass.schedules[0].room_id = $scope.currentClass.selectedRoom.room_id.toString();
-        $scope.currentClass.schedules[0].room_name = $scope.currentClass.selectedRoom.name.toString();
+        if( "schedules" in $scope.currentClass ){
+            $scope.currentClass.schedules[0].room_id = $scope.currentClass.selectedRoom.room_id.toString();
+            $scope.currentClass.schedules[0].room_name = $scope.currentClass.selectedRoom.name.toString();
+        }
     }
 
     // Quick Cancel
@@ -332,6 +373,9 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
         exception_window.classList.add('open');
         overlay.classList.add('open');
         document.getElementsByTagName("body")[0].style.overflow = "hidden";
+
+        // close modal on overlay click
+        overlay.addEventListener("click", $scope.closeExceptions);        
         
     };
 
@@ -344,7 +388,6 @@ sscy.controller('classController',['$scope', '$http', function($scope, $http){
             "type_id": 0,
             "invalid_days": []
         };
-
 
         // Hide the exception window and overlay
         document.querySelector('.exceptions').classList.remove('open');
