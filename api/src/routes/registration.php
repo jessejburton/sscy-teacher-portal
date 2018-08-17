@@ -52,10 +52,9 @@ $app->get('/registration/{class_id}/{class_date}', function (Request $request, R
     $class_date = $request->getAttribute('class_date');
 
     $sql = "SELECT 
-                registration_id, r.date_added, r.checked_in, r.paid, r.is_ky, r.is_pr,
-                a.email, a.name_first, a.name_last
+                r.registration_id, r.date_added, r.checked_in, r.paid, r.is_ky, r.is_pr,
+                r.email, r.name_first, r.name_last
             FROM registration_tbl r
-            INNER JOIN account_tbl a ON a.account_id = r.account_id
             WHERE date_class = '$class_date'
             AND class_id = $class_id";
 
@@ -74,5 +73,95 @@ $app->get('/registration/{class_id}/{class_date}', function (Request $request, R
 
     } catch(PDOException $e) {
         echo '{"type": "danger","text": "'.$e->getMessage().'"}';
+    }
+});
+
+// Add Registrant
+$app->put('/registration/add', function (Request $request, Response $response) {
+
+    $name_first = $request->getParam('name_first');
+    $name_last = $request->getParam('name_last');
+    $email = $request->getParam('email');
+    $is_pr = +$request->getParam('is_pr');
+    $is_ky = +$request->getParam('is_ky');
+    $checked_in = +$request->getParam('checked_in');
+    $paid = $request->getParam('paid');
+    $registration_date = $request->getParam('registration_date');
+    $class_id = $request->getParam('class_id');
+
+    // Add the Registration
+    $sql =  "INSERT INTO registration_tbl (name_first, name_last, email, is_pr, is_ky, paid, date_class, class_id, checked_in) 
+             VALUES (:name_first, :name_last, :email, :is_pr, :is_ky, :paid, :registration_date, :class_id, :checked_in)";
+
+    try {
+        
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        // Handle Class Insert
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindParam(':name_first', $name_first);
+        $stmt->bindParam(':name_last', $name_last);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':is_pr', $is_pr);
+        $stmt->bindParam(':is_ky', $is_ky);
+        $stmt->bindParam(':paid', $paid);
+        $stmt->bindParam(':checked_in', $checked_in);
+        $stmt->bindParam(':registration_date', $registration_date);
+        $stmt->bindParam(':class_id', $class_id);
+
+        $stmt->execute();
+        $registration_id = $db->lastInsertId();
+
+        // return message
+        echo '{"success": true, "type": "success","text": "Registration has been added.","registration_id":' . $registration_id . '}';
+
+    } catch(PDOException $e) {
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
+// Update Registration
+$app->put('/registration/update/{id}', function (Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+
+    $is_ky = +$request->getParam('is_ky');
+    $is_pr = +$request->getParam('is_pr');
+    $checked_in = +$request->getParam('checked_in');
+    $paid = $request->getParam('paid'); 
+
+    // Update the class table
+    $sql =  "UPDATE registration_tbl SET
+                is_ky = :is_ky,
+                is_pr = :is_pr,
+                checked_in = :checked_in,
+                paid = :paid 
+            WHERE registration_id = $id";
+
+    try {
+        
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        // Handle Class Update
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindParam(':is_ky', $is_ky);
+        $stmt->bindParam(':is_pr', $is_pr);
+        $stmt->bindParam(':checked_in', $checked_in);
+        $stmt->bindParam(':paid', $paid);
+
+        $stmt->execute();
+
+        // return message
+        echo '{"success": true, "type": "success","text": "Registration has been saved."}';
+
+    } catch(PDOException $e) {
+        echo '{"error": {"text": '.$e->getMessage().'}';
     }
 });

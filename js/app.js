@@ -659,7 +659,16 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
     $scope.classes = [];
     $scope.registrants = [];
     $scope.class = "";
-    $scope.show = false;
+    $scope.registration_date = "";
+    $scope.show = true;
+    $scope.registrant = {
+        "name_first": "",
+        "name_last": "",
+        "email": "",
+        "is_pr": false,
+        "is_ky": false,
+        "paid": 16
+    }
 
     // Get the url for the API call
     $user_id = document.getElementById('hidden_user_id').value;
@@ -678,14 +687,121 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
             });
     };
 
+    // Add Registrant and Check them In
+    $scope.addRegistrant = function(){
+
+        // Prepare the data
+        $scope.registrant.checked_in = true;
+        $scope.registrant.class_id = $scope.class.class_id;
+
+        // Registration Date
+        reg_date = new Date($scope.registration_date);
+        reg_date = moment(reg_date).format("YYYY-MM-DD");
+        $scope.registrant.registration_date = reg_date;
+
+        /*** Error Trapping ***/
+        if($scope.registrant.class_id == undefined){
+            alert("Please select a class");
+            return false;
+        }
+
+        if($scope.registrant.registration_date == "Invalid date"){
+            alert("Please select a date");
+            return false;
+        }
+
+        if($scope.registrant.name_first.length == 0 || $scope.registrant.name_last.length == 0){
+            alert("Please enter a first and last name");
+            return false;
+        }
+
+        // Send the data
+        $http({ 
+            method: 'PUT',
+            url: siteRootURL + 'api/registration/add', 
+            headers: { 'Content-Type':'application/json' },
+            data: $scope.registrant
+        })
+        .then(function successCallback(response) {
+
+            $scope.message = response.data;
+
+            if($scope.message.success){
+                // Add the registration ID to the registrant
+                $scope.registrant.registration_id = $scope.message.registration_id;
+                // Add the registrant to the Registrants list
+                $scope.registrants.push($scope.registrant);
+
+                // Reset the registrant
+                $scope.registrant = {
+                    "name_first": "",
+                    "name_last": "",
+                    "email": "",
+                    "is_pr": false,
+                    "is_ky": false,
+                    "paid": 16
+                }
+            }
+
+        }, function errorCallback(response) {
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Error" + JSON.stringify(response);
+        });
+
+    }
+
+    // Check in the selected registrant
+    $scope.checkinRegistrant = function(registrant) {
+ 
+        // Prepare the data
+        registrant.checked_in = true;
+
+        /*** Error Trapping ***/
+
+        // Send the data
+        $http({ 
+            method: 'PUT',
+            url: siteRootURL + 'api/registration/update/' + registrant.registration_id, 
+            headers: { 'Content-Type':'application/json' },
+            data: registrant
+        })
+        .then(function successCallback(response) {
+
+            $scope.message = response.data;
+
+        }, function errorCallback(response) {
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Error" + JSON.stringify(response);
+        });
+
+    };
+
+    // When PR is checked
+    $scope.prUpdate = function() {
+        $scope.registrant.paid = 5;
+    };
+
+    // When KY is checked
+    $scope.kyUpdate = function() {
+        $scope.registrant.paid = 0;
+    };    
+
     // Get the registrants based on the selected value
     $scope.getRegistrantsByClass = function() {
 
-        // $scope.class gets updated by the ng-model of the select box
+        var reg_date = new Date($scope.registration_date);
+            reg_date = moment(reg_date).format("YYYY-MM-DD");
+        
+        /*** ERROR TRAPPING ***/
+        if(reg_date == "Invalid date" || $scope.class.length == 0){
+            return false;
+        }
 
         $http({ 
                 method:'GET',
-                url: siteRootURL  + 'api/registration/' + $scope.class.value, 
+                url: siteRootURL  + 'api/registration/' + $scope.class.class_id + '/' + reg_date, 
                 headers: { 'Content-Type':'application/json' }
             })
             .then(function successCallback(response) {
@@ -711,14 +827,40 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
     $scope.lastMode = "setup";
     $scope.open = false;
     $scope.pin = "";
-    $scope.pin_value = "0355";
+    $scope.pin_value = "355";
     $scope.error_message = "";
     $scope.classes = [];
+    $scope.registration_mode = true;
+    $scope.registered = [];
 
     const currentDate = new Date();
     const formattedDate = currentDate.getFullYear() + '-' 
                             + ('0' + (currentDate.getMonth()+1)).slice(-2) + '-'
                             + ('0' + currentDate.getDate()).slice(-2);
+
+    // Get the registrants for a specific class
+    $scope.getRegistrants = function() {
+
+        var reg_date = new Date();
+            reg_date = moment(reg_date).format("YYYY-MM-DD");
+        
+        /*** ERROR TRAPPING ***/
+        if(reg_date == "Invalid date" || $scope.class.length == 0){
+            return false;
+        }
+
+        $http({ 
+                method:'GET',
+                url: siteRootURL  + 'api/registration/' + $scope.class.class_id + '/' + reg_date, 
+                headers: { 'Content-Type':'application/json' }
+            })
+            .then(function successCallback(response) {
+                $scope.registered = response.data;
+            }, function errorCallback(response) {
+                alert("Error" + JSON.stringify(response));
+        });
+
+    };                            
 
     // Get the available classes
     $scope.getAvailableClasses = function() {
@@ -741,6 +883,7 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
         let class_name = document.querySelector(".class-select").value;
 
         $scope.class = $scope.classes.find(c => c.name = class_name);
+        $scope.registered = $scope.getRegistrants();
     }
 
     // Enter Signin Mode
@@ -759,9 +902,9 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
     $scope.checkPin = function(e) { 
 
         if($scope.pin == $scope.pin_value){
-            $scope.error_message = "";
-            $scope.open = false;
             document.querySelector('.signin').classList.remove("open");
+            $scope.open = false;
+            $scope.error_message = "";
             $scope.pin = "";
         } else {
             $scope.error_message = "Invalid Pin!";
@@ -770,15 +913,26 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
     }
 
     $scope.toggleSigninMode = function(){
+
         if($scope.open){
-            $scope.lastMode = $scope.mode;
+            // if is to handle if they click twice on the lotus button
+            if($scope.mode !== "exit"){
+                $scope.lastMode = $scope.mode;
+            }
+
             $scope.mode = "exit";
+
+            // Set focus to the pin textbox
+            $(".pin-input").focus(); // NOT WORKING
         } else {
             // Open the signin mode
             $scope.open = true;
+            $scope.lastMode = $scope.mode;
             $scope.mode = "setup";
             document.querySelector('.signin').classList.add("open");
         }
+
+        console.table($scope);
     }
 
     // Event Listeners
@@ -843,3 +997,19 @@ sscy.filter('daysOfWeek', function daysOfWeek($filter){
         return days_text_arr.toString();
     }
 });
+
+/*************************************************
+ * 
+ * Inline If Filter
+ * 
+ * Takes in an conditional and outputs either the
+ * first or second value
+ * 
+ * i.e. {{foo == "bar" | iif : "it's true" : "no, it's not"}} 
+ * 
+ *************************************************/
+sscy.filter('iif', function () {
+    return function(input, trueValue, falseValue) {
+         return input ? trueValue : falseValue;
+    };
+ });

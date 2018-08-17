@@ -9,8 +9,14 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
 
     // Make sure the person is logged in.
     if( !isset($_SESSION['user_id']) ){
-        echo '{"type": "danger","text": "You muset be logged in to access this page."}';
+        echo '{"type": "danger","text": "You must be logged in to access this page."}';
         return;
+    }
+
+    if($_SESSION['is_admin'] == 0){
+        $where = "WHERE t.account_id = $id";
+    } else {
+        $where = "WHERE 1 = 1";
     }
 
     $sql = "SELECT 
@@ -25,7 +31,7 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
             INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
             INNER JOIN account_tbl a ON t.account_id = a.account_id 
             INNER JOIN room_tbl r ON r.room_id = cs.room_id
-            WHERE t.account_id = $id
+            $where
             AND (cs.date_until IS NULL
             OR cs.date_until > NOW())
             ORDER BY days_of_week";

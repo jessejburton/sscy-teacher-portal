@@ -60,6 +60,11 @@
     &__setup, &__collect, &__logo, &__exit {
         @include absCenter;
         z-index: 3000;
+    } 
+ 
+    &__collect-registered {
+        max-height: 70vh;   
+        overflow-y: scroll;
     }
 
 }
