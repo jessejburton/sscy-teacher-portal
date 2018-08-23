@@ -47,3 +47,12 @@
 .u-admin-only {
   display: none;
 }
+
+.signin__collect {
+  width: 70vw;
+}
+
+a.colored {
+  color: $accent-color!important;
+  text-decoration: underline;
+}

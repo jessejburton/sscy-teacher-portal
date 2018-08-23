@@ -831,12 +831,76 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
     $scope.error_message = "";
     $scope.classes = [];
     $scope.registration_mode = true;
+    $scope.signup_mode = false;
     $scope.registered = [];
+    $scope.new_registrant = {};
 
     const currentDate = new Date();
     const formattedDate = currentDate.getFullYear() + '-' 
                             + ('0' + (currentDate.getMonth()+1)).slice(-2) + '-'
                             + ('0' + currentDate.getDate()).slice(-2);
+
+    // Add New Member
+    $scope.signup = function(){
+        $scope.registration_mode = false;
+        $scope.signup_mode = true;
+    };
+
+    // Checkin Mode
+    $scope.checkin = function(){
+        $scope.registration_mode = true;
+        $scope.signup_mode = false;
+    };    
+
+    // Signup and Register
+    $scope.signup_register = function(){
+        
+        var signup = {
+            "name_first": $scope.new_registrant.name_first,
+            "name_last": $scope.new_registrant.name_last,
+            "email": $scope.new_registrant.email,
+            "paid": $scope.new_registrant.amount,
+            "id": 0,
+            "checked_in": true
+        };
+
+        // Reset the registrant
+        $scope.new_registrant.name_first = "";
+        $scope.new_registrant.name_last = "";
+        $scope.new_registrant.email = "";
+        $scope.new_registrant.amount = "";
+
+        $scope.registered.push(signup);
+        $scope.checkin();
+
+    }
+
+    // Check in the selected registrant
+    $scope.checkinRegistrant = function(registrant) {
+ 
+        // Prepare the data
+        registrant.checked_in = true;
+
+        /*** Error Trapping ***/
+
+        // Send the data
+        $http({ 
+            method: 'PUT',
+            url: siteRootURL + 'api/registration/update/' + registrant.registration_id, 
+            headers: { 'Content-Type':'application/json' },
+            data: registrant
+        })
+        .then(function successCallback(response) {
+
+            console.log("Registration recordeded");
+
+        }, function errorCallback(response) {
+            $scope.message.success = false;
+            $scope.message.type = "danger";
+            $scope.message.text = "Error" + JSON.stringify(response);
+        });
+
+    };    
 
     // Get the registrants for a specific class
     $scope.getRegistrants = function() {

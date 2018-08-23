@@ -44,7 +44,7 @@
 
                         <br />
                         
-                        <p>If you did not register online please &nbsp;&nbsp;&nbsp;<button class="button">register now</button></p>
+                        <p>If you did not register online please &nbsp;&nbsp;&nbsp;<button class="button " ng-click="signup()">register now</button></p>
 
                         <table>
                         
@@ -59,8 +59,11 @@
                             <tbody>
                                 <tr ng-repeat="registrant in registered">
                                     <td>{{ registrant.name_first }} {{ registrant.name_last }}</td>
-                                    <td><input type="text" placeholder="amount" class="input-text" ng-model="new_registrant.amount" /></td>
-                                    <td><button class="button" data-id="{{ registrant.id }}">Check In</button></td>
+                                    <td><input type="text" placeholder="amount" class="input-text" ng-model="registrant.paid" /></td>
+                                    <td>
+                                        <button class="button button--checkin" ng-click="checkinRegistrant(registrant)" title='Check In' ng-if="!registrant.checked_in">Check In</button>
+                                        <span ng-if="registrant.checked_in">Checked In</span>
+                                    </td>
                                 </tr>                            
                             </tbody>
 
@@ -68,7 +71,7 @@
 
                     </div>
 
-                    <div class="signin__collect-new" ng-if="!registration_mode">
+                    <div class="signin__collect-new" ng-if="signup_mode">
 
                         <h2>New Member</h2>
                         <p><input type="text" placeholder="first name" class="input-text" ng-model="new_registrant.name_first" /></p>
@@ -78,9 +81,23 @@
                         <p><input type="text" placeholder="email" class="input-text"  ng-model="new_registrant.email" /></p>
 
                         <p><input type="text" placeholder="amount" class="input-text" ng-model="new_registrant.amount" /></p>
+
+                        <br /><br />
+
+                        <h2>Acknowledgments</h2>
+                        <p>
+                            <input type="checkbox">
+                            <label style="font-weight: normal;">I have read the Salt Spring Centre's <a href="http://www.saltspringcentre.com/legal/cancellation-policy/" target="_blank" class="colored">Waiver</a> and agree to its terms.</label>
+                        </p>
+
+                        <p>
+                            <input type="checkbox">
+                            <label style="font-weight: normal;">I have read { TEACHERS NAME }'s <a href="http://www.saltspringcentre.com/legal/cancellation-policy/" target="_blank" class="colored">Waiver</a> and agree to its terms.</label>
+                        </p>
                         
                         <div class="button-group u-text-center">
-                            <button class="button">Register and Check In</button>
+                            <a href="javascript:void(0);" ng-click="checkin()" style="margin-right: 40px;">cancel</a>
+                            <button class="button" ng-click="signup_register()">Register and Check In</button>
                         </div>
                     
                     </div>
