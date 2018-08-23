@@ -922,8 +922,11 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
 
             $scope.mode = "exit";
 
-            // Set focus to the pin textbox
-            $(".pin-input").focus(); // NOT WORKING
+            // Set focus to the pin textbox (needed to add a pause so that the animation can finish otherwise the input box doesn't focus)
+            setTimeout(function () {
+                $(".pin-input").focus(); // NOT WORKING
+            }, 500);
+
         } else {
             // Open the signin mode
             $scope.open = true;
