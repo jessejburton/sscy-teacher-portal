@@ -56,28 +56,30 @@
             </textarea>
       </div>
 
-      <!-- Room and Teacher options, if 'room_teacher_change' is selected as type -->
-      <div ng-if="exception.type.type == 'room_teacher_change'">
-            <!-- Room Change -->
-            <div class="exception__room input-group">
-               <label>Room</label>
-               <select 
-                  name="exception_room"
-                  class="input-select"
-                  ng-model="exception.room" 
-                  ng-options="room.name for room in rooms track by room.room_id">
-               </select>
-            </div>
+      <div class="u-admin-only"><!-- Hiding this until it is functioning better -->
+            <!-- Room and Teacher options, if 'room_teacher_change' is selected as type -->
+            <div ng-if="exception.type.type == 'room_teacher_change'">
+                  <!-- Room Change -->
+                  <div class="exception__room input-group">
+                  <label>Room</label>
+                  <select 
+                        name="exception_room"
+                        class="input-select"
+                        ng-model="exception.room" 
+                        ng-options="room.name for room in rooms track by room.room_id">
+                  </select>
+                  </div>
 
-            <!-- Teacher Change -->
-            <div class="exception__room input-group">
-               <label>Teacher</label>
-               <select 
-                  name="exception_teacher"
-                  class="input-select"
-                  ng-model="exception.teacher" 
-                  ng-options="teacher.name for teacher in teachers track by teacher.teacher_id">
-               </select>
+                  <!-- Teacher Change -->
+                  <div class="exception__room input-group">
+                  <label>Teacher</label>
+                  <select 
+                        name="exception_teacher"
+                        class="input-select"
+                        ng-model="exception.teacher" 
+                        ng-options="teacher.name for teacher in teachers track by teacher.teacher_id">
+                  </select>
+                  </div>
             </div>
       </div>
 
