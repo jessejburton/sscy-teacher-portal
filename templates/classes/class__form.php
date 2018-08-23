@@ -26,6 +26,12 @@
 
     </div>
 
+    <?php if(!$_SESSION['is_admin']){ ?>
+        <div class="u-admin-only">
+    <?php } else { ?>
+        <div><!-- add a blank div so that I can close it without another if -->
+    <?php } ?>
+
     <!-- Room -->
     <div class="class__room input-group">
         <label>Room</label>
@@ -97,6 +103,8 @@
             </div>
         </div>
     </div>
+
+    </div><!-- . closes the admin only div -->
     
     <!-- Class Form Buttons -->
     <div class="button-group">
