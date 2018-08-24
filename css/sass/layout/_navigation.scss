@@ -67,7 +67,7 @@ nav {
         height: 32em; 
     }
     
-   @include respond($tablet) {
+   @include respond($all) {
         a.home-link { 
             width: 36px; 
         }
@@ -94,7 +94,7 @@ nav {
         }
     }      
 
-    @include respond($tablet-wide) {
+    @include respond($all) {
         ul {
             font-size: 100%;
 
@@ -106,5 +106,11 @@ nav {
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    nav.menu-header {
+        height: auto!important;
     }
 }
