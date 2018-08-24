@@ -842,7 +842,6 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
 
     // Add New Member
     $scope.signup = function(){
-        alert("here");
         $scope.registration_mode = false;
         $scope.signup_mode = true;
     };
