@@ -660,7 +660,7 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
     $scope.registrants = [];
     $scope.class = "";
     $scope.registration_date = "";
-    $scope.show = true;
+    $scope.show = false;
     $scope.registrant = {
         "name_first": "",
         "name_last": "",
@@ -806,7 +806,7 @@ sscy.controller('registrationController',['$scope', '$http', function($scope, $h
             })
             .then(function successCallback(response) {
                 $scope.registrants = response.data;
-                $scope.show = true;
+                $(".registrant-list").css("opacity", 1);
             }, function errorCallback(response) {
                 alert("Error" + JSON.stringify(response));
         });
@@ -842,6 +842,7 @@ sscy.controller('signinController',['$scope', '$http', function($scope, $http){
 
     // Add New Member
     $scope.signup = function(){
+        alert("here");
         $scope.registration_mode = false;
         $scope.signup_mode = true;
     };

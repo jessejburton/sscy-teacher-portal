@@ -30,7 +30,7 @@
         </div>-->
     </div>
 
-    <div class="row" style="padding-top: 40px;" ng-if="show" ng-cloak>
+    <div class="row registrant-list" style="padding-top: 40px; opacity: 0;">
         <h3>Registrants</h3>
 
         <div class="registrants__autoreply autoreply-{{ message.type }}">{{ message.text }}</div>
