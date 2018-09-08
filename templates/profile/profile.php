@@ -1,5 +1,16 @@
-<div class="container" ng-controller="profileController" ng-init="getLoggedInProfile()" ng-cloak>
-    <h2>My Profile</h2>
+<div class="container" ng-controller="profileController" ng-init="getTeacherProfile()" ng-cloak>
+    <h2>Teacher Profile</h2>
+
+    <!-- Select a teacher -->
+    <div class="input-group u-bottom-space" ng-show="<?php echo $_SESSION['is_admin']; ?>">
+        <label for="teacher_select" class="label-select">Select a Teacher</label>
+        <select class="input-select input-select-inline"
+                ng-model="profile" 
+                ng-change="getTeacherProfile()"
+                ng-options="teacher.name for teacher in teachers track by teacher.account_id">
+        </select>
+    </div>
+
     <form>
         <div ng-show="message.show" class="alert alert-{{message.type}}">
             {{message.text}}

@@ -37,6 +37,34 @@ $app->get('/profile', function (Request $request, Response $response) use ($app)
     }
 });
 
+// Get Profile
+$app->get('/profile/{id}', function (Request $request, Response $response) use ($app) {
+
+    $userid = $request->getAttribute('id');
+
+    $sql = "SELECT 
+            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
+            FROM account_tbl a
+            INNER JOIN teacher_tbl t ON a.account_id = t.account_id
+            WHERE a.account_id = $userid";
+
+    try {
+        
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->query($sql);
+        $profile = $stmt->fetch(PDO::FETCH_OBJ);
+        $db = null;
+        echo json_encode($profile);
+
+    } catch(PDOException $e) {
+        echo '{"type": "danger","text": '.$e->getMessage().'"}';
+    }
+});
+
 // Update Profile
 $app->put('/profile/save/{id}', function (Request $request, Response $response) {
     $id = $request->getAttribute('id');

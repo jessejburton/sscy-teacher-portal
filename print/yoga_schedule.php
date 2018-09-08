@@ -39,7 +39,7 @@
             array_push($arr_classes[$day], $class);
         }
 
-    }
+    }   
 
     $today = date('w');
     $current_date = date(strtotime('-'.$today.' days'));
