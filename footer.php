@@ -40,7 +40,7 @@
                     <div class="signin__collect-registered" ng-if="registration_mode">
 
                         <h2>Registered</h2>
-                        <p>If you registered online, please find your name in the list below. Beside your name enter the amount you are paying and then click "Check In".</p>
+                        <p>If you registered online, please click "Check In" beside your name in the list below.</p>
 
                         <br />
                         
@@ -51,7 +51,6 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Amount</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -59,7 +58,6 @@
                             <tbody>
                                 <tr ng-repeat="registrant in registered">
                                     <td>{{ registrant.name_first }} {{ registrant.name_last }}</td>
-                                    <td><input type="text" placeholder="amount" class="input-text" ng-model="registrant.paid" /></td>
                                     <td>
                                         <button class="button button--checkin" ng-click="checkinRegistrant(registrant)" title='Check In' ng-if="!registrant.checked_in">Check In</button>
                                         <span ng-if="registrant.checked_in">Checked In</span>
@@ -79,8 +77,6 @@
                         <p><input type="text" placeholder="last name" class="input-text" ng-model="new_registrant.name_last" /></p>
                         
                         <p><input type="text" placeholder="email" class="input-text"  ng-model="new_registrant.email" /></p>
-
-                        <p><input type="text" placeholder="amount" class="input-text" ng-model="new_registrant.amount" /></p>
 
                         <br /><br />
 

@@ -31,6 +31,12 @@
     </div>
 
     <div class="row registrant-list" style="padding-top: 40px; opacity: 0;">
+        <h3>Total Amount Collected</h3>
+        <p style="padding-bottom: 50px;">
+            <span>$</span><input type="text" class="input-text input-text-inline" style="width: 200px;" placeholder="Amount Collected" ng-model="amount_collected" />
+            <button class="button button--checkin" ng-click="saveAmount()" title="Save amount collected for class">✔ SAVE</button>
+        </p>
+
         <h3>Registrants</h3>
 
         <div class="registrants__autoreply autoreply-{{ message.type }}">{{ message.text }}</div>
@@ -41,9 +47,6 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>PR</th>
-                    <th>KY</th>
-                    <th>Amount</th>
                     <th style="width: 120px;">Checked In</th>
                 </tr>
             </thead>
@@ -51,26 +54,17 @@
                 <tr>
                     <td><input type="text" class="input-text" placeholder="first name" ng-model="registrant.name_first" /></td>
                     <td><input type="text" class="input-text" placeholder="last name" ng-model="registrant.name_last" /></td>
-                    <td><input type="text" class="input-text" placeholder="email" ng-model="registrant.email" /></td>
-                    <td><input type="checkbox" class="registration__checkbox registration__checkbox--isPR" ng-model="registrant.is_pr" ng-change="prUpdate()" /></td>
-                    <td><input type="checkbox" class="registration__checkbox registration__checkbox--isKY" ng-model="registrant.is_ky" ng-change="kyUpdate()" /></td>
-                    <td>
-                        <span style="position: absolute;margin-top: 6px;">$</span> 
-                        <input type="text" ng-model="registrant.paid" class="registration-amount input-text-inline" ng-disabled=" (registrant.is_pr||registrant.is_ky) ? true : false" />
-                    </td>               
+                    <td><input type="text" class="input-text" placeholder="email" ng-model="registrant.email" /></td>         
                     <td><button class="button button--checkin" ng-click="addRegistrant()" title="Check this person in">CHECK IN</button></td>
                 </tr>
                 <tr ng-repeat="r in registrants">
                     <td>{{r.name_first}}</td>
                     <td>{{r.name_last}}</td>
                     <td><a href="mailto:{{r.email}}">{{r.email}}</a></td>
-                    <td><input type="checkbox" class="registration__checkbox registration__checkbox--isPR" ng-checked="{{r.is_pr}}" ng-model="r.is_pr" ng-change="prUpdate()" /></td>
-                    <td><input type="checkbox" class="registration__checkbox registration__checkbox--isKY" ng-checked="{{r.is_ky}}" ng-model="r.is_ky" ng-change="kyUpdate()" /></td>
                     <td>
-                        <span style="position: absolute;margin-top: 6px;">$</span> 
-                        <input type="text" class="registration-amount input-text-inline" ng-model="r.paid" />
+                        <button class="button button--checkin" ng-click="checkinRegistrant(r)" ng-if="r.checked_in == null || r.checked_in == 0">Check In</button>
+                        <span ng-if="r.checked_in == 1">Checked In</span>
                     </td>
-                    <td><button class="button button--checkin" ng-click="checkinRegistrant(r)" title='{{ r.checked_in == 1 | iif : "Save changes made to this person" : "Check this person in"}}'>{{ r.checked_in == 1 | iif : "✔ Save" : "Check In"}}</button></td>
                 </tr>
             </tbody>
         </table>

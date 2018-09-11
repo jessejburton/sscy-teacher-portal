@@ -759,6 +759,7 @@ sscy.controller("registrationController", [
       is_ky: false,
       paid: 16
     };
+    $scope.amount_collected = "";
 
     // Get the url for the API call
     $user_id = document.getElementById("hidden_user_id").value;
@@ -870,17 +871,7 @@ sscy.controller("registrationController", [
       );
     };
 
-    // When PR is checked
-    $scope.prUpdate = function() {
-      $scope.registrant.paid = 5;
-    };
-
-    // When KY is checked
-    $scope.kyUpdate = function() {
-      $scope.registrant.paid = 0;
-    };
-
-    // Get the registrants based on the selected value
+    // Get the registrants and class amount based on the selected value
     $scope.getRegistrantsByClass = function() {
       var reg_date = new Date($scope.registration_date);
       reg_date = moment(reg_date).format("YYYY-MM-DD");
@@ -903,6 +894,53 @@ sscy.controller("registrationController", [
         function successCallback(response) {
           $scope.registrants = response.data;
           $(".registrant-list").css("opacity", 1);
+        },
+        function errorCallback(response) {
+          alert("Error" + JSON.stringify(response));
+        }
+      );
+
+      // Get Class Amount Collected
+      $http({
+        method: "GET",
+        url:
+          siteRootURL + "api/amount/" + $scope.class.class_id + "/" + reg_date,
+        headers: { "Content-Type": "application/json" }
+      }).then(
+        function successCallback(response) {
+          if (response.data.length == 0) {
+            $scope.amount_collected = "";
+          } else {
+            $scope.amount_collected = response.data[0].amount;
+          }
+        },
+        function errorCallback(response) {
+          alert("Error" + JSON.stringify(response));
+        }
+      );
+    };
+
+    // Save Amount
+    $scope.saveAmount = function() {
+      // Get the registration date
+      var reg_date = new Date($scope.registration_date);
+      reg_date = moment(reg_date).format("YYYY-MM-DD");
+
+      // Save Amount Collected
+      $http({
+        method: "PUT",
+        url:
+          siteRootURL +
+          "api/amount/save/" +
+          $scope.class.class_id +
+          "/" +
+          reg_date,
+        headers: { "Content-Type": "application/json" },
+        data: { amount: $scope.amount_collected }
+      }).then(
+        function successCallback(response) {
+          console.log(response);
+          alert(response.data.text);
         },
         function errorCallback(response) {
           alert("Error" + JSON.stringify(response));
