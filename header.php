@@ -53,13 +53,13 @@
                         <span class="screen-reader">Home</span><?php require('lotus-white-svg.php'); ?>
                     </a>
                     <a class="mobile-nav" href="#" title="toggle menu" onclick="toggleMenu(0)">MENU</a>
-                    <div class="menu-main-menu-container">
+                    <!--<div class="menu-main-menu-container">
                         <ul id="menu-main-menu" class="menu" ng-controller="navigationController">
                             <li class="menu-item" ng-repeat="item in navItems track by item.id" ng-cloak>
                                 <a href="{{item.link}}">{{item.text}}</a>
                             </li>
                         </ul>
-                    </div>	
+                    </div>	-->
                 <?php } ?>
             </nav>
 
