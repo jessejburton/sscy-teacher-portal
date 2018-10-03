@@ -9,11 +9,11 @@ sscy.controller("navigationController", [
   function($scope, $rootScope) {
     // Change this to read from a folder config file
     $scope.navItems = [
-      { text: "Dashboard", link: siteRootURL },
-      { text: "Classes", link: siteRootURL + "classes.php" },
-      { text: "Registration", link: siteRootURL + "registration.php" },
-      { text: "Reports", link: siteRootURL + "reports.php" },
-      { text: "Profile", link: siteRootURL + "profile.php" }
+      { text: "Dashboard", link: siteRootURL, id: 1 },
+      { text: "Classes", link: siteRootURL + "classes.php", id: 2 },
+      { text: "Registration", link: siteRootURL + "registration.php", id: 3 },
+      { text: "Reports", link: siteRootURL + "reports.php", id: 4 },
+      { text: "Profile", link: siteRootURL + "profile.php", id: 5 }
     ];
   }
 ]);
