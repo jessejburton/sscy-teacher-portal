@@ -808,8 +808,8 @@ sscy.controller("reportController", [
 
           // Calculate the total
           $scope.reportTotal = $scope.report
-            .map(r => r.amount)
-            .reduce((a, b) => a + b, 0);
+            .map(r => r.charge)
+            .reduce((a, b) => Number(a) + Number(b), 0);
 
           // Show the report table
           document.getElementById("report").classList.remove("hidden");
@@ -818,6 +818,10 @@ sscy.controller("reportController", [
           alert("Error" + JSON.stringify(response));
         }
       );
+    };
+
+    $scope.sendReport = function() {
+      alert("test");
     };
   }
 ]);

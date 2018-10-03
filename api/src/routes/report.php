@@ -10,7 +10,7 @@ $app->get('/report/{year}/{month}/{teacher_id}', function (Request $request, Res
     $year = $request->getAttribute('year');
 
     $sql = "SELECT 
-                ca.amount, c.name AS class_name, ca.date_class, COUNT(r.registration_id) AS registrants, rm.name AS room_name, rm.rate
+                ca.amount, c.name AS class_name, ca.date_class, COUNT(r.registration_id) AS registrants, rm.name AS room_name, rm.rate, IF(ca.amount > 50, rm.rate, 0) AS charge
             FROM class_amount_tbl ca
             INNER JOIN class_tbl c ON c.class_id = ca.class_id
             INNER JOIN registration_tbl r ON r.class_id = ca.class_id AND r.date_class = ca.date_class     

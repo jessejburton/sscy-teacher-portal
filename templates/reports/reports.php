@@ -60,7 +60,7 @@
                     <td>{{ row.date_class | date:'MMM, d yyyy' }}</td>
                     <td>{{ row.registrants }}</td>
                     <td>{{ row.amount | currency }}</td>
-                    <td>{{ row.rate | currency }}</td>
+                    <td>{{ row.charge | currency }}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -70,6 +70,10 @@
                 </tr>
             </tfoot>
         </table>
+
+        <div class="u-text-right">
+            <button class="button button__add-class" ng-click="sendReport()"><i class="fas fa-envelope"></i> Send Report</button>
+        </div>
 
     </div>
 
