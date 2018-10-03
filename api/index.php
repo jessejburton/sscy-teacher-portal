@@ -28,6 +28,7 @@ require 'src/routes/registration.php';
 require 'src/routes/rooms.php';
 require 'src/routes/teachers.php';
 require 'src/routes/amount.php';
+require 'src/routes/report.php';
 
 $app->run();
 

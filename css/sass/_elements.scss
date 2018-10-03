@@ -1,435 +1,433 @@
-
 .button {
-    background: transparent;
-    font-weight: 400;
-    text-transform: uppercase;
-    padding: 10px 15px;
-    border: 2px solid #64999F;
-    -webkit-transition: all 0.1s;
-    -moz-transition: all 0.1s;
-    -ms-transition: all 0.1s;
-    -o-transition: all 0.1s;
-    transition: all 0.1s;
-    cursor: pointer;
-    color: #64999F;
-    text-decoration: none;
-    display: inline-block;
+  background: transparent;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding: 10px 15px;
+  border: 2px solid #64999f;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  transition: all 0.1s;
+  cursor: pointer;
+  color: #64999f;
+  text-decoration: none;
+  display: inline-block;
 
-    &:hover {
-        background-color: #64999F;
-        color: #f7f4f0;
-    }
+  &:hover {
+    background-color: #64999f;
+    color: #f7f4f0;
+  }
 }
 
 .profile_links {
-    position: absolute;
-    right: 20px;
-    top: 12px;
+  position: absolute;
+  right: 20px;
+  top: 12px;
 }
 
 .profile-photo {
-    position: relative;
-    width: 150px;
+  position: relative;
+  width: 150px;
 
-    img {
-        display: block;
-        width: 100%;
-        height: auto;
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .profile-photo-hover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.5s ease;
+    background-color: $accent-color;
+    cursor: pointer;
+
+    .profile-photo-text {
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      text-align: center;
     }
+  }
 
-    .profile-photo-hover {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100%;
-        width: 100%;
-        opacity: 0;
-        transition: .5s ease;
-        background-color: $accent-color;
-        cursor: pointer;
-
-        .profile-photo-text {
-            color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            text-align: center;
-        }
-    }
-
-    &:hover .profile-photo-hover {
-        opacity: 1;
-    }
+  &:hover .profile-photo-hover {
+    opacity: 1;
+  }
 }
 
 .registration-checkbox {
-    /* Double-sized Checkboxes */
-    -ms-transform: scale(1.5); /* IE */
-    -moz-transform: scale(1.5); /* FF */
-    -webkit-transform: scale(1.5); /* Safari and Chrome */
-    -o-transform: scale(1.5); /* Opera */
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
 }
 
 #registration .input-text {
-    width: 90%;
+  width: 90%;
 }
 
 hr {
-    margin: 40px 0;
+  margin: 40px 0;
 }
 
-#registration, #report {
-    display: none;
+#registration {
+  display: none;
 }
 
 .template {
-    display: none;
+  display: none;
 }
 
 .checkedin {
-    cursor: pointer;
-    color: #64999F;
-    padding: 5px;
-    display: inline-block;
+  cursor: pointer;
+  color: #64999f;
+  padding: 5px;
+  display: inline-block;
 }
 
-
-
 main {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 // AGENDA ITEMS
 .agenda {
-    display: none;
+  display: none;
 }
 
 .agenda__item {
+  & .agenda__item-name,
+  & .agenda__item-comment,
+  & .agenda__item-decision,
+  & .agenda__item-action,
+  & .agenda__item-add,
+  & .agenda__item-incamera,
+  & .agenda__item-display {
+    border-radius: 3px;
+    padding: 15px;
+    margin-bottom: 3px;
+    position: relative;
+  }
 
-    & .agenda__item-name, & .agenda__item-comment, & .agenda__item-decision, & .agenda__item-action, & .agenda__item-add, & .agenda__item-incamera, & .agenda__item-display {
-        border-radius: 3px;
-        padding: 15px;
-        margin-bottom: 3px;
-        position: relative;
+  &:not(.agenda__item--display) .agenda__item-name {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $accent-color !important;
+      color: $white;
     }
+  }
 
-    &:not(.agenda__item--display) .agenda__item-name {
-        cursor: pointer;
+  & .agenda__item-toggle {
+    border-top: 20px solid rgb(192, 190, 188);
+  }
 
-        &:hover {
-            background-color: $accent-color!important;
-            color: $white;
-        }
+  & .agenda__item-toggle {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
     }
+  }
 
+  & .agenda__item-discussion {
+    display: none;
+  }
+
+  &.expanded {
     & .agenda__item-toggle {
-        border-top: 20px solid rgb(192, 190, 188);
+      border-top: none;
+      border-bottom: 20px solid rgb(192, 190, 188);
     }
+  }
 
-    & .agenda__item-toggle {
-        content: "";
+  &--static {
+    .agenda__item-name {
+      background-color: rgb(216, 213, 210);
+      border: 1px solid rgb(192, 190, 188);
+    }
+  }
+
+  &--current {
+    .agenda__item-name {
+      background-color: rgb(255, 255, 255);
+      border: 1px solid rgb(231, 229, 227);
+    }
+  }
+
+  &--request {
+    .agenda__item-name {
+      background-color: rgb(251, 255, 195);
+      border: 1px solid rgb(190, 190, 160);
+    }
+  }
+
+  &-discussion {
+    padding-left: 100px;
+
+    // DECISIONS
+    .agenda__item-decision {
+      background-color: rgb(230, 182, 235);
+      border: 1px solid rgb(176, 121, 182);
+
+      .agenda__item--support {
         display: block;
-        position: absolute;
-        top: 50%;
-        right: 15px;
-        transform: translateY(-50%);
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        cursor: pointer;
+        width: 100%;
+        text-align: right;
 
-        &:hover {
-            opacity: .7;
+        .agenda__item--support-text {
+          font-style: italic;
+          padding-right: 10px;
+          font-size: 0.7rem;
         }
+      }
     }
 
-    & .agenda__item-discussion {
-        display: none;
+    // COMMENTS
+    .agenda__item-comment {
+      background-color: rgb(189, 178, 190);
+      border: 1px solid rgb(175, 163, 177);
     }
 
-    &.expanded {
-        
-        & .agenda__item-toggle {
-            border-top: none;
-            border-bottom: 20px solid rgb(192, 190, 188);
-        }
+    // ACTIONS
+    .agenda__item-action {
+      background-color: rgb(240, 239, 218);
+      border: 1px solid rgb(154, 155, 143);
 
+      .agenda__item--complete {
+        display: block;
+        width: 100%;
+        text-align: right;
+      }
     }
 
-    &--static {
-        .agenda__item-name {
-            background-color: rgb(216, 213, 210);
-            border: 1px solid rgb(192, 190, 188);
-        }
+    // IN-CAMERA
+    .agenda__item-incamera {
+      background-color: rgb(106, 96, 107);
+      border: 1px solid rgb(96, 86, 97);
+      color: $white;
     }
 
-    &--current {
-        .agenda__item-name {
-            background-color: rgb(255, 255, 255);
-            border: 1px solid rgb(231, 229, 227);
-        }
-    }   
+    // ADD
+    .agenda__item-add {
+      padding: 0;
+      padding-bottom: 25px;
 
-    &--request {
-        .agenda__item-name {
-            background-color: rgb(251, 255, 195);
-            border: 1px solid rgb(190, 190, 160);
-        }
-    }        
+      .agenda__item-buttons {
+        text-align: right;
 
-    &-discussion {
+        .button {
+          color: $black;
 
-        padding-left: 100px;
-
-        // DECISIONS
-        .agenda__item-decision {
-            background-color: rgb(230, 182, 235);
-            border: 1px solid rgb(176, 121, 182);
-
-            .agenda__item--support {
-                display: block; 
-                width: 100%;
-                text-align: right;
-
-                .agenda__item--support-text {
-                    font-style: italic;
-                    padding-right: 10px;
-                    font-size: .7rem;
-                }
-            }
-        }
-
-        // COMMENTS
-        .agenda__item-comment {
-            background-color: rgb(189, 178, 190);
-            border: 1px solid rgb(175, 163, 177);
-        }
-
-        // ACTIONS
-        .agenda__item-action {
+          &.button-action {
             background-color: rgb(240, 239, 218);
             border: 1px solid rgb(154, 155, 143);
-            
-            .agenda__item--complete {
-                display: block; 
-                width: 100%;
-                text-align: right;
-            }
-        }
+          }
 
-        // IN-CAMERA
-        .agenda__item-incamera {
+          &.button-discussion {
+            background-color: rgb(189, 178, 190);
+            border: 1px solid rgb(175, 163, 177);
+          }
+
+          &.button-decision {
+            background-color: rgb(230, 182, 235);
+            border: 1px solid rgb(176, 121, 182);
+          }
+
+          &.button-incamera {
             background-color: rgb(106, 96, 107);
             border: 1px solid rgb(96, 86, 97);
             color: $white;
+          }
+
+          &.button-table {
+            background-color: rgb(255, 255, 255);
+            border: 1px solid rgb(225, 217, 226);
+            color: $black;
+          }
+
+          &:hover {
+            background-color: $accent-dark;
+            color: $white;
+          }
         }
+      }
 
-        // ADD
-        .agenda__item-add {
-
-            padding: 0;
-            padding-bottom: 25px;
-
-            .agenda__item-buttons {
-                text-align: right;
-
-                .button {
-
-                    color: $black;
-
-                    &.button-action {
-                        background-color: rgb(240, 239, 218);
-                        border: 1px solid rgb(154, 155, 143);
-                    }
-
-                    &.button-discussion {
-                        background-color: rgb(189, 178, 190);
-                        border: 1px solid rgb(175, 163, 177);
-                    }
-
-                    &.button-decision {
-                        background-color: rgb(230, 182, 235);
-                        border: 1px solid rgb(176, 121, 182);
-                    }
-
-                    &.button-incamera {
-                        background-color: rgb(106, 96, 107);
-                        border: 1px solid rgb(96, 86, 97);
-                        color: $white;
-                    }
-
-                    &.button-table {
-                        background-color: rgb(255, 255, 255);
-                        border: 1px solid rgb(225, 217, 226);
-                        color: $black;
-                    }
-
-                    &:hover {
-                        background-color: $accent-dark;
-                        color: $white;
-                    }
-                    
-                }
-            }
-
-            .agenda__item-textarea {
-                width: 97%;
-            }
-
-        }
-
-        .agenda__item-comment, .agenda__item-decision, .agenda__item-action, .agenda__item-incamera {
-            min-height: 40px;
-            padding-left: 70px;
-            position: relative;
-        }
-
+      .agenda__item-textarea {
+        width: 97%;
+      }
     }
+
+    .agenda__item-comment,
+    .agenda__item-decision,
+    .agenda__item-action,
+    .agenda__item-incamera {
+      min-height: 40px;
+      padding-left: 70px;
+      position: relative;
+    }
+  }
 }
 
 .agenda__item--request {
-    .agenda__item-name {
-        min-height: 40px;
-        padding-left: 70px;
-        position: relative;
-    }
+  .agenda__item-name {
+    min-height: 40px;
+    padding-left: 70px;
+    position: relative;
+  }
 }
 
 .agenda__item-photo {
-    position: absolute;
-    left: 15px;
-    border-radius: 50%;
-    max-width: 40px;
-    max-height: 40px;
-    overflow: hidden;
+  position: absolute;
+  left: 15px;
+  border-radius: 50%;
+  max-width: 40px;
+  max-height: 40px;
+  overflow: hidden;
 
-    img {
-        width: 100%;
-    }
+  img {
+    width: 100%;
+  }
 }
 
 .agenda__item--complete-text {
-    font-style: italic;
-    padding-right: 10px;
-    font-size: .7rem;
+  font-style: italic;
+  padding-right: 10px;
+  font-size: 0.7rem;
 }
 
 .agenda__approve-minutes {
-    padding-bottom: 25px;
-}
-        
-.svg-inline--fa {
-    transition: all .2s;
+  padding-bottom: 25px;
 }
 
-.agenda__item--complete .svg-inline--fa:hover, .agenda__item--support .svg-inline--fa:hover, .agenda__item--complete-minutes .svg-inline--fa:hover {
-    transform: scale(1.2);
-    cursor: pointer;
-    color: $accent-color;
+.svg-inline--fa {
+  transition: all 0.2s;
+}
+
+.agenda__item--complete .svg-inline--fa:hover,
+.agenda__item--support .svg-inline--fa:hover,
+.agenda__item--complete-minutes .svg-inline--fa:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  color: $accent-color;
 }
 
 .agenda__item-unfinished {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .agenda__action-items {
-    padding: 0;
-    display: block!important;
+  padding: 0;
+  display: block !important;
 }
 
 .agenda__options {
-    text-align: right;
-    padding-bottom: 15px;
-    font-size: .9rem;
+  text-align: right;
+  padding-bottom: 15px;
+  font-size: 0.9rem;
 }
 
 .agenda__item-name.incamera {
-    background-color: rgb(106, 96, 107);
-    border: 1px solid rgb(96, 86, 97);
-    color: $white;
+  background-color: rgb(106, 96, 107);
+  border: 1px solid rgb(96, 86, 97);
+  color: $white;
 }
 
 .printable-agenda {
-    max-width: 800px;
+  max-width: 800px;
 
-    .item-title, strong {
-        font-weight: bold;
-    }
+  .item-title,
+  strong {
+    font-weight: bold;
+  }
 
-    .discussion {
-        padding-bottom: 15px;
-    }
+  .discussion {
+    padding-bottom: 15px;
+  }
 }
 
 .dashboard {
+  .icon {
+    width: 100% !important;
+    text-align: center;
+    display: block;
+    border: 3px solid $accent-color;
+    border-radius: 3px;
 
-    .icon {
-        width: 100%!important;
-        text-align: center;
-        display: block;
-        border: 3px solid $accent-color;
-        border-radius: 3px;
-
-        @include respond($tablet){
-            margin: 0 auto;
-            width: 170px;
-            height: 170px;
-        }
-
-        a:link {
-            padding: 20px 0;
-            width: 100%;
-            height: 130px;
-            display: inline-block;
-            text-decoration: none;
-
-            & .icon__text {
-                display: block;
-            }
-
-            & .svg-inline--fa {
-                display: block;
-                margin: 0 auto;
-                height: 100px;
-                transform: scale(4);
-            }
-    
-        }
-
-        a:hover {
-            background-color: $accent-color;
-            color: $white;
-        }
-
+    @include respond($tablet) {
+      margin: 0 auto;
+      width: 170px;
+      height: 170px;
     }
+
+    a:link {
+      padding: 20px 0;
+      width: 100%;
+      height: 130px;
+      display: inline-block;
+      text-decoration: none;
+
+      & .icon__text {
+        display: block;
+      }
+
+      & .svg-inline--fa {
+        display: block;
+        margin: 0 auto;
+        height: 100px;
+        transform: scale(4);
+      }
+    }
+
+    a:hover {
+      background-color: $accent-color;
+      color: $white;
+    }
+  }
 }
 
 #faqs {
-    display: none;
+  display: none;
 }
 
 .faqs {
+  .faq {
+    margin-bottom: 20px;
 
-    .faq {
-
-        margin-bottom: 20px;
-
-        .faq__question {
-            font-size: 1.1em;
-            font-style: italic;
-        }
-
-        .faq__answer {
-            text-indent: 20px;
-            padding-top: 20px;
-            display: none;
-        }
-
+    .faq__question {
+      font-size: 1.1em;
+      font-style: italic;
     }
+
+    .faq__answer {
+      text-indent: 20px;
+      padding-top: 20px;
+      display: none;
+    }
+  }
 }
 
+.hidden {
+  opacity: 0 !important;
+  transition: opacity 4s !important;
+}

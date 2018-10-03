@@ -741,6 +741,88 @@ sscy.controller("loginController", [
 ]);
 
 // Registration Controller
+sscy.controller("reportController", [
+  "$scope",
+  "$http",
+  function($scope, $http) {
+    // Get the current date
+    var today = new Date();
+
+    // Set up some variables
+    $scope.months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    $scope.years = [today.getFullYear()];
+    $scope.selectedMonth = $scope.months[today.getMonth()];
+    $scope.selectedYear = today.getFullYear();
+    $scope.selectedTeacher = {};
+    $scope.teachers = {};
+    $scope.reportTotal = 0;
+
+    // Get the userid for the API call
+    $user_id = document.getElementById("hidden_user_id").value;
+
+    // Populate Teachers
+    $http({
+      method: "GET",
+      url: siteRootURL + "api/teachers",
+      headers: { "Content-Type": "application/json" }
+    }).then(
+      function successCallback(response) {
+        $scope.teachers = response.data;
+      },
+      function errorCallback(response) {
+        alert("Error" + JSON.stringify(response));
+      }
+    );
+
+    // get all classes with registrants for the current teacher
+    $scope.getReport = function() {
+      var url =
+        siteRootURL +
+        "api/report/" +
+        $scope.selectedYear +
+        "/" +
+        ($scope.months.indexOf($scope.selectedMonth) + 1) +
+        "/" +
+        $scope.selectedTeacher.teacher_id;
+
+      $http({
+        method: "GET",
+        url: url,
+        headers: { "Content-Type": "application/json" }
+      }).then(
+        function successCallback(response) {
+          $scope.report = response.data;
+
+          // Calculate the total
+          $scope.reportTotal = $scope.report
+            .map(r => r.amount)
+            .reduce((a, b) => a + b, 0);
+
+          // Show the report table
+          document.getElementById("report").classList.remove("hidden");
+        },
+        function errorCallback(response) {
+          alert("Error" + JSON.stringify(response));
+        }
+      );
+    };
+  }
+]);
+
+// Registration Controller
 sscy.controller("registrationController", [
   "$scope",
   "$http",
@@ -1136,8 +1218,6 @@ sscy.controller("signinController", [
         $scope.mode = "setup";
         document.querySelector(".signin").classList.add("open");
       }
-
-      console.table($scope);
     };
 
     // Event Listeners
