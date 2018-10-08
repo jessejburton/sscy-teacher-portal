@@ -785,7 +785,9 @@ sscy.controller("reportController", [
         $scope.selectedTeacher = $scope.teachers.find(
           t => t.account_id == loggedInUserID
         );
-        $scope.getReport();
+        if(!$scope.selectedTeacher == undefined){
+          $scope.getReport();
+        }
       },
       function errorCallback(response) {
         alert("Error" + JSON.stringify(response));
