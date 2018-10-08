@@ -781,6 +781,11 @@ sscy.controller("reportController", [
     }).then(
       function successCallback(response) {
         $scope.teachers = response.data;
+        // Get the current teacher if a teacher is logged in
+        $scope.selectedTeacher = $scope.teachers.find(
+          t => t.account_id == loggedInUserID
+        );
+        $scope.getReport();
       },
       function errorCallback(response) {
         alert("Error" + JSON.stringify(response));
@@ -818,10 +823,6 @@ sscy.controller("reportController", [
           alert("Error" + JSON.stringify(response));
         }
       );
-    };
-
-    $scope.sendReport = function() {
-      alert("test");
     };
   }
 ]);
@@ -1053,8 +1054,8 @@ sscy.controller("signinController", [
     $scope.pin_value = "355";
     $scope.error_message = "";
     $scope.classes = [];
-    $scope.registration_mode = true;
-    $scope.signup_mode = false;
+    $scope.registration_mode = false;
+    $scope.signup_mode = true;
     $scope.registered = [];
     $scope.new_registrant = {};
 
@@ -1074,29 +1075,101 @@ sscy.controller("signinController", [
 
     // Checkin Mode
     $scope.checkin = function() {
-      $scope.registration_mode = true;
-      $scope.signup_mode = false;
+      //$scope.registration_mode = true;
+      //$scope.signup_mode = false;
     };
 
     // Signup and Register
     $scope.signup_register = function() {
       var signup = {
-        name_first: $scope.new_registrant.name_first,
-        name_last: $scope.new_registrant.name_last,
-        email: $scope.new_registrant.email,
-        paid: $scope.new_registrant.amount,
+        name_first: $scope.new_registrant.name_first
+          ? $scope.new_registrant.name_first
+          : "",
+        name_last: $scope.new_registrant.name_last
+          ? $scope.new_registrant.name_last
+          : "",
+        email: $scope.new_registrant.email ? $scope.new_registrant.email : "",
+        paid: 0,
         id: 0,
         checked_in: true
       };
+
+      // Error Trapping
+      if (
+        signup.name_first.length == 0 ||
+        signup.name_last.length == 0 ||
+        !checkEmail(signup.email) ||
+        !document.getElementById("waiver_checkbox").checked
+      ) {
+        alert(
+          "Please make sure to fill in all of the fields and check the acknowledgment. This information is required to validate signing the waiver."
+        );
+        return false;
+      }
 
       // Reset the registrant
       $scope.new_registrant.name_first = "";
       $scope.new_registrant.name_last = "";
       $scope.new_registrant.email = "";
       $scope.new_registrant.amount = "";
+      document.getElementById("waiver_checkbox").checked = false;
 
-      $scope.registered.push(signup);
-      $scope.checkin();
+      $scope.addRegistrant(signup);
+    };
+
+    // Add Registrant and Check them In
+    $scope.addRegistrant = function(registrant) {
+      // Prepare the data
+      registrant.class_id = $scope.class.class_id;
+
+      // Registration Date
+      reg_date = new Date();
+      reg_date = moment(reg_date).format("YYYY-MM-DD");
+      registrant.registration_date = reg_date;
+
+      /*** Error Trapping ***/
+      if (registrant.class_id == undefined) {
+        alert("Please select a class");
+        return false;
+      }
+
+      if (registrant.registration_date == "Invalid date") {
+        alert("Please select a date");
+        return false;
+      }
+
+      if (
+        registrant.name_first.length == 0 ||
+        registrant.name_last.length == 0
+      ) {
+        alert("Please enter a first and last name");
+        return false;
+      }
+
+      // Send the data
+      $http({
+        method: "PUT",
+        url: siteRootURL + "api/registration/add",
+        headers: { "Content-Type": "application/json" },
+        data: registrant
+      }).then(
+        function successCallback(response) {
+          $scope.message = response.data;
+
+          if ($scope.message.success) {
+            // Add the registration ID to the registrant
+            registrant.registration_id = $scope.message.registration_id;
+            // Add the registrant to the Registrants list
+            $scope.registered.push(registrant);
+            alert("Registration confirmed.");
+          }
+        },
+        function errorCallback(response) {
+          $scope.message.success = false;
+          $scope.message.type = "danger";
+          $scope.message.text = "Error" + JSON.stringify(response);
+        }
+      );
     };
 
     // Check in the selected registrant
@@ -1115,6 +1188,8 @@ sscy.controller("signinController", [
         data: registrant
       }).then(
         function successCallback(response) {
+          console.log(response);
+          alert("Registration Recorded");
           console.log("Registration recordeded");
         },
         function errorCallback(response) {
@@ -1302,3 +1377,16 @@ sscy.filter("iif", function() {
     return input ? trueValue : falseValue;
   };
 });
+
+function checkEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+
+// How To's
+// Add event listeners
+$(".howtos h3").on("click", function(){
+  $(this).next(".howto").slideToggle();
+});
+

@@ -49,10 +49,12 @@
 
                 <p>
                     <!-- Options -->
-                    <small class="links">          
-                        <a class="no-left-margin" href="javascript:void(0);" ng-click="showExceptions(class.name)">
-                            <i class="far fa-calendar-alt"></i> add notice
-                        </a> 
+                    <small class="links">    
+                        <?php if(  $_SESSION['is_admin'] ){ ?>
+                            <a class="no-left-margin" href="javascript:void(0);" ng-click="showExceptions(class.name)">
+                                <i class="far fa-calendar-alt"></i> add notice
+                            </a> 
+                        <?php } ?>
                         <a href="javascript:void(0);" ng-click="quickCancel(class.name)">
                             <i class="fas fa-ban"></i> quick cancel
                         </a>
