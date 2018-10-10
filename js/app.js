@@ -38,7 +38,6 @@ sscy.controller("classController", [
     };
 
     $scope.selectedTeacher = {};
-    $scope.selectedTeacher.account_id = loggedInUserID;
 
     // Related to editing / adding classes
     $scope.saveClassButtonText = "Add Class";
@@ -180,6 +179,7 @@ sscy.controller("classController", [
       }).then(
         function successCallback(response) {
           $scope.classes = response.data;
+          console.log($scope.classes);
         },
         function errorCallback(response) {
           alert("Error" + JSON.stringify(response));
@@ -211,6 +211,9 @@ sscy.controller("classController", [
     }).then(
       function successCallback(response) {
         $scope.teachers = response.data;
+        $scope.selectedTeacher = $scope.teachers.find(
+          t => t.account_id == loggedInUserID
+        );
       },
       function errorCallback(response) {
         alert("Error" + JSON.stringify(response));
@@ -321,9 +324,7 @@ sscy.controller("classController", [
       var data = {
         name: $scope.currentClass.name,
         description: $scope.currentClass.description,
-        teacher_id: $scope.teachers.find(
-          t => t.account_id == $scope.selectedTeacher.account_id
-        ).teacher_id,
+        teacher_id: $scope.selectedTeacher.teacher_id,
         room_id: $scope.currentClass.selectedRoom.room_id,
         start_time: moment(times[$scope.classTime.minValue], "h:mm A").format(
           "HH:mm:ss"
@@ -785,7 +786,7 @@ sscy.controller("reportController", [
         $scope.selectedTeacher = $scope.teachers.find(
           t => t.account_id == loggedInUserID
         );
-        if(!$scope.selectedTeacher == undefined){
+        if (!$scope.selectedTeacher == undefined) {
           $scope.getReport();
         }
       },
@@ -1385,10 +1386,10 @@ function checkEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-
 // How To's
 // Add event listeners
-$(".howtos h3").on("click", function(){
-  $(this).next(".howto").slideToggle();
+$(".howtos h3").on("click", function() {
+  $(this)
+    .next(".howto")
+    .slideToggle();
 });
-

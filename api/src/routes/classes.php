@@ -20,21 +20,25 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
     }
 
     $sql = "SELECT 
-                c.class_id, c.name, c.description, cs.room_id, c.teacher_id, 
-                cs.days_of_week AS days, cs.start_time, cs.end_time,
-                cs.date_from, cs.date_until,
-                t.teacher_id, t.account_id, t.default_price, t.waiver, 
-                CONCAT(a.name_first, ' ', a.name_last) AS teacher_name, 
-                r.name AS room_name, r.photo AS room_photo, r.description AS room_description
-            FROM class_weekly_schedule_tbl cs 
-            INNER JOIN class_tbl c ON c.class_id = cs.class_id
-            INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
-            INNER JOIN account_tbl a ON t.account_id = a.account_id 
-            INNER JOIN room_tbl r ON r.room_id = cs.room_id
-            $where
-            AND (cs.date_until IS NULL
-            OR cs.date_until > NOW())
-            ORDER BY days_of_week";
+        c.class_id, c.name, c.description, cs.room_id, c.teacher_id, 
+        cs.days_of_week AS days, cs.start_time, cs.end_time,
+        cs.date_from, cs.date_until,
+        t.teacher_id, t.account_id, t.default_price, t.waiver, 
+        CONCAT(a.name_first, ' ', a.name_last) AS teacher_name, 
+        r.name AS room_name, r.photo AS room_photo, r.description AS room_description,
+        (CASE 
+        WHEN date_until IS NULL THEN 1 
+        WHEN CURDATE() between date_from and date_until THEN 1 
+        WHEN (date_from IS NULL AND date_until > CURDATE()) THEN 1 
+        WHEN (date_from > CURDATE() AND date_until > CURDATE()) THEN 1
+        ELSE 0 END) AS active
+    FROM class_weekly_schedule_tbl cs 
+    INNER JOIN class_tbl c ON c.class_id = cs.class_id
+    INNER JOIN teacher_tbl t ON c.teacher_id = t.teacher_id 
+    INNER JOIN account_tbl a ON t.account_id = a.account_id 
+    INNER JOIN room_tbl r ON r.room_id = cs.room_id
+    $where
+    ORDER BY days_of_week";
 
     try {
         
@@ -60,7 +64,9 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
                     'class_id' => $record->class_id, 
                     'description' => $record->description,
                     'date_from' => $record->date_from,
-                    'date_until' => $record->date_until
+                    'date_until' => $record->date_until,
+                    'teacher_name' => $record->teacher_name,
+                    'active' => $record->active
                 ];
 
                 // Create the schedule and exception arrays

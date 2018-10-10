@@ -12,12 +12,22 @@
         <button class="button button__add-class" ng-click="addClass()"><i class="fas fa-plus"></i> Add Class</button>
     </div>
 
-    <div class="row class" ng-repeat="class in classes" ng-cloak>
+    <div style="padding: 10px 0; font-size: .8em; text-align: right;">
+        Class appears on the website <span class="u-box"></span><br />
+        Class does not appear on the website <span class="outdated u-box"></span><br />
+    </div>
+
+    <div class="row class" ng-repeat="class in classes" ng-cloak ng-class="{outdated: class.active == 0}">
         
         <!-- Class Name -->
         <h3 class="class__name">
             {{class.name}} 
         </h3>
+
+        <!--- Teacher Name --->
+        <?php if( $_SESSION['is_admin'] ){ ?>
+            <h4>by {{class.teacher_name}}</h4>
+        <?php } ?>
 
         <!-- Class Description -->
         <p class="class__description">{{class.description}}</p>

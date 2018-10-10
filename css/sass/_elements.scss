@@ -447,7 +447,6 @@ main {
 }
 
 .howtos {
-
   margin-top: 40px;
 
   h3 {
@@ -467,5 +466,20 @@ main {
     display: none;
     padding: 10px 50px 20px 50px;
   }
+}
 
+// For non active classes
+.outdated {
+  filter: grayscale(100%);
+}
+
+.u-box {
+  background-color: rgba(196, 230, 234, 0.5) !important;
+  border: 1px solid rgba(138, 131, 159, 0.5);
+  position: relative;
+  display: inline-block;
+  margin-top: 5px;
+  transform: translateY(3px);
+  width: 20px;
+  height: 20px;
 }
