@@ -70,8 +70,25 @@
                         <li>Click on "REPORTS" in the menu at the top</li>
                         <li>Here you can see the amounts collected and registration numbers for each class that you have recorded</li>
                         <li>You can change the month and/or year to view the associated information</li>
-                        <li>The report automatically calculates the total amount you will receive from the centre minus any rental fees <small>* please report any discrepencies to <a href="mailto:info@saltspringcentre.com">info@saltspringcentre.com</a> for review</li>
+                        <li>The report automatically calculates the total amount you will receive from the centre minus any rental fees <small>* please report any discrepencies to <a href="mailto:info@saltspringcentre.com">info@saltspringcentre.com</a> for review</small></li>
                     </ol>
+                </div>
+
+                <h3>Update My Information <i class="fa fa-caret-down"></i></h3>            
+                <div class="howto">
+                    <ol>
+                        <li>Click on "PROFILE" in the menu at the top</li>
+                        <li>Here you can update the following information:
+                            <ul>
+                                <li>Your Name</li>
+                                <li>Your Email</li>
+                                <li>Your Bio</li>
+                                <li>The Cost of your Classes</li>
+                                <li>More coming soon...</li>
+                        </li>
+                    </ol>
+
+                    <p><i class="fa fa-video"></i> <a href="video/profile.mp4" target="_blank">Play Video</a></p>
                 </div>
             </div>
 

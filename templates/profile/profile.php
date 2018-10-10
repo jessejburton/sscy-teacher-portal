@@ -42,12 +42,9 @@
                 <p>feature coming soon!</p>
             </div>
             <div class="col-1-of-2">
-                <!--
-                <h3>Pin</h3>
-                <input id="pin" type="text" class="input-text" placeholder="pin" ng-model="profile.pin" maxlength="4" />
-                <label for="pin" class="input-text-label">pin</label>
-                <small>* This pin will be used to unlock the screen when in class mode.</small>       
-                -->         
+                <h3>Class Cost</h3>
+                <input id="price" type="text" class="input-text" placeholder="class cost" ng-model="profile.price" maxlength="100" />
+                <label for="price" class="input-text-label">cost of class (i.e. $15, By Donation, Sliding Scale $10-15 etc.)</label>
             </div>
         </div>
         

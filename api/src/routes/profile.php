@@ -15,7 +15,7 @@ $app->get('/profile', function (Request $request, Response $response) use ($app)
     $userid = $_SESSION['user_id'];
 
     $sql = "SELECT 
-            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
+            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo, t.default_price AS price
             FROM account_tbl a
             INNER JOIN teacher_tbl t ON a.account_id = t.account_id
             WHERE a.account_id = $userid";
@@ -43,7 +43,7 @@ $app->get('/profile/{id}', function (Request $request, Response $response) use (
     $userid = $request->getAttribute('id');
 
     $sql = "SELECT 
-            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo
+            a.account_id, a.name_first, a.name_last, t.bio, a.email, t.photo, t.default_price AS price
             FROM account_tbl a
             INNER JOIN teacher_tbl t ON a.account_id = t.account_id
             WHERE a.account_id = $userid";
@@ -73,6 +73,7 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
     $name_last = $request->getParam('name_last');
     $bio = $request->getParam('bio');
     $email = $request->getParam('email');
+    $price = $request->getParam('price');
 
     $sql =  "UPDATE account_tbl SET
                 name_first = :name_first,
@@ -81,7 +82,8 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
             WHERE account_id = $id";
 
     $sql2 =  "UPDATE teacher_tbl SET
-                bio = :bio
+                bio = :bio,
+                default_price = :price
             WHERE account_id = $id";
 
     try {
@@ -99,6 +101,7 @@ $app->put('/profile/save/{id}', function (Request $request, Response $response) 
 
         $stmt = $db->prepare($sql2);
             $stmt->bindParam(':bio', $bio);
+            $stmt->bindParam(':price', $price);
         $stmt->execute();
 
         echo '{"type": "success","text":"Profile changes have been saved."}';

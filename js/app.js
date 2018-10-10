@@ -624,7 +624,8 @@ sscy.controller("profileController", [
       name_last: "",
       email: "",
       bio: "",
-      photo: ""
+      photo: "",
+      price: ""
     };
 
     // Populate Teachers
