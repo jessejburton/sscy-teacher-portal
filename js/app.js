@@ -852,6 +852,8 @@ sscy.controller("registrationController", [
     };
     $scope.amount_collected = "";
 
+    var vars = getUrlVars();
+
     // Get the url for the API call
     $user_id = document.getElementById("hidden_user_id").value;
 
@@ -864,6 +866,20 @@ sscy.controller("registrationController", [
       }).then(
         function successCallback(response) {
           $scope.classes = response.data;
+
+          // If the class and date have been passed in select them
+          if (vars.class_id !== undefined && vars.class_date !== undefined) {
+            $scope.class = $scope.classes[vars.class_id];
+
+            // Need to do this since the month value needs to be subtract 1
+            var datevars = vars.class_date.split("-");
+            var reg_date = new Date(datevars[0], datevars[1] - 1, datevars[2]);
+            $scope.registration_date = moment(reg_date).format(
+              "dddd, MMMM D, YYYY"
+            );
+
+            $scope.getRegistrantsByClass();
+          }
         },
         function errorCallback(response) {
           alert("Error" + JSON.stringify(response));

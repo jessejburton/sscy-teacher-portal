@@ -483,3 +483,8 @@ main {
   width: 20px;
   height: 20px;
 }
+
+#report a,
+report a:link {
+  color: $accent-color;
+}

@@ -59,10 +59,10 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in report">
-                        <td>{{ row.class_name }}</td>
+                        <td><a href="registration.php?class_id={{ row.class_id }}&class_date={{ row.date_class }}">{{ row.class_name }}</a></td>
                         <td>{{ row.room_name }}</td>
                         <td>{{ row.date_class | date:'MMM, d yyyy' }}</td>
-                        <td>{{ row.registrants }}</td>
+                        <td><a href="registration.php?class_id={{ row.class_id }}&class_date={{ row.date_class }}">{{ row.registrants }}</a></td>
                         <td>{{ row.amount | currency }}</td>
                         <td>{{ row.charge | currency }}</td>
                     </tr>

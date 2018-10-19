@@ -13,7 +13,8 @@ $app->get('/report/{year}/{month}/{teacher_id}', function (Request $request, Res
                 c.name AS class_name, r.class_id, r.date_class, COUNT(registration_id) AS registrants, rm.name AS room_name, rm.rate, ifNull((SELECT amount FROM class_amount_tbl ca WHERE ca.class_id = r.class_id AND ca.date_class = r.date_class),0) AS amount, IF((SELECT amount FROM class_amount_tbl ca WHERE ca.class_id = r.class_id AND ca.date_class = r.date_class) > 50, rm.rate, 0) AS charge, c.teacher_id
             FROM registration_tbl r 
             INNER JOIN class_tbl c ON c.class_id = r.class_id
-            INNER JOIN room_tbl rm ON c.room_id = rm.room_id
+            INNER JOIN class_weekly_schedule_tbl cws ON cws.class_id = c.class_id
+            INNER JOIN room_tbl rm ON cws.room_id = rm.room_id
             WHERE   MONTH(date_class) = $month
             AND     YEAR(date_class) = $year
             AND 	c.teacher_id = $teacher_id

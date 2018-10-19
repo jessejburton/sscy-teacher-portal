@@ -57,9 +57,9 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
         foreach($records as $record){
             
             // Make sure the record exists 
-            if(!isset($return_arr[$record->name])){
+            if(!isset($return_arr[$record->class_id])){
                 // Create the main object
-                $return_arr[$record->name] = (object) [
+                $return_arr[$record->class_id] = (object) [
                     'name'=> $record->name, 
                     'class_id' => $record->class_id, 
                     'description' => $record->description,
@@ -70,8 +70,8 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
                 ];
 
                 // Create the schedule and exception arrays
-                $return_arr[$record->name]->schedules = [];
-                $return_arr[$record->name]->exceptions = [];
+                $return_arr[$record->class_id]->schedules = [];
+                $return_arr[$record->class_id]->exceptions = [];
             }
 
             // Schedules
@@ -84,7 +84,7 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
                 'teacher' => $record->teacher_name,
                 'days' => $record->days
             ];
-            array_push($return_arr[$record->name]->schedules, $schedule);
+            array_push($return_arr[$record->class_id]->schedules, $schedule);
 
             // Exceptions
             $sql2 = "SELECT 
@@ -106,7 +106,7 @@ $app->get('/classes/{id}', function (Request $request, Response $response) use (
                 $exceptions = $stmt->fetchAll(PDO::FETCH_OBJ);
                 $db2 = null;
                 
-                $return_arr[$record->name]->exceptions = $exceptions;
+                $return_arr[$record->class_id]->exceptions = $exceptions;
 
             } catch(PDOException $e) {
                 echo '{"error": {"text": '.$e->getMessage().'}';
