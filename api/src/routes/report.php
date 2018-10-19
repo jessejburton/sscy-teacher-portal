@@ -10,17 +10,14 @@ $app->get('/report/{year}/{month}/{teacher_id}', function (Request $request, Res
     $year = $request->getAttribute('year');
 
     $sql = "SELECT 
-                ca.amount, c.name AS class_name, ca.date_class, COUNT(r.registration_id) AS registrants, rm.name AS room_name, rm.rate, IF(ca.amount > 50, rm.rate, 0) AS charge
-            FROM class_amount_tbl ca
-            INNER JOIN class_tbl c ON c.class_id = ca.class_id
-            INNER JOIN registration_tbl r ON r.class_id = ca.class_id AND r.date_class = ca.date_class     
-            INNER JOIN class_weekly_schedule_tbl cws ON c.class_id = cws.class_id 
-            INNER JOIN room_tbl rm ON cws.room_id = rm.room_id
-            WHERE   MONTH(ca.date_class) = $month
-            AND     YEAR(ca.date_class) = $year
-            AND     ca.class_id IN (SELECT class_id FROM class_tbl WHERE teacher_id = $teacher_id)
-            GROUP BY ca.class_id, ca.date_class
-            ORDER BY c.name";
+                c.name, r.class_id, r.date_class, COUNT(registration_id) AS registrants, rm.name AS room_name, rm.rate, ifNull((SELECT amount FROM class_amount_tbl ca WHERE ca.class_id = r.class_id AND ca.date_class = r.date_class),0) AS amount, IF((SELECT amount FROM class_amount_tbl ca WHERE ca.class_id = r.class_id AND ca.date_class = r.date_class) > 50, rm.rate, 0) AS charge, c.teacher_id
+            FROM registration_tbl r 
+            INNER JOIN class_tbl c ON c.class_id = r.class_id
+            INNER JOIN room_tbl rm ON c.room_id = rm.room_id
+            WHERE   MONTH(date_class) = $month
+            AND     YEAR(date_class) = $year
+            AND 	c.teacher_id = $teacher_id
+            GROUP BY class_id, date_class";
 
     try {
         
