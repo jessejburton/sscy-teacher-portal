@@ -214,6 +214,7 @@ sscy.controller("classController", [
         $scope.selectedTeacher = $scope.teachers.find(
           t => t.account_id == loggedInUserID
         );
+        $scope.getClasses();
       },
       function errorCallback(response) {
         alert("Error" + JSON.stringify(response));
@@ -660,6 +661,17 @@ sscy.controller("profileController", [
         }
       );
     };
+
+    $scope.changePhoto = function() {
+      document.getElementById("photo").click();
+    };
+
+    // Upload the file when someone selects a new photo
+    document.getElementById("photo").addEventListener("change", function() {
+      // Submit the form
+      var frm = document.getElementById("photo_form");
+      console.log(frm);
+    });
 
     $scope.saveProfile = function() {
       var dataObj = $scope.profile;

@@ -55,10 +55,18 @@
             </div>
             <div class="col-1-of-2">
                 <h3>Photo</h3>
-                <div class="profile-photo">
+                <div class="profile-photo" ng-click="changePhoto()">
                     <img src="{{profile.photo}}" class="profile-photo-image" />
                     <div class="profile-photo-hover"><div class="profile-photo-text">CHANGE PHOTO</div></div>
                 </div>
+
+                <!-- Upload Form -->
+                <form action="templates/profile/upload.php?userid=<?php echo $_SESSION['user_id'] ?>" target="upload_frame" method="post" enctype="multipart/form-data" name="photo_form" id="photo_form">
+                    <input name="file" type="file" id="photo" size="30" />
+                </form>
+                <!-- Upload Form Iframe -->
+                <iframe id="upload_frame" name="upload_frame" frameborder="0" border="0" src="templates/profile/upload.php" scrolling="no" scrollbar="no" > </iframe>
+
             </div>
         </div>
 
