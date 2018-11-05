@@ -1270,6 +1270,7 @@ sscy.controller("signinController", [
       }).then(
         function successCallback(response) {
           $scope.classes = response.data;
+          console.log($scope.classes);
         },
         function errorCallback(response) {
           alert("Error" + JSON.stringify(response));

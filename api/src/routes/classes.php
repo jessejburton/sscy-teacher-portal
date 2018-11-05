@@ -296,12 +296,12 @@ $app->put('/class/update/{id}', function (Request $request, Response $response) 
 
     // Update the schedule
     $sql2 = "UPDATE class_weekly_schedule_tbl SET
-            days_of_week = :days_of_week,
-            room_id = :room_id, 
-            date_from = :date_from,
-            date_until = :date_to,
-            start_time = :start_time,
-            end_time = :end_time        
+                days_of_week = :days_of_week,
+                room_id = :room_id, 
+                date_from = :date_from,
+                date_until = :date_to,
+                start_time = :start_time,
+                end_time = :end_time        
             WHERE class_id = $id";
 
     try {

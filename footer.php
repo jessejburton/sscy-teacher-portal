@@ -18,7 +18,7 @@
                         ng-if="classes.length > 0" 
                         ng-change="selectClass()"
                         ng-model="class">
-                        <option ng-repeat="class in classes">{{class.name}}</option>
+                        <option ng-repeat="class in classes">{{class.name}} - ({{class.name_first}} {{class.name_last}})</option>
                     </select>
 
                     <div class="button-group u-text-center" ng-if="classes.length > 0">
