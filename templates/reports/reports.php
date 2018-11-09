@@ -1,4 +1,4 @@
-<div class="container" ng-controller="reportController" ng-init="getClasses()">
+<div class="container" ng-controller="reportController">
 
         <h2>Reports</h2>
 
