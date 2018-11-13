@@ -16,7 +16,7 @@
         </div>
 
         <div class="button-group">
-            <button class="button" id="login" ng-click="checkUserLogin()">Login :)</button>
+            <a class="button" id="login" ng-click="checkUserLogin()">Login :)</a>
         </div>
     </form>
 </div>
