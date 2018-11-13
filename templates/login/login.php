@@ -1,6 +1,6 @@
 <div class="container" style="width: 50%;" ng-controller="loginController">
     <h1>Please Log In</h1>
-    <form>
+    
         <div ng-if="message.show" class="alert alert-{{message.type}}" ng-cloak>
             {{message.text}}
         </div>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="button-group">
-            <a class="button" id="login" ng-click="checkUserLogin()">Login :)</a>
+            <button class="button" id="login" ng-click="checkUserLogin()">Login</button>
         </div>
-    </form>
+    
 </div>
