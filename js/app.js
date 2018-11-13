@@ -713,6 +713,8 @@ sscy.controller("loginController", [
     };
 
     $scope.checkUserLogin = function() {
+      alert("here");
+
       var dataObj = {
         username: $scope.username,
         password: $scope.password
@@ -735,6 +737,7 @@ sscy.controller("loginController", [
         function successCallback(response) {
           // Refresh the page if the user was logged in successfully
           if (response.data.success) {
+            alert("there");
             window.location = window.location;
             return;
           }
