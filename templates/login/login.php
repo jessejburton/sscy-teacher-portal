@@ -17,6 +17,7 @@
 
         <div class="button-group">
             <button class="button" id="login" ng-click="checkUserLogin()">Login</button>
+            <a ng-click="testFunction()">Click Me</a>
         </div>
     
 </div>

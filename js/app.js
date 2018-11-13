@@ -712,6 +712,10 @@ sscy.controller("loginController", [
       type: ""
     };
 
+    $scope.testFunction = function() {
+      alert("clicked");
+    };
+
     $scope.checkUserLogin = function() {
       alert("here");
 
