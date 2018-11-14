@@ -388,10 +388,10 @@ sscy.controller("classController", [
     };
 
     // Quick Cancel
-    $scope.quickCancel = function(class_name) {
+    $scope.quickCancel = function(class_id) {
       // Get the class details
-      $scope.exception.class = $scope.classes[class_name];
-      $scope.exception.class_id = $scope.exception.class.class_id;
+      $scope.exception.class = $scope.classes[class_id];
+      $scope.exception.class_id = class_id;
 
       let days = $scope.exception.class.schedules[0].days[0];
 
@@ -414,16 +414,16 @@ sscy.controller("classController", [
       $scope.exception.type = $scope.types[0];
 
       // Show the exception window
-      $scope.showExceptions(class_name);
+      $scope.showExceptions(class_id);
     };
 
     // Show Exceptions
-    $scope.showExceptions = function(class_name) {
+    $scope.showExceptions = function(class_id) {
       // disable scrolling
       document.body.className += " " + "no-scroll";
 
       // Get the class details
-      $scope.exception.class = $scope.classes[class_name];
+      $scope.exception.class = $scope.classes[class_id];
       $scope.exception.class_id = $scope.exception.class.class_id;
 
       // Set the invalid days array
@@ -712,13 +712,7 @@ sscy.controller("loginController", [
       type: ""
     };
 
-    $scope.testFunction = function() {
-      alert("clicked");
-    };
-
     $scope.checkUserLogin = function() {
-      alert("here");
-
       var dataObj = {
         username: $scope.username,
         password: $scope.password
@@ -741,7 +735,6 @@ sscy.controller("loginController", [
         function successCallback(response) {
           // Refresh the page if the user was logged in successfully
           if (response.data.success) {
-            alert("there");
             window.location = window.location;
             return;
           }

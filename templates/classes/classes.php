@@ -65,7 +65,7 @@
                                 <i class="far fa-calendar-alt"></i> add notice
                             </a> 
                         <?php } ?>
-                        <a href="javascript:void(0);" ng-click="quickCancel(class.name)">
+                        <a href="javascript:void(0);" ng-click="quickCancel(class.class_id)">
                             <i class="fas fa-ban"></i> quick cancel
                         </a>
                         <a href="javascriptio:void(0);" ng-click="editClass(class);">
