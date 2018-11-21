@@ -852,7 +852,6 @@ sscy.controller("registrationController", [
     $scope.classes = [];
     $scope.registrants = [];
     $scope.class = "";
-    $scope.registration_date = "";
     $scope.show = false;
     $scope.registrant = {
       name_first: "",
@@ -891,6 +890,12 @@ sscy.controller("registrationController", [
             );
 
             $scope.getRegistrantsByClass();
+          } else {
+            var reg_date = new Date();
+            $scope.registration_date = moment(reg_date).format(
+              "dddd, MMMM D, YYYY"
+            );
+            console.log($scope.registration_date);
           }
         },
         function errorCallback(response) {

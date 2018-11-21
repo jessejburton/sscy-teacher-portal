@@ -3,151 +3,309 @@ BlankSlate WordPress Theme © 2011-2014 TidyThemes
 BlankSlate is distributed under the terms of the GNU GPL
 */
 
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,header ol,header ul,header li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{font-size:100%;font:inherit;padding:0;border:0;margin:0;vertical-align:baseline}body{line-height:1}header ol,header ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}.clear{clear:both}
-.sticky{}.bypostauthor{}.wp-caption{}.wp-caption-text{}.gallery-caption{}.alignright{}.alignleft{}.aligncenter{} 
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+header ol,
+header ul,
+header li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  font-size: 100%;
+  font: inherit;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+}
+header ol,
+header ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+.clear {
+  clear: both;
+}
+.sticky {
+}
+.bypostauthor {
+}
+.wp-caption {
+}
+.wp-caption-text {
+}
+.gallery-caption {
+}
+.alignright {
+}
+.alignleft {
+}
+.aligncenter {
+}
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/roboto/Roboto-Light.woff');
+  font-family: "Roboto";
+  src: url("../fonts/roboto/Roboto-Light.woff");
 }
 
-html, body {
-    overflow-x: hidden;
+html,
+body {
+  overflow-x: hidden;
 }
 
 body {
-    .container {
-        padding: 40px 0;
-        max-width: 50%;
-        margin: 0 auto;
+  .container {
+    padding: 40px 0;
+    max-width: 50%;
+    margin: 0 auto;
 
-        @include respond($tablet){
-            max-width: $grid-width;
-        }
+    @include respond($tablet) {
+      max-width: $grid-width;
+    }
+  }
+
+  background: $white;
+
+  & > header {
+    @extend %wrapper-full;
+  }
+
+  & > main {
+    width: 100%;
+
+    section {
+      @extend %wrapper-fixed;
+      padding: $vertical-spacing 0;
+    }
+  }
+
+  // COLORS
+  .alt-color {
+    @extend %alt-color;
+  }
+
+  .alt-color-2 {
+    @extend %alt-color-2;
+  }
+
+  .bright-background {
+    @extend %bright-background;
+  }
+
+  .gradient-background {
+    @extend %gradient-background;
+  }
+
+  .soft-background {
+    @extend %soft-background;
+  }
+
+  .texture-background {
+    @extend %texture-background;
+  }
+
+  .alt-background {
+    @extend %alt-background;
+  }
+
+  .alt-background-2 {
+    @extend %alt-background-2;
+  }
+
+  .dark-background {
+    @extend %dark-background;
+  }
+
+  .alt-background,
+  .dark-background,
+  .bright-background,
+  .alt-background-2 {
+    color: $white;
+    svg path {
+      fill: $white;
+    }
+  }
+
+  .alt-color {
+    color: $secondary-color;
+    svg path {
+      fill: $secondary-color;
+    }
+  }
+
+  .alt-color-2 {
+    color: $secondary-color-2;
+    svg path {
+      fill: $secondary-color-2;
+    }
+  }
+
+  a.button,
+  input[type="submit"],
+  input[type="button"] {
+    @extend %button;
+
+    &:hover,
+    a:active {
+      color: $white;
+      background-color: $accent-color;
+    }
+  }
+
+  // TABLES
+
+  table {
+    width: 100%;
+
+    th {
+      font-weight: bold;
+      text-align: left;
     }
 
-    background: $white;
-  
-    & > header {
-      @extend %wrapper-full;
-    }
-  
-    & > main {
-      width: 100%;
-  
-      section {
-        @extend %wrapper-fixed;
-        padding: $vertical-spacing 0;
-      }
-  
-    }
-  
-    // COLORS
-    .alt-color {
-        @extend %alt-color;
-    }
-  
-    .alt-color-2 {
-        @extend %alt-color-2;
-    }
-  
-    .bright-background {
-        @extend %bright-background;
-    }
-  
-    .gradient-background {
-        @extend %gradient-background;
-    }
- 
-    .soft-background {
-        @extend %soft-background;
+    td,
+    th {
+      padding: 15px;
     }
 
-    .texture-background {
-        @extend %texture-background;
+    tbody tr:nth-child(odd) {
+      background-color: #e9e6e3;
     }
 
-    .alt-background {
-        @extend %alt-background;
+    tfoot {
+      background-color: #575350;
+      color: #ffffff;
     }
-
-    .alt-background-2 {
-        @extend %alt-background-2;
-    }
-
-    .dark-background {
-        @extend %dark-background;
-    }
-    
-    .alt-background, .dark-background, .bright-background, .alt-background-2 {
-        color: $white;
-        svg path { fill: $white; }
-    }
-  
-    .alt-color {
-        color: $secondary-color;
-        svg path { fill: $secondary-color; }
-    }
-
-    .alt-color-2 {
-        color: $secondary-color-2;
-        svg path { fill: $secondary-color-2; }
-    }
-  
-    a.button, input[type=submit], input[type=button] {
-        @extend %button;
-       
-        &:hover, a:active { 
-            color: $white; 
-            background-color:  
-            $accent-color; 
-        }
-    }
-
-    // TABLES
-
-    table {
-        width: 100%;
-    
-        th {
-            font-weight: bold;
-            text-align: left;
-        }
-    
-        td, th {
-            padding: 15px;
-        }
-    
-        tbody tr:nth-child(odd) {
-            background-color:#e9e6e3;
-        }
-    
-        tfoot {
-            background-color: #575350;
-            color: #ffffff;
-        }
-        
-    }
-    
+  }
 }
 
 small.links a {
-    text-transform: lowercase;
-    font-size: 12px!important; 
-    
-    &:not(:first-child){
-        margin-left: 20px;    
-    }
-}
+  text-transform: lowercase;
+  font-size: 12px !important;
 
+  &:not(:first-child) {
+    margin-left: 20px;
+  }
+}
 
 @media screen and (max-width: 1100px) {
-    .profile_links {
-      display: none!important; 
-    }
+  .profile_links {
+    display: none !important;
+  }
 }
 
+@media screen and (max-width: 400px) {
+  body > main {
+    width: 20%;
+  }
+
+  .button--checkin {
+    margin-top: 25px;
+  }
+}
