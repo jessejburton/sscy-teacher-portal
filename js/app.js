@@ -751,6 +751,40 @@ sscy.controller("loginController", [
         }
       );
     };
+
+    // Auto Login with Unique URL
+    var vars = getUrlVars();
+    if (vars.uid && vars.uid.length > 0) {
+      var dataObj = {
+        uid: vars.uid
+      };
+
+      // Get the user details via the UID
+      $http({
+        method: "POST",
+        url: siteRootURL + "api/login/byUID",
+        headers: { "Content-Type": "application/json" },
+        data: dataObj
+      }).then(
+        function successCallback(response) {
+          // Refresh the page if the user was logged in successfully
+          if (response.data.success) {
+            window.location = window.location;
+            return;
+          }
+
+          // Show any messages
+          $scope.message = response.data;
+          $scope.message.show = true; // ERROR TRAPPING change to if maybe?
+          return;
+        },
+        function errorCallback(response) {
+          $scope.message.text = response.data;
+          $scope.message.show = true;
+          return;
+        }
+      );
+    }
   }
 ]);
 
