@@ -21,7 +21,7 @@ $app->post('/login', function (Request $request, Response $response) {
     $sql = "SELECT account_id, username, concat(name_first, ' ', name_last) AS name, is_admin
             FROM account_tbl
             WHERE username = '$username'
-            AND (password = '$hashed_password' OR password = $password)";
+            AND password = '$hashed_password'";
 
     try {
 

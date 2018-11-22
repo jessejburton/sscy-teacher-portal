@@ -16,7 +16,7 @@
         </div>
 
         <div class="button-group">
-            <button class="button" id="login" on-touch="checkUserLogin()" ng-click="checkUserLogin()">Login</button>
+            <button class="button" id="login" ng-click="checkUserLogin()">Login</button>
         </div>
     
 </div>
