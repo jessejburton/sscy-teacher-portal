@@ -1118,6 +1118,7 @@ sscy.controller("signinController", [
 
     // Set up the variables
     $scope.class = {};
+    //$scope.selectedClass = {};
     $scope.mode = "setup";
     $scope.lastMode = "setup";
     $scope.open = false;
@@ -1319,7 +1320,7 @@ sscy.controller("signinController", [
 
     // Select the class for registration
     $scope.selectClass = function() {
-      let class_name = document.querySelector(".class-select").value;
+      var class_name = document.querySelector(".class-select").value;
 
       $scope.class = $scope.classes.find(c => (c.name = class_name));
       $scope.registered = $scope.getRegistrants();

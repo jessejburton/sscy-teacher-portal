@@ -18,7 +18,7 @@
                         ng-if="classes.length > 0" 
                         ng-change="selectClass()"
                         ng-model="class">
-                        <option ng-repeat="class in classes">{{class.name}} - ({{class.name_first}} {{class.name_last}})</option>
+                        <option ng-repeat="class in classes" value="{{class.name}}">{{class.name}} - ({{class.name_first}} {{class.name_last}})</option>
                     </select>
 
                     <div class="button-group u-text-center" ng-if="classes.length > 0">
@@ -34,7 +34,7 @@
                 <!-- Signin -->
                 <div class="signin__collect" ng-if="mode == 'signin'" ng-cloak>
                     <div class="signin_class-details u-bottom-space">
-                        <h4>{{class.name}}</h4>
+                        <h4>{{class.name}} <small>with</small> {{class.name_first}} {{class.name_last}}</h4>
                     </div>
 
                     <div class="signin__collect-registered" ng-if="registration_mode">
