@@ -14,6 +14,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="mobile-web-app-capable" content="yes">
         <title>SALT SPRING CENTRE OF YOGA - TEACHERS PORTAL</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
