@@ -507,7 +507,8 @@ sscy.controller("classController", [
       if ($scope.exception.class.schedules[0].days != exception_date.getDay()) {
         $scope.message.success = false;
         $scope.message.type = "danger";
-        $scope.message.text = "Date must be on a " + weekday[date.getDay()];
+        $scope.message.text =
+          "Date must be on a " + $scope.weekdays[date.getDay()];
         return;
       }
 
@@ -540,8 +541,11 @@ sscy.controller("classController", [
         function successCallback(response) {
           $scope.message = response.data;
           if ($scope.message.success) {
+            console.log($scope.exception.class);
+            console.log($scope.classes);
+            console.log($scope.classes[$scope.exception.class.class_id]);
             // Add the exception to the classes exception list
-            $scope.classes[$scope.exception.class.name].exceptions.push(
+            $scope.classes[$scope.exception.class.class_id].exceptions.push(
               $scope.message.exception
             );
 

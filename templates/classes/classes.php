@@ -61,7 +61,7 @@
                     <!-- Options -->
                     <small class="links">    
                         <?php if(  $_SESSION['is_admin'] ){ ?>
-                            <a class="no-left-margin" href="javascript:void(0);" ng-click="showExceptions(class.name)">
+                            <a class="no-left-margin" href="javascript:void(0);" ng-click="showExceptions(class.class_id)">
                                 <i class="far fa-calendar-alt"></i> add notice
                             </a> 
                         <?php } ?>
