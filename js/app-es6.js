@@ -1,4 +1,5 @@
 // Main Angular App File
+// Manually removed es6 Lamda expressions
 
 var sscy = angular.module("SSCY", ["720kb.datepicker", "rzModule"]);
 

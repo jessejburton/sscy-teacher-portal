@@ -151,7 +151,7 @@
 
         <!-- SLIDER -->
         <script src="js/config.js"></script>
-        <script src="js/app.js"></script>  
+        <script src="js/app-es6.js"></script>  
 
     </body>
 </html>
