@@ -212,9 +212,9 @@ sscy.controller("classController", [
     }).then(
       function successCallback(response) {
         $scope.teachers = response.data;
-        $scope.selectedTeacher = $scope.teachers.find(function(t) {
+        /*$scope.selectedTeacher = $scope.teachers.find(function(t) {
           return t.account_id == loggedInUserID;
-        });
+        });*/
         $scope.getClasses();
       },
       function errorCallback(response) {
@@ -401,7 +401,7 @@ sscy.controller("classController", [
       $scope.exception.class = $scope.classes[class_id];
       $scope.exception.class_id = class_id;
 
-      let days = $scope.exception.class.schedules[0].days[0];
+      var days = $scope.exception.class.schedules[0].days[0];
 
       // Find out the next available class date
       var dayOfWeek = days;
@@ -510,7 +510,7 @@ sscy.controller("classController", [
 
       // Must be only days the class is on
       // First find out what day was passed in
-      let exception_date = new Date($scope.exception.date);
+      var exception_date = new Date($scope.exception.date);
 
       // If the selected date is not the same as the class date
       if ($scope.exception.class.schedules[0].days != exception_date.getDay()) {
