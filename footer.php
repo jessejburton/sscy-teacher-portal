@@ -151,7 +151,7 @@
 
         <!-- SLIDER -->
         <script src="js/config.js"></script>
-        <script src="js/app-compiled.js"></script>
+        <script src="js/app-compiled.js"></script>  
 
     </body>
 </html>

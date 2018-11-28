@@ -217,7 +217,7 @@ sscy.controller("classController", [
         $scope.getClasses();
       },
       function errorCallback(response) {
-        alert("Error" + JSON.stringify(response));
+        console.log("Error" + JSON.stringify(response));
       }
     );
 
