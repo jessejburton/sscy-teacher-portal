@@ -211,9 +211,9 @@ sscy.controller("classController", [
     }).then(
       function successCallback(response) {
         $scope.teachers = response.data;
-        $scope.selectedTeacher = $scope.teachers.find(
-          t => t.account_id == loggedInUserID
-        );
+        $scope.selectedTeacher = $scope.teachers.find(function(t) {
+          return t.account_id == loggedInUserID;
+        });
         $scope.getClasses();
       },
       function errorCallback(response) {
@@ -277,17 +277,21 @@ sscy.controller("classController", [
         $scope.currentClass.schedules[0].end_time,
         "HH:mm A"
       ).format("h:mm A");
-      $scope.classTime.minValue = times.findIndex(e => e == start_time);
-      $scope.classTime.maxValue = times.findIndex(e => e == end_time);
+      $scope.classTime.minValue = times.findIndex(function(e) {
+        return e == start_time;
+      });
+      $scope.classTime.maxValue = times.findIndex(function(e) {
+        return e == end_time;
+      });
 
       // Select the day
       $scope.currentClass.selectedDay =
         $scope.weekdays[$scope.currentClass.schedules[0].days];
 
       // Select the room
-      $scope.currentClass.selectedRoom = $scope.rooms.find(
-        room => room.room_id == $scope.currentClass.schedules[0].room_id
-      );
+      $scope.currentClass.selectedRoom = $scope.rooms.find(function(room) {
+        return room.room_id == $scope.currentClass.schedules[0].room_id;
+      });
 
       // Show the overlay
       class_form.style.top = `${window.scrollY + 5}vh`;
@@ -573,9 +577,9 @@ sscy.controller("classController", [
 
       var exception = document.querySelector(".exception-" + id),
         classname = exception.dataset.classname,
-        index = $scope.classes[classname].exceptions.findIndex(
-          e => e.exception_id == id
-        );
+        index = $scope.classes[classname].exceptions.findIndex(function(e) {
+          return e.exception_id == id;
+        });
 
       // Send the data
       $http({
@@ -831,9 +835,9 @@ sscy.controller("reportController", [
       function successCallback(response) {
         $scope.teachers = response.data;
         // Get the current teacher if a teacher is logged in
-        $scope.selectedTeacher = $scope.teachers.find(
-          t => t.account_id == loggedInUserID
-        );
+        $scope.selectedTeacher = $scope.teachers.find(function(t) {
+          return t.account_id == loggedInUserID;
+        });
         if ($scope.selectedTeacher !== undefined) {
           $scope.getReport();
         }
@@ -864,8 +868,12 @@ sscy.controller("reportController", [
 
           // Calculate the total
           $scope.reportTotal = $scope.report
-            .map(r => r.charge)
-            .reduce((a, b) => Number(a) + Number(b), 0);
+            .map(function(r) {
+              r.charge;
+            })
+            .reduce(function(a, b) {
+              return Number(a) + Number(b);
+            }, 0);
 
           // Show the report table
           document.getElementById("report").classList.remove("hidden");
@@ -1323,7 +1331,9 @@ sscy.controller("signinController", [
     $scope.selectClass = function() {
       var class_name = document.querySelector(".class-select").value;
 
-      $scope.class = $scope.classes.find(c => (c.name = class_name));
+      $scope.class = $scope.classes.find(function(c) {
+        return c.name == class_name;
+      });
       $scope.registered = $scope.getRegistrants();
     };
 
