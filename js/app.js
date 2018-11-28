@@ -541,9 +541,6 @@ sscy.controller("classController", [
         function successCallback(response) {
           $scope.message = response.data;
           if ($scope.message.success) {
-            console.log($scope.exception.class);
-            console.log($scope.classes);
-            console.log($scope.classes[$scope.exception.class.class_id]);
             // Add the exception to the classes exception list
             $scope.classes[$scope.exception.class.class_id].exceptions.push(
               $scope.message.exception
