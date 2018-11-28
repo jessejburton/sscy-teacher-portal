@@ -248,7 +248,9 @@ sscy.controller("classController", [
       };
 
       // Show the overlay
-      class_form.style.top = `${window.scrollY + 5}vh`;
+      // scroll var
+      var scrollTop = window.scroll + 5;
+      class_form.style.top = scrollTop + "vh";
       class_form.scrollTop = 0;
       class_form.classList.add("open");
       overlay.style.left = 0;
@@ -295,7 +297,8 @@ sscy.controller("classController", [
       });
 
       // Show the overlay
-      class_form.style.top = `${window.scrollY + 5}vh`;
+      var overlayScrollTop = window.scrollY + 5;
+      class_form.style.top = overlayScrollTop + "vh";
       class_form.scrollTop = 0;
       class_form.classList.add("open");
       overlay.style.left = 0;
@@ -441,7 +444,8 @@ sscy.controller("classController", [
       }
 
       // Show the exception window
-      exception_window.style.top = `${window.scrollY + 5}vh`;
+      var exceptionScrollTop = window.scrollY + 5;
+      exception_window.style.top = exceptionScrollTop + "vh";
       overlay.style.left = 0;
       exception_window.classList.add("open");
       overlay.classList.add("open");
