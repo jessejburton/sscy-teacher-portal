@@ -182,7 +182,7 @@ sscy.controller("classController", [
           console.log($scope.classes);
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -199,7 +199,7 @@ sscy.controller("classController", [
         $scope.types = response.data;
       },
       function errorCallback(response) {
-        alert("Error" + JSON.stringify(response));
+        console.log("Error" + JSON.stringify(response));
       }
     );
 
@@ -231,7 +231,7 @@ sscy.controller("classController", [
         $scope.rooms = response.data;
       },
       function errorCallback(response) {
-        alert("Error" + JSON.stringify(response));
+        console.log("Error" + JSON.stringify(response));
       }
     );
 
@@ -596,7 +596,7 @@ sscy.controller("classController", [
                 Not working for some reason so falling back to jQuery in order to 
                 move on but want to COME BACK to this.
                 if( $scope.classes[classname].exceptions.length == 1 ){
-                    alert("here");
+                    console.log("here");
                     $scope.classes[classname].exceptions = [];    
                 } else {
                     $scope.classes[classname].exceptions.splice(index, 1);
@@ -640,7 +640,7 @@ sscy.controller("profileController", [
         $scope.teachers = response.data;
       },
       function errorCallback(response) {
-        alert("Error" + JSON.stringify(response));
+        console.log("Error" + JSON.stringify(response));
       }
     );
 
@@ -839,7 +839,7 @@ sscy.controller("reportController", [
         }
       },
       function errorCallback(response) {
-        alert("Error" + JSON.stringify(response));
+        console.log("Error" + JSON.stringify(response));
       }
     );
 
@@ -871,7 +871,7 @@ sscy.controller("reportController", [
           document.getElementById("report").classList.remove("hidden");
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -934,7 +934,7 @@ sscy.controller("registrationController", [
           }
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -952,12 +952,12 @@ sscy.controller("registrationController", [
 
       /*** Error Trapping ***/
       if ($scope.registrant.class_id == undefined) {
-        alert("Please select a class");
+        console.log("Please select a class");
         return false;
       }
 
       if ($scope.registrant.registration_date == "Invalid date") {
-        alert("Please select a date");
+        console.log("Please select a date");
         return false;
       }
 
@@ -965,7 +965,7 @@ sscy.controller("registrationController", [
         $scope.registrant.name_first.length == 0 ||
         $scope.registrant.name_last.length == 0
       ) {
-        alert("Please enter a first and last name");
+        console.log("Please enter a first and last name");
         return false;
       }
 
@@ -1055,7 +1055,7 @@ sscy.controller("registrationController", [
           $(".registrant-list").css("opacity", 1);
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
 
@@ -1074,7 +1074,7 @@ sscy.controller("registrationController", [
           }
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -1099,10 +1099,10 @@ sscy.controller("registrationController", [
       }).then(
         function successCallback(response) {
           console.log(response);
-          alert(response.data.text);
+          console.log(response.data.text);
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -1174,7 +1174,7 @@ sscy.controller("signinController", [
         !checkEmail(signup.email) ||
         !document.getElementById("waiver_checkbox").checked
       ) {
-        alert(
+        console.log(
           "Please make sure to fill in all of the fields and check the acknowledgment. This information is required to validate signing the waiver."
         );
         return false;
@@ -1202,12 +1202,12 @@ sscy.controller("signinController", [
 
       /*** Error Trapping ***/
       if (registrant.class_id == undefined) {
-        alert("Please select a class");
+        console.log("Please select a class");
         return false;
       }
 
       if (registrant.registration_date == "Invalid date") {
-        alert("Please select a date");
+        console.log("Please select a date");
         return false;
       }
 
@@ -1215,7 +1215,7 @@ sscy.controller("signinController", [
         registrant.name_first.length == 0 ||
         registrant.name_last.length == 0
       ) {
-        alert("Please enter a first and last name");
+        console.log("Please enter a first and last name");
         return false;
       }
 
@@ -1234,7 +1234,7 @@ sscy.controller("signinController", [
             registrant.registration_id = $scope.message.registration_id;
             // Add the registrant to the Registrants list
             $scope.registered.push(registrant);
-            alert("Registration confirmed.");
+            console.log("Registration confirmed.");
           }
         },
         function errorCallback(response) {
@@ -1262,7 +1262,7 @@ sscy.controller("signinController", [
       }).then(
         function successCallback(response) {
           console.log(response);
-          alert("Registration Recorded");
+          console.log("Registration Recorded");
           console.log("Registration recordeded");
         },
         function errorCallback(response) {
@@ -1297,7 +1297,7 @@ sscy.controller("signinController", [
           $scope.registered = response.data;
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
@@ -1314,7 +1314,7 @@ sscy.controller("signinController", [
           console.log($scope.classes);
         },
         function errorCallback(response) {
-          alert("Error" + JSON.stringify(response));
+          console.log("Error" + JSON.stringify(response));
         }
       );
     };
